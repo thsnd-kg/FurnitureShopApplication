@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueGroupNameValidator implements ConstraintValidator<UniqueGroupName, String> {
 	private String message;
-	private GroupService service;
+	private final GroupService service;
 	
 	public UniqueGroupNameValidator(GroupService groupService) {
 		service = groupService;

@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface ValidDescription {
-	public String message() default "Description is not valid.";
+	String message() default "Description is not valid.";
 	
 	Class<?>[] groups() default { };
 

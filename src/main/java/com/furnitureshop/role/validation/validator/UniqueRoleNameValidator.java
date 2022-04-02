@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueRoleNameValidator implements ConstraintValidator<UniqueRoleName, String> {
 	private String message;
-	private RoleService service;
+	private final RoleService service;
 	
 	public UniqueRoleNameValidator(RoleService roleService) {
 		service = roleService;

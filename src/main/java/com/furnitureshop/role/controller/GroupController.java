@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/group")
 public class GroupController {
-	private GroupService service;
+	private final GroupService service;
 	
 	public GroupController(GroupService groupService) {
 		service = groupService;

@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface ExistsRoleId {
-	public String message() default "Role doesn't exist.";
+	String message() default "Role doesn't exist.";
 	
 	Class<?>[] groups() default { };
 

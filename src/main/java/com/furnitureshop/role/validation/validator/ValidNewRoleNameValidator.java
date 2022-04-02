@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ValidNewRoleNameValidator implements ConstraintValidator<ValidNewRoleName, UpdateRoleDto> {
 	private String message;
-	private RoleService service;
+	private final RoleService service;
 	
 	public ValidNewRoleNameValidator(RoleService roleService) {
 		service = roleService;
