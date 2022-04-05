@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository repository;
-    private PasswordEncoder encoder;
+    private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         repository = userRepository;

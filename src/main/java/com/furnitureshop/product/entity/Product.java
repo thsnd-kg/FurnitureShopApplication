@@ -1,22 +1,37 @@
 package com.furnitureshop.product.entity;
 
-import com.furnitureshop.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
-@Data
+@Getter
+@Setter
 @Entity
-@Table
-@NoArgsConstructor
 @AllArgsConstructor
-public class Product extends BaseEntity {
+@NoArgsConstructor
+public class Product {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "product_id")
+    private Long productId;
 
-    private String name;
-    private String description;
+    @Basic
+    @Column(name = "product_name",
+            length = 50,
+            unique = true)
+    private String productName;
+
+    @Basic
+    @Column(name = "brand_id")
+    private Long brandId;
+
+    @Basic
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    @OneToMany(mappedBy = "product")
+    private Collection<ProductVariant> productVariants;
 }

@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ExistsRoleIdValidator implements ConstraintValidator<ExistsRoleId, Long> {
 	private String message;
-	private RoleService service;
+	private final RoleService service;
 	
 	public ExistsRoleIdValidator(RoleService roleService) {
 		service = roleService;

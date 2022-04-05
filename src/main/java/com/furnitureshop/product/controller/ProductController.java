@@ -1,23 +1,24 @@
 package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
+import com.furnitureshop.product.service.ProductServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 public class ProductController {
-    @GetMapping
-    public Object findAllProduct() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("Name", "aliababa");
+    private final ProductServiceImpl productService;
 
-        return ResponseHandler.getResponse(map, HttpStatus.OK);
+    @Autowired
+    public ProductController(ProductServiceImpl productService) {
+        this.productService = productService;
     }
 
+    @GetMapping
+    public Object getProducts() {
+        return ResponseHandler.getResponse(productService.getProducts(), HttpStatus.OK);
+    }
 }

@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface ExistsGroupId {
-	public String message() default "Group doesn't exist.";
+	String message() default "Group doesn't exist.";
 	
 	Class<?>[] groups() default { };
 

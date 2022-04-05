@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ExistsGroupIdValidator implements ConstraintValidator<ExistsGroupId, Long> {
 	private String message;
-	private GroupService service;
+	private final GroupService service;
 	
 	public ExistsGroupIdValidator(GroupService groupService) {
 		service = groupService;
