@@ -29,7 +29,10 @@ public class ProductVariant {
 
     @Basic
     @Column(name = "price")
-    private int price;
+    private Integer price;
+
+    @Column(name = "image")
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false)

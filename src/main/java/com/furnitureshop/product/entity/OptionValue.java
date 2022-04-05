@@ -11,9 +11,9 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
+/*@Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = { "product_id", "option_id", "value_name" })
-})
+})*/
 @IdClass(OptionValuePK.class)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +33,12 @@ public class OptionValue {
     @Basic
     @Column(name = "value_name", length = 50)
     private String valueName;
+
+    @Column(name = "sku", length = 50)
+    private String sku;
+
+    @Column(name = "image")
+    private String image;
 
     @ManyToOne
     @JoinColumns({
