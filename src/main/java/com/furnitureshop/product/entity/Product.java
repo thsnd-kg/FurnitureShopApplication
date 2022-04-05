@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -16,7 +18,15 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends BaseEntity {
-
     private String name;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 }
