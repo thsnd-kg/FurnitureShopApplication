@@ -2,10 +2,8 @@ package com.furnitureshop.product.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -24,13 +22,13 @@ public class Product {
             unique = true)
     private String productName;
 
-    @Basic
-    @Column(name = "brand_id")
-    private Long brandId;
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
-    @Basic
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @OneToMany(mappedBy = "product")
     private Collection<ProductVariant> productVariants;
