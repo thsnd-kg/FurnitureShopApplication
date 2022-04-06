@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,18 +17,25 @@ public class Product {
     @Column(name = "product_id")
     private Long productId;
 
-    @Basic
+    @Column(name = "brand_id")
+    private Long brandId;
+
+    @Column(name = "category_id")
+    private Long categoryId;
+
     @Column(name = "product_name",
             length = 50,
             unique = true)
     private String productName;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Brand brand;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Category category;
 
     @OneToMany(mappedBy = "product")

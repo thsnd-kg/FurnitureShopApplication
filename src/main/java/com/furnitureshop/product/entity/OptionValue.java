@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
-/*@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "product_id", "option_id", "value_name" })
-})*/
+@Table
 @IdClass(OptionValuePK.class)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,16 +29,16 @@ public class OptionValue {
     @Column(name = "value_id")
     private Long valueId;
 
-    @Basic
     @Column(name = "value_name", length = 50)
     private String valueName;
 
     @Column(name = "sku", length = 50)
     private String sku;
 
-    @Column(name = "image")
+    @Column(name = "image", length = 300)
     private String image;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),

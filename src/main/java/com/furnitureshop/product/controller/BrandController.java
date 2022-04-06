@@ -54,5 +54,4 @@ public class BrandController {
 
         return ResponseHandler.getResponse(service.deleteBrand(brandId), HttpStatus.OK);
     }
-
 }
