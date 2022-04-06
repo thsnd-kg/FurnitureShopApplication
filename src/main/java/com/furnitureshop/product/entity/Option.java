@@ -23,7 +23,6 @@ public class Option {
     @Column(name = "option_id")
     private Long optionId;
 
-    @Basic
     @Column(name = "option_name", length = 50)
     private String optionName;
 

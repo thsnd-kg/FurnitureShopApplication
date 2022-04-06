@@ -23,6 +23,7 @@ public class BaseEntity {
     protected Long id;
 
     @Version
+    @Column(columnDefinition = "integer DEFAULT 0", nullable = false)
     protected int version;
 
     @CreatedBy

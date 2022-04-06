@@ -16,6 +16,7 @@ public class VariantValueServiceImpl implements VariantValueService {
         this.variantValueRepository = variantValueRepository;
     }
 
+    @Override
     public List<VariantValue> getVariantValues() {
         return variantValueRepository.findAll();
     }

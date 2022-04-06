@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +26,10 @@ public class VariantValue {
     @Column(name = "option_id")
     private Long optionId;
 
-    @Basic
     @Column(name = "value_id")
     private Long valueId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),
@@ -36,6 +37,7 @@ public class VariantValue {
     })
     private ProductVariant productVariant;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),
@@ -44,6 +46,7 @@ public class VariantValue {
     })
     private OptionValue optionValue;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),

@@ -5,7 +5,6 @@ import com.furnitureshop.product.repository.OptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +16,7 @@ public class OptionServiceImpl implements OptionService {
         this.optionRepository = optionRepository;
     }
 
+    @Override
     public List<Option> getOptions() {
         return optionRepository.findAll();
     }
