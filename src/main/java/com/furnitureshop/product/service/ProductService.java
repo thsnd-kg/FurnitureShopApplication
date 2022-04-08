@@ -12,5 +12,4 @@ public interface ProductService {
     Product getProductById(Long id);
     Product createProduct(ProductDto dto);
     Product updateProduct(ProductDto dto);
-    Boolean deteleProduct(Long productId);
 }

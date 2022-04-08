@@ -6,18 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OptionServiceImpl implements OptionService {
-    private final OptionRepository optionRepository;
+    private final OptionRepository repository;
 
     @Autowired
-    public OptionServiceImpl(OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
+    public OptionServiceImpl(OptionRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<Option> getOptions() {
-        return optionRepository.findAll();
+        return repository.findAll();
+    }
+
+    @Override
+    public Option getOption(Long optionId) {
+        Optional<Option> optionById = repository.getById(optionId);
+        return optionById.orElse(null);
     }
 }

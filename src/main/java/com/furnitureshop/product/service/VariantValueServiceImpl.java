@@ -9,15 +9,15 @@ import java.util.List;
 
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
-    private final VariantValueRepository variantValueRepository;
+    private final VariantValueRepository repository;
 
     @Autowired
-    public VariantValueServiceImpl(VariantValueRepository variantValueRepository) {
-        this.variantValueRepository = variantValueRepository;
+    public VariantValueServiceImpl(VariantValueRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<VariantValue> getVariantValues() {
-        return variantValueRepository.findAll();
+        return repository.findAll();
     }
 }

@@ -10,21 +10,21 @@ import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepository repository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Product getProductById(Long id) {
-        return productRepository.getById(id);
+        return repository.getById(id);
     }
 
     @Override
@@ -34,21 +34,16 @@ public class ProductServiceImpl implements ProductService {
         product.setCategoryId(dto.getCategoryId());
         product.setProductName(dto.getProductName());
 
-        return productRepository.save(product);
+        return repository.save(product);
     }
 
     @Override
     public Product updateProduct(ProductDto dto) {
-        Product brand = productRepository.getById(dto.getProductId());
+        Product brand = repository.getById(dto.getProductId());
 
         if(dto.getProductName() != null)
             brand.setProductName(dto.getProductName());
 
-        return productRepository.save(brand);
-    }
-
-    @Override
-    public Boolean deteleProduct(Long productId) {
-        return null;
+        return repository.save(brand);
     }
 }

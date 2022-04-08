@@ -9,15 +9,30 @@ import java.util.List;
 
 @Service
 public class ProductVariantServiceImpl implements ProductVariantService {
-    private final ProductVariantRepository productVariantRepository;
+    private final ProductVariantRepository repository;
 
     @Autowired
-    public ProductVariantServiceImpl(ProductVariantRepository productVariantRepository) {
-        this.productVariantRepository = productVariantRepository;
+    public ProductVariantServiceImpl(ProductVariantRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<ProductVariant> getProductVariants() {
-        return productVariantRepository.findAll();
+        return repository.findAll();
+    }
+
+    @Override
+    public ProductVariant getProductVariantByProductId(Long productId) {
+        return repository.getProductVariantByProductId(productId).orElse(null);
+    }
+
+    @Override
+    public ProductVariant getProductVariantByVariantId(Long variantId) {
+        return repository.getProductVariantByVariantId(variantId).orElse(null);
+    }
+
+    @Override
+    public ProductVariant getProductVariant(Long productId, Long variantId) {
+        return repository.getProductVariant(productId, variantId).orElse(null);
     }
 }

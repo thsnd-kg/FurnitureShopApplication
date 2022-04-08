@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface OptionService {
     List<Option> getOptions();
+    Option getOption(Long optionId);
 }

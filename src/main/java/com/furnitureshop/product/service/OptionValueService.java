@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface OptionValueService {
     List<OptionValue> getOptionValues();
+    OptionValue getOptionValueByOptionId(Long optionId);
+    OptionValue getOptionValueByValueId(Long valueId);
+    OptionValue getOptionValueByProductId(Long productId);
 }
