@@ -36,6 +36,8 @@ public class ProductController {
         if(errors.hasErrors())
             return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
+
+
         return ResponseHandler.getResponse(productService.createProduct(newProduct), HttpStatus.OK);
     }
 

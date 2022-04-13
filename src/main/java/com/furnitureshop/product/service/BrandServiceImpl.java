@@ -33,7 +33,7 @@ public class BrandServiceImpl implements BrandService{
     public Brand createBrand(BrandDto dto) {
         Brand brand = new Brand();
         brand.setBrandName(dto.getBrandName());
-        brand.setDescription(dto.getDescription());
+        brand.setBrandDescription(dto.getDescription());
         brand.setIsDeleted(false);
         return repo.save(brand);
     }
@@ -46,7 +46,7 @@ public class BrandServiceImpl implements BrandService{
             brand.setBrandName(dto.getBrandName());
 
         if(dto.getDescription() != null)
-            brand.setDescription(dto.getDescription());
+            brand.setBrandDescription(dto.getDescription());
 
         return repo.save(brand);
     }

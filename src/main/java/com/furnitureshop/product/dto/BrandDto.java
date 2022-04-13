@@ -16,5 +16,6 @@ public class BrandDto {
     @NotEmpty
     @NotBlank
     private String brandName;
+
     private String description;
 }

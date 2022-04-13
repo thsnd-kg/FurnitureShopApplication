@@ -27,7 +27,8 @@ public class Brand extends BaseEntity {
     @NotBlank
     private String brandName;
 
-    private String description;
+    @Column(length = 100)
+    private String brandDescription;
 
     @NotNull
     @Column(columnDefinition = "boolean default false")
