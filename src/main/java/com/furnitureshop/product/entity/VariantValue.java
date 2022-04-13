@@ -11,18 +11,21 @@ import javax.persistence.*;
 @Entity
 @IdClass(VariantValuePK.class)
 public class VariantValue {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "variant_id")
     private Long variantId;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
     private Long optionId;
 

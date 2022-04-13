@@ -1,6 +1,8 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,9 +13,10 @@ import java.util.Collection;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Product extends BaseEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
 
@@ -28,14 +31,12 @@ public class Product {
             unique = true)
     private String productName;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "brand_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id", nullable = false, insertable = false, updatable = false)
     private Brand brand;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false, insertable = false, updatable = false)
     private Category category;
 
     @OneToMany(mappedBy = "product")
