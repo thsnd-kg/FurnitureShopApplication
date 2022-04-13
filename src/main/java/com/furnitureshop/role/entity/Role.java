@@ -19,6 +19,11 @@ import java.util.Set;
 @Entity
 @Table(name = "furnitureshop_role")
 public class Role extends BaseEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false)
+	protected Long id;
+
 	@NotNull
 	@Size(min = 3, max = 50)
 	@Column(unique = true)

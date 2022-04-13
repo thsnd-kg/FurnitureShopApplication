@@ -33,8 +33,9 @@ public class ProductServiceImpl implements ProductService {
         product.setBrandId(dto.getBrandId());
         product.setCategoryId(dto.getCategoryId());
         product.setProductName(dto.getProductName());
+        Product res = productRepository.save(product);
 
-        return productRepository.save(product);
+        return res;
     }
 
     @Override

@@ -17,10 +17,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    protected Long id;
 
     @Version
     @Column(columnDefinition = "integer DEFAULT 0", nullable = false)
