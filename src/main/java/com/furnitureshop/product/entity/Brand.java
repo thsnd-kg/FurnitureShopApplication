@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,11 @@ import java.util.Collection;
 @Getter
 @Setter
 public class Brand extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "brand_id", updatable = false)
+    private Long brandId;
+
     @NotBlank
     private String brandName;
 
@@ -27,6 +33,7 @@ public class Brand extends BaseEntity {
     @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "brand")
+    @JsonIgnore
+    @OneToMany(  mappedBy = "brand")
     private Collection<Product> products;
 }

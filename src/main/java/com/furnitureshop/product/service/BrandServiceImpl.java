@@ -24,6 +24,8 @@ public class BrandServiceImpl implements BrandService{
 
     @Override
     public Brand getBrandById(Long brandId) {
+
+
         return repo.getById(brandId);
     }
 

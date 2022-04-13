@@ -5,10 +5,7 @@ import com.furnitureshop.common.entity.BaseEntity;
 import com.furnitureshop.role.entity.Group;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,6 +21,11 @@ import java.util.Set;
 @Entity
 @Table(name = "furnitureshop_user")
 public class User extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
+    protected Long id;
+
     @NotNull
     @Column(unique = true)
     @Size(min = 3, max = 50)
