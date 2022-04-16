@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.OptionDto;
+import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.service.OptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,17 +43,26 @@ public class OptionController {
 
     @PostMapping
     public Object createOption(@Valid @RequestBody OptionDto newOption, BindingResult errors) {
-        if (errors.hasErrors())
-            return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(service.createOption(newOption), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.createOption(newOption), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping
     public Object updateOption(@Valid @RequestBody OptionDto updatedOption, BindingResult errors) {
-        if (errors.hasErrors())
-            return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(service.updateOption(updatedOption), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.updateOption(updatedOption), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

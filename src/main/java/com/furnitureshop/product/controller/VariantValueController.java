@@ -34,17 +34,25 @@ public class VariantValueController {
 
     @PostMapping
     public Object createProductVariant(@Valid @RequestBody VariantValueDto newVariantValue, BindingResult errors) {
-        if (errors.hasErrors())
-            return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(service.createVariantValue(newVariantValue), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.createVariantValue(newVariantValue), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping
     public Object updateProductVariant(@Valid @RequestBody VariantValueDto updatedVariantValue, BindingResult errors) {
-        if (errors.hasErrors())
-            return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(service.updateVariantValue(updatedVariantValue), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.updateVariantValue(updatedVariantValue), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }
