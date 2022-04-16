@@ -11,77 +11,88 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository repository;
+    private final CategoryRepository repo;
 
     @Autowired
     public CategoryServiceImpl(CategoryRepository repository) {
-        this.repository = repository;
+        this.repo = repository;
     }
 
     @Override
     public List<Category> getCategories() {
-        return repository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public List<Category> getCategoriesActive() {
-        return repository.findByIsDeletedFalse();
+        return repo.findByIsDeletedFalse();
     }
 
     @Override
     public Category getCategoryById(Long categoryId) {
-        return repository.getById(categoryId);
+        Optional<Category> category = repo.findById(categoryId);
+        if(category.isPresent())
+            return category.get();
+
+        throw new IllegalStateException("Category does not exist");
     }
 
     @Override
     public Boolean deleteCategory(Long categoryId) {
-        Category category = repository.getById(categoryId);
+        if(!isExisted(categoryId))
+            throw new IllegalStateException("Category does not exist");
+
+        Category category = repo.getById(categoryId);
         category.setIsDeleted(true);
-        repository.save(category);
+        repo.save(category);
         return true;
     }
 
     @Override
     public Category createCategory(CategoryDto dto) {
-        Category category = new Category();
-        category.setCategoryName(dto.getCategoryName());
-        category.setCategoryDescription(dto.getCategoryDescription());
-        category.setIsDeleted(false);
-
-        if(dto.getParentId() != null) {
-            Optional<Category> parent = repository.findById(dto.getParentId());
-
-            if (parent.isPresent())
-                category.setParent(parent.get());
-            else
-                return null;
-        }
-
-        return repository.save(category);
+        Category category = handleData(dto, false);
+        return repo.save(category);
     }
 
     @Override
     public Category updateCategory(CategoryDto dto) {
-        if (dto.getCategoryId() == null)
-            return null;
+        Category category = handleData(dto, true);
+        return repo.save(category);
+    }
 
-        Category category = repository.getById(dto.getCategoryId());
+    public boolean isExisted(Long categoryId){
+        Optional<Category> category = repo.findById(categoryId);
+        if(category.isPresent())
+            return true;
 
-        if (dto.getCategoryName() != null)
+        return false;
+    }
+
+    public Category handleData(CategoryDto dto, boolean hasId){
+        Category category = new Category();
+
+        if(hasId) {
+            if (dto.getCategoryId() == null)
+                throw new IllegalStateException("Category Id must not be null");
+
+            if (isExisted(dto.getCategoryId()))
+                category = repo.getById(dto.getCategoryId());
+        }
+
+        if(dto.getCategoryName() != null)
             category.setCategoryName(dto.getCategoryName());
 
-        if (dto.getCategoryDescription() != null) {
+        if(dto.getCategoryDescription() !=null) {
             category.setCategoryDescription(dto.getCategoryDescription());
         }
 
-        if (dto.getParentId() != null) {
-            Optional<Category> parent = repository.findById(dto.getParentId());
+        if(dto.getParentId() != null) {
+            if(!isExisted(dto.getParentId()))
+                throw new IllegalStateException("Parent does not exist");
 
-            if (parent.isPresent())
-                category.setParent(parent.get());
-            else
-                return null;
+            Category parent = repo.getById(dto.getParentId());
+            category.setParent(parent);
         }
-        return repository.save(category);
+        return  category;
     }
 }
