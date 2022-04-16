@@ -20,8 +20,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive) {
-        if (isActive)
+    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive){
+        if(isActive)
             return ResponseHandler.getResponse(service.getCategoriesActive(), HttpStatus.OK);
 
         return ResponseHandler.getResponse(service.getCategories(), HttpStatus.OK);
@@ -32,42 +32,51 @@ public class CategoryController {
     public Object getCategoryById(@PathVariable("category-id") Long categoryId){
         try{
             if(categoryId == null)
-                return ResponseHandler.getResponse("Id must not be null", HttpStatus.BAD_REQUEST);
+                throw new IllegalStateException("Category Id must not be null");
 
             return service.getCategoryById(categoryId);
         }catch (Exception e){
-            e.printStackTrace();
-            return ResponseHandler.getResponse( HttpStatus.BAD_REQUEST);
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping
     public Object createCategory(@Valid @RequestBody CategoryDto newCategory, BindingResult errors) {
-        if(errors.hasErrors())
-            return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+        try {
+            if(errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        Category category = service.createCategory(newCategory);
-        if(category == null)
-            return ResponseHandler.getResponse(HttpStatus.BAD_REQUEST);
+            Category category = service.createCategory(newCategory);
+            return ResponseHandler.getResponse(category, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseHandler.getResponse(category, HttpStatus.OK);
     }
 
     @PutMapping
     public Object updateCategory(@RequestBody CategoryDto updatedCategory){
-        Category category = service.updateCategory(updatedCategory);
-        if(category == null)
-            return ResponseHandler.getResponse(HttpStatus.BAD_REQUEST);
+        try{
+            Category category = service.updateCategory(updatedCategory);
+            if(category == null)
+                return ResponseHandler.getResponse(HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(category, HttpStatus.OK);
+            return ResponseHandler.getResponse(category, HttpStatus.OK);
+        }catch(Exception e){
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping(path = "/{category-id}")
-    public Object deleteBrand(@PathVariable("category-id") Long categoryId){
-        if(categoryId == null)
-            return ResponseHandler.getResponse(HttpStatus.BAD_REQUEST);
-
-        return ResponseHandler.getResponse(service.deleteCategory(categoryId), HttpStatus.OK);
+    public Object deleteBrand(@PathVariable("category-id") Long categoryId) {
+        try {
+            if (categoryId == null)
+                throw new IllegalStateException("Category Id must not be null");
+            return ResponseHandler.getResponse(service.deleteCategory(categoryId), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
 
