@@ -4,6 +4,7 @@ import com.furnitureshop.role.entity.Group;
 import com.furnitureshop.security.dto.UserDetailsDto;
 import com.furnitureshop.user.entity.User;
 import com.furnitureshop.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository repository;
 
+    @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
         repository = userRepository;
     }

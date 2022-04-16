@@ -18,8 +18,8 @@ import java.util.List;
 @RequestMapping("api/group")
 public class GroupController {
 	private final GroupService service;
-	
-	public GroupController(GroupService groupService) {
+
+    public GroupController(GroupService groupService) {
 		service = groupService;
 	}
 	

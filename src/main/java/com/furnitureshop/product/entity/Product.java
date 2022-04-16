@@ -1,9 +1,11 @@
 package com.furnitureshop.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -14,17 +16,10 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
-
-    @Column(name = "brand_id")
-    private Long brandId;
-
-    @Column(name = "category_id")
-    private Long categoryId;
 
     @Column(name = "product_name",
             length = 50,
@@ -32,13 +27,16 @@ public class Product extends BaseEntity {
     private String productName;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "brand_id",
+            referencedColumnName = "brand_id")
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "category_id",
+            referencedColumnName = "category_id")
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private Collection<ProductVariant> productVariants;
 }

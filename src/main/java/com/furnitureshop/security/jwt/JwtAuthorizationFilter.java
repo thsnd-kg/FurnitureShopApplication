@@ -1,6 +1,8 @@
 package com.furnitureshop.security.jwt;
 
 
+import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,19 +22,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
+    @Autowired
     public JwtAuthorizationFilter(JwtUtils utils, UserDetailsService service) {
         jwtUtils = utils;
         userDetailsService = service;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         // authorize the request before
         try {
             String token = jwtUtils.getJwtTokenFromRequest(request);
 
-            if(token != null && jwtUtils.validateJwtToken(token)) {
+            if (token != null && jwtUtils.validateJwtToken(token)) {
                 String username = jwtUtils.getUsernameFromToken(token);
 
                 // authorize
@@ -49,5 +52,4 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
         // do after
     }
-
 }

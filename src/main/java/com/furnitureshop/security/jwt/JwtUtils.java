@@ -1,23 +1,16 @@
 package com.furnitureshop.security.jwt;
 
+import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-
     private final Long jwtExpiration = 86400000L;
     private final String jwtSecret = "thisismysecrettoken";
     private final String authHeader = "Authorization";

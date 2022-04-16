@@ -10,30 +10,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
+    private final CategoryRepository repository;
+
     @Autowired
-    private CategoryRepository repo;
+    public CategoryServiceImpl(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<Category> getCategories() {
-        return repo.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<Category> getCategoriesActive() {
-        return repo.findByIsDeletedFalse();
+        return repository.findByIsDeletedFalse();
     }
 
     @Override
     public Category getCategoryById(Long categoryId) {
-        return repo.getById(categoryId);
+        return repository.getById(categoryId);
     }
 
     @Override
     public Boolean deleteCategory(Long categoryId) {
-        Category category = repo.getById(categoryId);
+        Category category = repository.getById(categoryId);
         category.setIsDeleted(true);
-        repo.save(category);
+        repository.save(category);
         return true;
     }
 
@@ -41,11 +45,11 @@ public class CategoryServiceImpl implements CategoryService{
     public Category createCategory(CategoryDto dto) {
         Category category = new Category();
         category.setCategoryName(dto.getCategoryName());
-        category.setDescription(dto.getDescription());
+        category.setCategoryDescription(dto.getCategoryDescription());
         category.setIsDeleted(false);
 
         if(dto.getParentId() != null) {
-            Optional<Category> parent = repo.findById(dto.getParentId());
+            Optional<Category> parent = repository.findById(dto.getParentId());
 
             if (parent.isPresent())
                 category.setParent(parent.get());
@@ -53,31 +57,31 @@ public class CategoryServiceImpl implements CategoryService{
                 return null;
         }
 
-        return repo.save(category);
+        return repository.save(category);
     }
 
     @Override
     public Category updateCategory(CategoryDto dto) {
-        if(dto.getCategoryId() == null)
+        if (dto.getCategoryId() == null)
             return null;
 
-        Category category = repo.getById(dto.getCategoryId());
+        Category category = repository.getById(dto.getCategoryId());
 
-        if(dto.getCategoryName() != null)
+        if (dto.getCategoryName() != null)
             category.setCategoryName(dto.getCategoryName());
 
-        if(dto.getDescription() !=null) {
-            category.setDescription(dto.getDescription());
+        if (dto.getCategoryDescription() != null) {
+            category.setCategoryDescription(dto.getCategoryDescription());
         }
 
-        if(dto.getParentId() != null) {
-            Optional<Category> parent = repo.findById(dto.getParentId());
+        if (dto.getParentId() != null) {
+            Optional<Category> parent = repository.findById(dto.getParentId());
 
             if (parent.isPresent())
                 category.setParent(parent.get());
             else
                 return null;
         }
-        return repo.save(category);
+        return repository.save(category);
     }
 }

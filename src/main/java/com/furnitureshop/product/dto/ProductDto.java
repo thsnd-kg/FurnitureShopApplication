@@ -1,19 +1,25 @@
 package com.furnitureshop.product.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
+@Setter
 public class ProductDto {
+    @NotNull(message = "Product id must not be null")
     private Long productId;
+
+    @NotNull(message = "Brand id must not be null")
     private Long brandId;
+
+    @NotNull(message = "Category id must not be null")
     private Long categoryId;
 
-    @NotNull(message = "Product name must not be null")
     @NotBlank(message = "Product name must not be blank")
-    @Size(min = 1, max = 50, message = "Product name must be between 1 and 50 characters")
+    @Size(max = 50, message = "Product name must be less than 50 characters")
     private String productName;
 }

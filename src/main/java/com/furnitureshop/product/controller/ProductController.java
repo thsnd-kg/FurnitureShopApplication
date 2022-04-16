@@ -14,21 +14,21 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
-    private final ProductService productService;
+    private final ProductService service;
 
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductService service) {
+        this.service = service;
     }
 
     @GetMapping
     public Object getProducts() {
-        return ResponseHandler.getResponse(productService.getProducts(), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{product-id}")
-    public Object getBrandById(@PathVariable("product-id") Long brandId){
-        return ResponseHandler.getResponse(productService.getProductById(brandId), HttpStatus.OK);
+    public Object getProductById(@PathVariable("product-id") Long productId) {
+        return ResponseHandler.getResponse(service.getProduct(productId), HttpStatus.OK);
     }
 
     @PostMapping
@@ -36,16 +36,14 @@ public class ProductController {
         if(errors.hasErrors())
             return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-
-
-        return ResponseHandler.getResponse(productService.createProduct(newProduct), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.createProduct(newProduct), HttpStatus.OK);
     }
 
     @PutMapping
-    public Object updateBrand(@RequestBody ProductDto updatedProduct, BindingResult errors){
-        if(errors.hasErrors())
+    public Object updateProduct(@Valid @RequestBody ProductDto updatedProduct, BindingResult errors) {
+        if (errors.hasErrors())
             return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-        return ResponseHandler.getResponse(productService.updateProduct(updatedProduct), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.updateProduct(updatedProduct), HttpStatus.OK);
     }
 }

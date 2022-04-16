@@ -2,7 +2,6 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.BrandDto;
-import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +13,16 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/brands")
 public class BrandController {
+    private final BrandService service;
+
     @Autowired
-    private BrandService service;
+    public BrandController(BrandService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public Object getBrands(@RequestParam(value = "onlyActive") Boolean isActive){
-        if(isActive == true)
+    public Object getBrands(@RequestParam(value = "onlyActive") Boolean isActive) {
+        if (isActive == true)
             return ResponseHandler.getResponse(service.getBrandsActive(), HttpStatus.OK);
 
         return ResponseHandler.getResponse(service.getBrands(), HttpStatus.OK);

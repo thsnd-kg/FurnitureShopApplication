@@ -8,25 +8,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BrandServiceImpl implements BrandService{
+public class BrandServiceImpl implements BrandService {
+    private final BrandRepository repository;
+
     @Autowired
-    private BrandRepository repo;
+    public BrandServiceImpl(BrandRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<Brand> getBrands() {
-        return repo.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<Brand> getBrandsActive() {
-        return repo.findByIsDeletedFalse();
+        return repository.findByIsDeletedFalse();
     }
 
     @Override
     public Brand getBrandById(Long brandId) {
-
-
-        return repo.getById(brandId);
+        return repository.getById(brandId);
     }
 
     @Override
@@ -35,12 +37,12 @@ public class BrandServiceImpl implements BrandService{
         brand.setBrandName(dto.getBrandName());
         brand.setBrandDescription(dto.getDescription());
         brand.setIsDeleted(false);
-        return repo.save(brand);
+        return repository.save(brand);
     }
 
     @Override
     public Brand updateBrand(BrandDto dto) {
-        Brand brand = repo.getById(dto.getBrandId());
+        Brand brand = repository.getById(dto.getBrandId());
 
         if(dto.getBrandName() != null)
             brand.setBrandName(dto.getBrandName());
@@ -48,14 +50,14 @@ public class BrandServiceImpl implements BrandService{
         if(dto.getDescription() != null)
             brand.setBrandDescription(dto.getDescription());
 
-        return repo.save(brand);
+        return repository.save(brand);
     }
 
     @Override
     public Boolean deleteBrand(Long brandId) {
-        Brand brand = repo.getById(brandId);
+        Brand brand = repository.getById(brandId);
         brand.setIsDeleted(true);
-        repo.save(brand);
+        repository.save(brand);
         return true;
     }
 }

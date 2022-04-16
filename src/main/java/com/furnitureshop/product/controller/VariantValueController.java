@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/variant_value")
 public class VariantValueController {
-    private final VariantValueService variantValueService;
+    private final VariantValueService service;
 
     @Autowired
-    public VariantValueController(VariantValueService variantValueService) {
-        this.variantValueService = variantValueService;
+    public VariantValueController(VariantValueService service) {
+        this.service = service;
     }
 
     @GetMapping
     public Object getVariantValues() {
-        return ResponseHandler.getResponse(variantValueService.getVariantValues(), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getVariantValues(), HttpStatus.OK);
     }
 }
