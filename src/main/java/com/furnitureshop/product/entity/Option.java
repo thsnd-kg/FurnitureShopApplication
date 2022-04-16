@@ -1,6 +1,11 @@
 package com.furnitureshop.product.entity;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.furnitureshop.common.entity.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -8,27 +13,30 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "product_id", "option_name" })
-})
 @IdClass(OptionPK.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Option {
-    @Id
-    @Column(name = "product_id")
-    private Long productId;
-
-    @Id
+public class Option extends BaseEntity {
     @Column(name = "option_id")
+    @Id
     private Long optionId;
+
+    @Column(name = "category_id")
+    @Id
+    private Long categoryId;
 
     @Column(name = "option_name", length = 50)
     private String optionName;
 
-    @OneToMany(mappedBy = "option")
-    private Collection<OptionValue> optionValues;
+    @ManyToOne
+    @JoinColumn(name = "category_id",
+            referencedColumnName = "category_id",
+            insertable = false,
+            updatable = false,
+            nullable = false)
+    private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "option")
     private Collection<VariantValue> variantValues;
 }

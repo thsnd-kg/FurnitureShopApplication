@@ -23,8 +23,8 @@ public class GroupServiceImpl implements GroupService {
 	private final GroupRepository repository;
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
-	
-	@Override
+
+    @Override
 	public boolean isTakenName(String groupName) {
 		return repository.countByName(groupName) >= 1;
 	}

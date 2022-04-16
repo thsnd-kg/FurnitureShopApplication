@@ -8,12 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
-@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,19 +18,19 @@ import java.util.Collection;
 public class Brand extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brand_id", updatable = false)
+    @Column(name = "brand_id")
     private Long brandId;
 
-    @NotBlank
+    @Column(name = "brand_name", length = 50)
     private String brandName;
 
-    private String description;
+    @Column(name = "brand_description", length = 100)
+    private String brandDescription;
 
-    @NotNull
     @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted;
 
     @JsonIgnore
-    @OneToMany(  mappedBy = "brand")
+    @OneToMany(mappedBy = "brand")
     private Collection<Product> products;
 }

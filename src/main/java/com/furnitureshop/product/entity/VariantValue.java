@@ -1,7 +1,9 @@
 package com.furnitureshop.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.furnitureshop.common.entity.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,50 +12,54 @@ import javax.persistence.*;
 @Setter
 @Entity
 @IdClass(VariantValuePK.class)
-public class VariantValue {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@NoArgsConstructor
+public class VariantValue extends BaseEntity {
     @Column(name = "product_id")
+    @Id
     private Long productId;
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "variant_id")
+    @Id
     private Long variantId;
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
+    @Id
     private Long optionId;
 
-    @Column(name = "value_id")
-    private Long valueId;
+    @Column(name = "option_value")
+    private String optionValue;
 
-    @JsonIgnore
+    @Column(name = "option_image")
+    private String optionImage;
+
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "variant_id", referencedColumnName = "variant_id", nullable = false, insertable = false, updatable = false)
+            @JoinColumn(name = "product_id",
+                    referencedColumnName = "product_id",
+                    nullable = false,
+                    insertable = false,
+                    updatable = false),
+            @JoinColumn(name = "variant_id",
+                    referencedColumnName = "variant_id",
+                    nullable = false,
+                    insertable = false,
+                    updatable = false)
     })
     private ProductVariant productVariant;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "option_id", referencedColumnName = "option_id", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "value_id", referencedColumnName = "value_id", nullable = false, insertable = false, updatable = false)
-    })
-    private OptionValue optionValue;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false),
-            @JoinColumn(name = "option_id", referencedColumnName = "option_id", nullable = false, insertable = false, updatable = false)
+            @JoinColumn(name = "option_id",
+                    referencedColumnName = "option_id",
+                    nullable = false,
+                    insertable = false,
+                    updatable = false),
+            @JoinColumn(name = "category_id",
+                    referencedColumnName = "category_id",
+                    nullable = false,
+                    insertable = false,
+                    updatable = false)
     })
     private Option option;
 }

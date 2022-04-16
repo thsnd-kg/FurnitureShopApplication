@@ -4,7 +4,6 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.CategoryDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,15 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
-    @Autowired
-    private CategoryService service;
+    private final CategoryService service;
+
+    public CategoryController(CategoryService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive){
-        if(isActive == true)
+    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive) {
+        if (isActive)
             return ResponseHandler.getResponse(service.getCategoriesActive(), HttpStatus.OK);
 
         return ResponseHandler.getResponse(service.getCategories(), HttpStatus.OK);
