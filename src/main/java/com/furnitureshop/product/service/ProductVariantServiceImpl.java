@@ -1,7 +1,9 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.ProductVariantDto;
+import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.ProductVariant;
+import com.furnitureshop.product.entity.ProductVariantPK;
 import com.furnitureshop.product.repository.ProductRepository;
 import com.furnitureshop.product.repository.ProductVariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductVariantServiceImpl implements ProductVariantService {
@@ -27,13 +30,13 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     @Override
-    public ProductVariant getProductVariantByProductId(Long productId) {
-        return productVariantRepository.findByProductId(productId).orElse(null);
+    public List<ProductVariant> getProductVariantsByProductId(Long productId) {
+        return productVariantRepository.findByProductId(productId);
     }
 
     @Override
-    public ProductVariant getProductVariantByVariantId(Long variantId) {
-        return productVariantRepository.findByVariantId(variantId).orElse(null);
+    public List<ProductVariant> getProductVariantsByVariantId(Long variantId) {
+        return productVariantRepository.findByVariantId(variantId);
     }
 
     @Override
@@ -43,14 +46,14 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public ProductVariant createProductVariant(ProductVariantDto dto) {
-        var productOptional = productRepository.findById(dto.getProductId());
-        var productVariantOptional = productVariantRepository.findByProductId(dto.getProductId());
+        Optional<Product> productOptional = productRepository.findById(dto.getProductId());
+        List<ProductVariant> productVariants = productVariantRepository.findByProductId(dto.getProductId());
 
-        if (productOptional.isEmpty()) {
+        if (!productOptional.isPresent()) {
             throw new IllegalStateException("Product not exists");
         }
 
-        ProductVariant max = productVariantOptional.stream().max(Comparator.comparing(ProductVariant::getVariantId)).orElse(null);
+        ProductVariant max = productVariants.stream().max(Comparator.comparing(ProductVariant::getVariantId)).orElse(null);
         Long id = max == null ? 0 : max.getVariantId();
 
         ProductVariant productVariant = new ProductVariant();
@@ -64,12 +67,12 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public ProductVariant updateProductVariant(ProductVariantDto dto) {
-        var productVariantOptional = productVariantRepository.findById(dto.getVariantId(), dto.getProductId());
-        var productOptional = productRepository.findById(dto.getProductId());
+        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(dto.getVariantId(), dto.getProductId());
+        Optional<Product> productOptional = productRepository.findById(dto.getProductId());
 
-        if (productVariantOptional.isEmpty()) {
+        if (!productVariantOptional.isPresent()) {
             throw new IllegalStateException("Product variant not exists");
-        } else if (productOptional.isEmpty()) {
+        } else if (!productOptional.isPresent()) {
             throw new IllegalStateException("Product not exists");
         }
 

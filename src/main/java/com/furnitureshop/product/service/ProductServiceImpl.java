@@ -1,6 +1,8 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.ProductDto;
+import com.furnitureshop.product.entity.Brand;
+import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.repository.BrandRepository;
 import com.furnitureshop.product.repository.CategoryRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,12 +38,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductDto dto) {
-        var brandOptional = brandRepository.findById(dto.getBrandId());
-        var categoryOptional = categoryRepository.findById(dto.getCategoryId());
+        Optional<Brand> brandOptional = brandRepository.findById(dto.getBrandId());
+        Optional<Category> categoryOptional = categoryRepository.findById(dto.getCategoryId());
 
-        if (brandOptional.isEmpty()) {
+        if (!brandOptional.isPresent()) {
             throw new IllegalStateException("Brand not exists");
-        } else if (categoryOptional.isEmpty()) {
+        } else if (!categoryOptional.isPresent()) {
             throw new IllegalStateException("Category not exists");
         } else if (productRepository.findByName(dto.getProductName()).isPresent()) {
             throw new IllegalStateException("Product name already exists");
@@ -56,15 +59,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(ProductDto dto) {
-        var brandOptional = brandRepository.findById(dto.getBrandId());
-        var categoryOptional = categoryRepository.findById(dto.getCategoryId());
-        var productOptional = productRepository.findById(dto.getProductId());
+        Optional<Brand> brandOptional = brandRepository.findById(dto.getBrandId());
+        Optional<Category> categoryOptional = categoryRepository.findById(dto.getCategoryId());
+        Optional<Product> productOptional = productRepository.findById(dto.getProductId());
 
-        if (productOptional.isEmpty()) {
+        if (!productOptional.isPresent()) {
             throw new IllegalStateException("Product not exists");
-        } else if (brandOptional.isEmpty()) {
+        } else if (!brandOptional.isPresent()) {
             throw new IllegalStateException("Brand not exists");
-        } else if (categoryOptional.isEmpty()) {
+        } else if (!categoryOptional.isPresent()) {
             throw new IllegalStateException("Category not exists");
         }
 

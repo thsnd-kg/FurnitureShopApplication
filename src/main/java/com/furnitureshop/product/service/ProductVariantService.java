@@ -8,9 +8,9 @@ import java.util.List;
 public interface ProductVariantService {
     List<ProductVariant> getProductVariants();
 
-    ProductVariant getProductVariantByProductId(Long productId);
+    List<ProductVariant> getProductVariantsByProductId(Long productId);
 
-    ProductVariant getProductVariantByVariantId(Long variantId);
+    List<ProductVariant> getProductVariantsByVariantId(Long variantId);
 
     ProductVariant getProductVariantById(Long variantId, Long productId);
 

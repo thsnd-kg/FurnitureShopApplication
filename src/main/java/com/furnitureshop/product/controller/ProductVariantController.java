@@ -27,12 +27,12 @@ public class ProductVariantController {
 
     @GetMapping(path = "/{variant-id}")
     public Object getProductVariantByVariantId(@PathVariable("variant-id") Long variantId) {
-        return ResponseHandler.getResponse(service.getProductVariantByVariantId(variantId), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getProductVariantsByVariantId(variantId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{product-id}")
     public Object getProductVariantByProductId(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(service.getProductVariantByProductId(productId), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getProductVariantsByProductId(productId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{product-id}/{variant-id}")

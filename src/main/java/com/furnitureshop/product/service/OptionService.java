@@ -8,9 +8,9 @@ import java.util.List;
 public interface OptionService {
     List<Option> getOptions();
 
-    Option getOptionByOptionId(Long optionId);
+    List<Option> getOptionsByOptionId(Long optionId);
 
-    Option getOptionByCategoryId(Long categoryId);
+    List<Option> getOptionsByCategoryId(Long categoryId);
 
     Option getOptionById(Long optionId, Long categoryId);
 

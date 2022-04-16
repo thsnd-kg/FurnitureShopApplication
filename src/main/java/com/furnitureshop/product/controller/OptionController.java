@@ -27,12 +27,12 @@ public class OptionController {
 
     @GetMapping(path = "/{option-id}")
     public Object getOptionByOptionId(@PathVariable("option-id") Long optionId) {
-        return ResponseHandler.getResponse(service.getOptionByOptionId(optionId), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getOptionsByOptionId(optionId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{category-id}")
     public Object getOptionByCategoryId(@PathVariable("category-id") Long categoryId) {
-        return ResponseHandler.getResponse(service.getOptionByCategoryId(categoryId), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getOptionsByCategoryId(categoryId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{option-id}/{category-id}")

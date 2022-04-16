@@ -1,6 +1,7 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.OptionDto;
+import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.repository.CategoryRepository;
 import com.furnitureshop.product.repository.OptionRepository;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class OptionServiceImpl implements OptionService {
@@ -27,13 +31,13 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public Option getOptionByOptionId(Long optionId) {
-        return optionRepository.findByOptionId(optionId).orElse(null);
+    public List<Option> getOptionsByOptionId(Long optionId) {
+        return optionRepository.findByOptionId(optionId);
     }
 
     @Override
-    public Option getOptionByCategoryId(Long categoryId) {
-        return optionRepository.findByCategoryId(categoryId).orElse(null);
+    public List<Option> getOptionsByCategoryId(Long categoryId) {
+        return optionRepository.findByCategoryId(categoryId);
     }
 
     @Override
@@ -43,14 +47,14 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     public Option createOption(OptionDto dto) {
-        var categoryOptional = categoryRepository.findById(dto.getCategoryId());
-        var optionOptional = optionRepository.findByCategoryId(dto.getCategoryId());
+        Optional<Category> categoryOptional = categoryRepository.findById(dto.getCategoryId());
+        List<Option> options = optionRepository.findByCategoryId(dto.getCategoryId());
 
-        if (categoryOptional.isEmpty()) {
+        if (!categoryOptional.isPresent()) {
             throw new IllegalStateException("Category not exists");
         }
 
-        Option max = optionOptional.stream().max(Comparator.comparing(Option::getOptionId)).orElse(null);
+        Option max = options.stream().max(Comparator.comparing(Option::getOptionId)).orElse(null);
         Long id = max == null ? 0 : max.getOptionId();
 
         Option option = new Option();
@@ -63,12 +67,12 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     public Option updateOption(OptionDto dto) {
-        var categoryOptional = categoryRepository.findById(dto.getCategoryId());
-        var optionOptional = optionRepository.findById(dto.getOptionId(), dto.getCategoryId());
+        Optional<Category> categoryOptional = categoryRepository.findById(dto.getCategoryId());
+        Optional<Option> optionOptional = optionRepository.findById(dto.getOptionId(), dto.getCategoryId());
 
-        if (optionOptional.isEmpty()) {
+        if (!optionOptional.isPresent()) {
             throw new IllegalStateException("Option not exists");
-        } else if (categoryOptional.isEmpty()) {
+        } else if (!categoryOptional.isPresent()) {
             throw new IllegalStateException("Category not exists");
         }
 

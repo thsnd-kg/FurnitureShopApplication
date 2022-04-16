@@ -10,7 +10,7 @@ public interface VariantValueService {
 
     VariantValue getVariantValueById(Long productId, Long variantId, Long optionId);
 
-    VariantValue createProductVariant(VariantValueDto dto);
+    VariantValue createVariantValue(VariantValueDto dto);
 
-    VariantValue updateProductVariant(VariantValueDto dto);
+    VariantValue updateVariantValue(VariantValueDto dto);
 }
