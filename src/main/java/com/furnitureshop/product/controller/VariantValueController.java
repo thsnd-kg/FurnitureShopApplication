@@ -25,7 +25,7 @@ public class VariantValueController {
         return ResponseHandler.getResponse(service.getVariantValues(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{product-id}/{variant-id}/{option-id}")
+    @GetMapping(path = "/product/{product-id}/variant/{variant-id}/option/{option-id}")
     public Object getVariantValueById(@PathVariable("product-id") Long productId,
                                       @PathVariable("variant-id") Long variantId,
                                       @PathVariable("option-id") Long optionId) {

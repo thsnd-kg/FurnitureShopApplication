@@ -4,7 +4,6 @@ import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.ProductVariant;
 import com.furnitureshop.product.entity.ProductVariantPK;
-import com.furnitureshop.product.repository.ProductRepository;
 import com.furnitureshop.product.repository.ProductVariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,12 @@ import java.util.Optional;
 @Service
 public class ProductVariantServiceImpl implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @Autowired
-    public ProductVariantServiceImpl(ProductVariantRepository productVariantRepository, ProductRepository productRepository) {
+    public ProductVariantServiceImpl(ProductVariantRepository productVariantRepository, ProductService productService) {
         this.productVariantRepository = productVariantRepository;
-        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @Override
@@ -46,41 +45,51 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public ProductVariant createProductVariant(ProductVariantDto dto) {
-        Optional<Product> productOptional = productRepository.findById(dto.getProductId());
-        List<ProductVariant> productVariants = productVariantRepository.findByProductId(dto.getProductId());
-
-        if (!productOptional.isPresent()) {
-            throw new IllegalStateException("Product not exists");
-        }
-
-        ProductVariant max = productVariants.stream().max(Comparator.comparing(ProductVariant::getVariantId)).orElse(null);
-        Long id = max == null ? 0 : max.getVariantId();
-
-        ProductVariant productVariant = new ProductVariant();
-        productVariant.setVariantId(id + 1);
-        productVariant.setProductId(dto.getProductId());
-        productVariant.setImage(dto.getImage());
-        productVariant.setPrice(dto.getPrice());
+        ProductVariant productVariant = handleData(dto, false);
 
         return productVariantRepository.save(productVariant);
     }
 
     @Override
     public ProductVariant updateProductVariant(ProductVariantDto dto) {
-        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(dto.getVariantId(), dto.getProductId());
-        Optional<Product> productOptional = productRepository.findById(dto.getProductId());
+        ProductVariant productVariant = handleData(dto, true);
 
-        if (!productVariantOptional.isPresent()) {
-            throw new IllegalStateException("Product variant not exists");
-        } else if (!productOptional.isPresent()) {
-            throw new IllegalStateException("Product not exists");
+        return productVariantRepository.save(productVariant);
+    }
+
+    public boolean isExisted(Long productId, Long variantId) {
+        Optional<ProductVariant> productVariant = productVariantRepository.findById(new ProductVariantPK(productId, variantId));
+
+        return productVariant.isPresent();
+    }
+
+    public ProductVariant handleData(ProductVariantDto dto, boolean hasId) {
+        ProductVariant productVariant = new ProductVariant();
+
+        if (hasId) {
+            if (dto.getProductId() == null)
+                throw new IllegalStateException("Product id must not be null");
+            if (dto.getVariantId() == null)
+                throw new IllegalStateException("Variant id must not be null");
+
+            if (isExisted(dto.getProductId(), dto.getVariantId()))
+                productVariant = productVariantRepository.getById(new ProductVariantPK(dto.getProductId(), dto.getVariantId()));
+            else
+                throw new IllegalStateException("Product variant not exists");
+        } else {
+            List<ProductVariant> productVariants = productVariantRepository.findByProductId(dto.getProductId());
+            ProductVariant max = productVariants.stream().max(Comparator.comparing(ProductVariant::getVariantId)).orElse(null);
+            long id = max == null ? 0 : max.getVariantId();
+            productVariant.setVariantId(id + 1);
         }
 
-        ProductVariant productVariant = productVariantOptional.get();
+        Product product = productService.getProduct(dto.getProductId());
+
         productVariant.setProductId(dto.getProductId());
+        productVariant.setProduct(product);
         productVariant.setPrice(dto.getPrice());
         productVariant.setImage(dto.getImage());
 
-        return productVariantRepository.save(productVariant);
+        return productVariant;
     }
 }

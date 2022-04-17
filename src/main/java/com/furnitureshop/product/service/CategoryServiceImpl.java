@@ -60,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
         return repo.save(category);
     }
 
+    @Override
     public boolean isExisted(Long categoryId){
         Optional<Category> category = repo.findById(categoryId);
         if(category.isPresent())

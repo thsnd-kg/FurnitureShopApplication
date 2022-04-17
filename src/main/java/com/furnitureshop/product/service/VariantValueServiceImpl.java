@@ -1,31 +1,29 @@
 package com.furnitureshop.product.service;
 
+import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.dto.VariantValueDto;
-import com.furnitureshop.product.entity.Option;
-import com.furnitureshop.product.entity.ProductVariant;
-import com.furnitureshop.product.entity.VariantValue;
-import com.furnitureshop.product.repository.OptionRepository;
-import com.furnitureshop.product.repository.ProductVariantRepository;
+import com.furnitureshop.product.entity.*;
 import com.furnitureshop.product.repository.VariantValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
     private final VariantValueRepository variantValueRepository;
-    private final ProductVariantRepository productVariantRepository;
-    private final OptionRepository optionRepository;
+    private final ProductVariantService productVariantService;
+    private final OptionService optionService;
 
     @Autowired
     public VariantValueServiceImpl(VariantValueRepository variantValueRepository,
-                                   ProductVariantRepository productVariantRepository,
-                                   OptionRepository optionRepository) {
+                                   ProductVariantService productVariantService,
+                                   OptionService optionService) {
         this.variantValueRepository = variantValueRepository;
-        this.productVariantRepository = productVariantRepository;
-        this.optionRepository = optionRepository;
+        this.productVariantService = productVariantService;
+        this.optionService = optionService;
     }
 
     @Override
@@ -40,46 +38,52 @@ public class VariantValueServiceImpl implements VariantValueService {
 
     @Override
     public VariantValue createVariantValue(VariantValueDto dto) {
-        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(dto.getVariantId(), dto.getProductId());
-        Optional<Option> optionOptional = optionRepository.findById(dto.getOptionId(), dto.getCategoryId());
-
-        if (!productVariantOptional.isPresent()) {
-            throw new IllegalStateException("Product variant not exists");
-        } else if (!optionOptional.isPresent()) {
-            throw new IllegalStateException("Option not exists");
-        }
-
-        VariantValue variantValue = new VariantValue();
-        variantValue.setProductId(dto.getProductId());
-        variantValue.setVariantId(dto.getVariantId());
-        variantValue.setOptionId(dto.getOptionId());
-        variantValue.setOptionValue(dto.getOptionValue());
-        variantValue.setOptionImage(dto.getOptionImage());
+        VariantValue variantValue = handleData(dto, false);
 
         return variantValueRepository.save(variantValue);
     }
 
     @Override
     public VariantValue updateVariantValue(VariantValueDto dto) {
-        Optional<VariantValue> variantValueOptional = variantValueRepository.findById(dto.getProductId(), dto.getVariantId(), dto.getOptionId());
-        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(dto.getVariantId(), dto.getProductId());
-        Optional<Option> optionOptional = optionRepository.findById(dto.getOptionId(), dto.getCategoryId());
+        VariantValue variantValue = handleData(dto, true);
 
-        if (!variantValueOptional.isPresent()) {
-            throw new IllegalStateException("Variant value not exists");
-        } else if (!productVariantOptional.isPresent()) {
-            throw new IllegalStateException("Product not exists");
-        } else if (!optionOptional.isPresent()) {
-            throw new IllegalStateException("Option not exists");
+        return variantValueRepository.save(variantValue);
+    }
+
+    public boolean isExisted(Long productId, Long variantId, Long optionId) {
+        Optional<VariantValue> variantValue = variantValueRepository.findById(new VariantValuePK(productId, variantId, optionId));
+
+        return variantValue.isPresent();
+    }
+
+    public VariantValue handleData(VariantValueDto dto, boolean hasId) {
+        VariantValue variantValue = new VariantValue();
+
+        if (hasId) {
+            if (dto.getProductId() == null)
+                throw new IllegalStateException("Product id must not be null");
+            if (dto.getVariantId() == null)
+                throw new IllegalStateException("Variant id must not be null");
+            if (dto.getOptionId() == null)
+                throw new IllegalStateException("Option id must not be null");
+
+            if (isExisted(dto.getProductId(), dto.getVariantId(), dto.getOptionId()))
+                variantValue = variantValueRepository.getById(new VariantValuePK(dto.getProductId(), dto.getVariantId(), dto.getOptionId()));
+            else
+                throw new IllegalStateException("Product variant not exists");
         }
 
-        VariantValue variantValue = variantValueOptional.get();
+        ProductVariant productVariant = productVariantService.getProductVariantById(dto.getVariantId(), dto.getProductId());
+        Option option = optionService.getOptionById(dto.getOptionId(), dto.getCategoryId());
+
         variantValue.setProductId(dto.getProductId());
         variantValue.setVariantId(dto.getVariantId());
         variantValue.setOptionId(dto.getOptionId());
         variantValue.setOptionValue(dto.getOptionValue());
         variantValue.setOptionImage(dto.getOptionImage());
+        variantValue.setProductVariant(productVariant);
+        variantValue.setOption(option);
 
-        return variantValueRepository.save(variantValue);
+        return variantValue;
     }
 }

@@ -22,8 +22,7 @@ public class Product extends BaseEntity {
     private Long productId;
 
     @Column(name = "product_name",
-            length = 50,
-            unique = true)
+            length = 50)
     private String productName;
 
     @ManyToOne

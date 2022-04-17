@@ -1,6 +1,8 @@
 package com.furnitureshop.product.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OptionPK implements Serializable {
     @Column(name = "option_id")
     @Id

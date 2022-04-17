@@ -16,6 +16,7 @@ import java.util.Collection;
 @IdClass(OptionPK.class)
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "options")
 public class Option extends BaseEntity {
     @Column(name = "option_id")
     @Id

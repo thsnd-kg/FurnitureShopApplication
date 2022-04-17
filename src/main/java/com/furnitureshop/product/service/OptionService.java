@@ -8,8 +8,6 @@ import java.util.List;
 public interface OptionService {
     List<Option> getOptions();
 
-    List<Option> getOptionsByOptionId(Long optionId);
-
     List<Option> getOptionsByCategoryId(Long categoryId);
 
     Option getOptionById(Long optionId, Long categoryId);
