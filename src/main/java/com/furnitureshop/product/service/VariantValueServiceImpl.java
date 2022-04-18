@@ -80,7 +80,6 @@ public class VariantValueServiceImpl implements VariantValueService {
         variantValue.setVariantId(dto.getVariantId());
         variantValue.setOptionId(dto.getOptionId());
         variantValue.setOptionValue(dto.getOptionValue());
-        variantValue.setOptionImage(dto.getOptionImage());
         variantValue.setProductVariant(productVariant);
         variantValue.setOption(option);
 

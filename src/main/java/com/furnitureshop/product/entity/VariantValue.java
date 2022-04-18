@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @IdClass(VariantValuePK.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class VariantValue extends BaseEntity {
+public class VariantValue {
     @Column(name = "product_id")
     @Id
     private Long productId;
@@ -30,9 +31,7 @@ public class VariantValue extends BaseEntity {
     @Column(name = "option_value")
     private String optionValue;
 
-    @Column(name = "option_image")
-    private String optionImage;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "product_id",

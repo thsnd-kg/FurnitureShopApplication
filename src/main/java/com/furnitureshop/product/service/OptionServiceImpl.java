@@ -15,12 +15,10 @@ import java.util.Optional;
 @Service
 public class OptionServiceImpl implements OptionService {
     private final OptionRepository optionRepository;
-    private final CategoryService categoryService;
 
     @Autowired
-    public OptionServiceImpl(OptionRepository optionRepository, CategoryService categoryService) {
+    public OptionServiceImpl(OptionRepository optionRepository) {
         this.optionRepository = optionRepository;
-        this.categoryService = categoryService;
     }
 
     @Override
@@ -39,14 +37,14 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public Option createOption(OptionDto dto) {
-        Option option = handleData(dto, false);
+    public Option createOption(OptionDto dto, Category category) {
+        Option option = handleData(dto, false, category);
         return optionRepository.save(option);
     }
 
     @Override
-    public Option updateOption(OptionDto dto) {
-        Option option = handleData(dto, true);
+    public Option updateOption(OptionDto dto, Category category) {
+        Option option = handleData(dto, true, category);
         return optionRepository.save(option);
     }
 
@@ -56,7 +54,7 @@ public class OptionServiceImpl implements OptionService {
         return option.isPresent();
     }
 
-    public Option handleData(OptionDto dto, boolean hasId) {
+    public Option handleData(OptionDto dto, boolean hasId, Category category) {
         Option option = new Option();
 
         if (hasId) {
@@ -73,8 +71,6 @@ public class OptionServiceImpl implements OptionService {
             long id = max == null ? 0 : max.getOptionId();
             option.setOptionId(id + 1);
         }
-
-        Category category = categoryService.getCategoryById(dto.getCategoryId());
 
         option.setCategoryId(dto.getCategoryId());
         option.setCategory(category);

@@ -78,8 +78,5 @@ public class CategoryController {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 }
 

@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +19,9 @@ public class CategoryDto {
 
     @Size(max = 100, message = "Category description must be less than 100 characters")
     private String categoryDescription;
+
+    @NotNull(message = "List option must be not null")
+    private List<OptionDto> optionDtos;
 
     private Long parentId;
 }

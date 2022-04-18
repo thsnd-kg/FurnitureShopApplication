@@ -16,7 +16,7 @@ import java.util.Collection;
 @IdClass(ProductVariantPK.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductVariant extends BaseEntity {
+public class ProductVariant {
     @Id
     @Column(name = "product_id")
     private Long productId;
@@ -31,11 +31,17 @@ public class ProductVariant extends BaseEntity {
     @Column(name = "image", length = 300)
     private String image;
 
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    @Column(name = "sku")
+    private String sku;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false, insertable = false, updatable = false)
     private Product product;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "productVariant")
     private Collection<VariantValue> variantValues;
 }

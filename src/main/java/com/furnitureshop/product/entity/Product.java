@@ -25,6 +25,13 @@ public class Product extends BaseEntity {
             length = 50)
     private String productName;
 
+    @Column(name = "product_description",
+            length = 100)
+    private String productDescription;
+
+    @Column(name = "image", length = 300)
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "brand_id",
             referencedColumnName = "brand_id")
@@ -35,7 +42,6 @@ public class Product extends BaseEntity {
             referencedColumnName = "category_id")
     private Category category;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private Collection<ProductVariant> productVariants;
 }

@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.ProductDto;
+import com.furnitureshop.product.hashmap.ProductHashMap;
 import com.furnitureshop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -23,12 +27,26 @@ public class ProductController {
 
     @GetMapping
     public Object getProducts() {
-        return ResponseHandler.getResponse(service.getProducts(), HttpStatus.OK);
+        try {
+            ArrayList<Map<String, Object>> result = new ArrayList<>();
+            service.getProducts().forEach(product -> {
+                result.add(ProductHashMap.get(product));
+            });
+
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping(path = "/{product-id}")
     public Object getProductById(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(service.getProduct(productId), HttpStatus.OK);
+        try {
+            return ResponseHandler.getResponse(ProductHashMap.get(service.getProduct(productId)), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping

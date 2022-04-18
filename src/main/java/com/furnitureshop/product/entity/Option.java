@@ -17,7 +17,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "options")
-public class Option extends BaseEntity {
+public class Option {
     @Column(name = "option_id")
     @Id
     private Long optionId;
@@ -29,6 +29,7 @@ public class Option extends BaseEntity {
     @Column(name = "option_name", length = 50)
     private String optionName;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id",
             referencedColumnName = "category_id",

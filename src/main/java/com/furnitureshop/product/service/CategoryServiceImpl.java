@@ -11,26 +11,28 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository repo;
+    private final CategoryRepository categoryRepository;
+    private final OptionService optionService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository repository) {
-        this.repo = repository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository, OptionService optionService) {
+        this.categoryRepository = categoryRepository;
+        this.optionService = optionService;
     }
 
     @Override
     public List<Category> getCategories() {
-        return repo.findAll();
+        return categoryRepository.findAll();
     }
 
     @Override
     public List<Category> getCategoriesActive() {
-        return repo.findByIsDeletedFalse();
+        return categoryRepository.findByIsDeletedFalse();
     }
 
     @Override
     public Category getCategoryById(Long categoryId) {
-        Optional<Category> category = repo.findById(categoryId);
+        Optional<Category> category = categoryRepository.findById(categoryId);
         if(category.isPresent())
             return category.get();
 
@@ -42,31 +44,33 @@ public class CategoryServiceImpl implements CategoryService {
         if(!isExisted(categoryId))
             throw new IllegalStateException("Category does not exist");
 
-        Category category = repo.getById(categoryId);
+        Category category = categoryRepository.getById(categoryId);
         category.setIsDeleted(true);
-        repo.save(category);
+        categoryRepository.save(category);
         return true;
     }
 
     @Override
     public Category createCategory(CategoryDto dto) {
         Category category = handleData(dto, false);
-        return repo.save(category);
+        Category result = categoryRepository.save(category);
+        dto.getOptionDtos().forEach(optionDto -> {
+            optionService.createOption(optionDto, category);
+        });
+
+        return result;
     }
 
     @Override
     public Category updateCategory(CategoryDto dto) {
         Category category = handleData(dto, true);
-        return repo.save(category);
+        return categoryRepository.save(category);
     }
 
     @Override
-    public boolean isExisted(Long categoryId){
-        Optional<Category> category = repo.findById(categoryId);
-        if(category.isPresent())
-            return true;
-
-        return false;
+    public boolean isExisted(Long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        return category.isPresent();
     }
 
     public Category handleData(CategoryDto dto, boolean hasId){
@@ -77,13 +81,13 @@ public class CategoryServiceImpl implements CategoryService {
                 throw new IllegalStateException("Category Id must not be null");
 
             if (isExisted(dto.getCategoryId()))
-                category = repo.getById(dto.getCategoryId());
+                category = categoryRepository.getById(dto.getCategoryId());
         }
 
         if(dto.getCategoryName() != null)
             category.setCategoryName(dto.getCategoryName());
 
-        if(dto.getCategoryDescription() !=null) {
+        if (dto.getCategoryDescription() != null) {
             category.setCategoryDescription(dto.getCategoryDescription());
         }
 
@@ -91,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
             if(!isExisted(dto.getParentId()))
                 throw new IllegalStateException("Parent does not exist");
 
-            Category parent = repo.getById(dto.getParentId());
+            Category parent = categoryRepository.getById(dto.getParentId());
             category.setParent(parent);
         }
         return  category;

@@ -34,15 +34,14 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category")
     private Collection<Product> products;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private Collection<Category> children;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private Collection<Option> options;
 }

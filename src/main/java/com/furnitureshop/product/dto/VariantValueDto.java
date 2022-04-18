@@ -23,7 +23,4 @@ public class VariantValueDto {
 
     @NotBlank(message = "Option value must not be blank")
     private String optionValue;
-
-    @NotBlank(message = "Option image must not be blank")
-    private String optionImage;
 }
