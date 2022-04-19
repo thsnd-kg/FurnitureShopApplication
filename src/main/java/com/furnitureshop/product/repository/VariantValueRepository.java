@@ -22,4 +22,7 @@ public interface VariantValueRepository extends JpaRepository<VariantValue, Vari
 
     @Query("SELECT v FROM VariantValue v WHERE v.optionId = ?1")
     List<VariantValue> findByOptionId(Long optionId);
+
+    @Query("SELECT DISTINCT v.optionValue FROM VariantValue v WHERE v.productId = ?1 AND v.optionId = ?2")
+    List<String> getOptionValue(Long productId, Long optionId);
 }

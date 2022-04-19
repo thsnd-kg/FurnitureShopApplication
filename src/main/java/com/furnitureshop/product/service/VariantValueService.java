@@ -13,4 +13,6 @@ public interface VariantValueService {
     VariantValue createVariantValue(VariantValueDto dto);
 
     VariantValue updateVariantValue(VariantValueDto dto);
+
+    List<String> getOptionValue(Long productId, Long optionId);
 }

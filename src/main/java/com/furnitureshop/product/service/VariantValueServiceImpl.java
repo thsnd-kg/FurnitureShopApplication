@@ -1,13 +1,11 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.dto.VariantValueDto;
 import com.furnitureshop.product.entity.*;
 import com.furnitureshop.product.repository.VariantValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +46,11 @@ public class VariantValueServiceImpl implements VariantValueService {
         VariantValue variantValue = handleData(dto, true);
 
         return variantValueRepository.save(variantValue);
+    }
+
+    @Override
+    public List<String> getOptionValue(Long productId, Long optionId) {
+        return variantValueRepository.getOptionValue(productId, optionId);
     }
 
     public boolean isExisted(Long productId, Long variantId, Long optionId) {

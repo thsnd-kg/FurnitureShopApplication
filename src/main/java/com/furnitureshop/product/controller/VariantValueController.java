@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/variant_value")
 public class VariantValueController {
@@ -30,6 +31,12 @@ public class VariantValueController {
                                       @PathVariable("variant-id") Long variantId,
                                       @PathVariable("option-id") Long optionId) {
         return ResponseHandler.getResponse(service.getVariantValueById(productId, variantId, optionId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/product/{product-id}/option/{option-id}")
+    public Object getOptionValue(@PathVariable("product-id") Long productId,
+                                 @PathVariable("option-id") Long optionId) {
+        return ResponseHandler.getResponse(service.getOptionValue(productId, optionId), HttpStatus.OK);
     }
 
     @PostMapping

@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
