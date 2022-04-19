@@ -1,7 +1,7 @@
 package com.furnitureshop.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.importer.entity.ImporterDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,4 +44,7 @@ public class ProductVariant {
 
     @OneToMany(mappedBy = "productVariant")
     private Collection<VariantValue> variantValues;
+
+    @OneToMany(mappedBy = "productVariant")
+    private Collection<ImporterDetail> imports;
 }

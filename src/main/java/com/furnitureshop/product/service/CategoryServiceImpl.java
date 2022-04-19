@@ -54,9 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(CategoryDto dto) {
         Category category = handleData(dto, false);
         Category result = categoryRepository.save(category);
-        dto.getOptionDtos().forEach(optionDto -> {
-            optionService.createOption(optionDto, category);
-        });
+        dto.getOptionDtos().forEach(optionDto -> optionService.createOption(optionDto, category));
 
         return result;
     }
