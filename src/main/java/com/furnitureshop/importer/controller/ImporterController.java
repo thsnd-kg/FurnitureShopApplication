@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @Controller
-@RequestMapping("/api/import")
+@RequestMapping("/api/imports")
 public class ImporterController {
     private final ImporterService importerService;
 

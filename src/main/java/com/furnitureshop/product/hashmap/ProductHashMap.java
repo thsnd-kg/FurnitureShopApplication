@@ -34,10 +34,11 @@ public class ProductHashMap {
         });
 
         result.put("product_id", product.getProductId());
+        result.put("product_name", product.getProductName());
         result.put("category_id", product.getCategory().getCategoryId());
         result.put("category_name", product.getCategory().getCategoryName());
         result.put("brand_id", product.getBrand().getBrandId());
-        result.put("brand_name", product.getBrand().getBrandId());
+        result.put("brand_name", product.getBrand().getBrandName());
         result.put("description", product.getProductDescription());
         result.put("image_url", product.getImage());
         result.put("variants", variants);
