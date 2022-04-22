@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -20,9 +21,6 @@ public class ProductVariantDto {
 
     @NotBlank(message = "Image must not be blank")
     private String image;
-
-    @NotBlank(message = "Quantity must not be blank")
-    private Integer quantity;
 
     @NotBlank(message = "Sku must not be blank")
     private String sku;
