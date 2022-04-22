@@ -31,7 +31,7 @@ public class ProductVariant {
     @Column(name = "image", length = 300)
     private String image;
 
-    @Column(name = "quantity", columnDefinition = "default 0")
+    @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "sku")
