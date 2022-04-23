@@ -81,7 +81,7 @@ public class BrandServiceImpl implements BrandService {
             brand.setBrandName(dto.getBrandName());
 
         if(dto.getDescription() !=null) {
-            brand.setBrandDescription(dto.getDescription());
+            brand.setBrandDesc(dto.getDescription());
         }
 
         return  brand;

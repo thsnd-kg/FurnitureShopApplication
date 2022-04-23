@@ -1,4 +1,4 @@
-package com.furnitureshop.product.dto;
+package com.furnitureshop.product.dto.variant;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +9,9 @@ import java.util.Collection;
 
 @Getter
 @Setter
-public class ProductVariantDto {
+public class CreateProductVariantDto {
     @NotNull(message = "Product id must not be null")
     private Long productId;
-
-    @NotNull(message = "Variant id must not be null")
-    private Long variantId;
-
-    @NotBlank(message = "Price must not be blank")
-    private Integer price;
 
     @NotBlank(message = "Image must not be blank")
     private String image;
@@ -25,5 +19,5 @@ public class ProductVariantDto {
     @NotBlank(message = "Sku must not be blank")
     private String sku;
 
-    private Collection<VariantValueDto> variantValues;
+    private Collection<CreateVariantValueDto> variantValues;
 }

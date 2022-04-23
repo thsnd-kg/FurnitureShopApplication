@@ -2,13 +2,10 @@ package com.furnitureshop.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -18,30 +15,34 @@ import java.util.Collection;
 public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id", updatable = false)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "category_id")
     protected Long categoryId;
 
     @Column(name = "category_name", length = 50)
     private String categoryName;
 
-    @Column(name = "category_description", length = 100)
-    private String categoryDescription;
+    @Column(name = "category_desc", length = 100)
+    private String categoryDesc;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(name = "is_deleted",
+            columnDefinition = "boolean default false")
     private Boolean isDeleted;
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private Collection<Product> products;
+    private List<Product> products;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private Collection<Category> children;
+    private List<Category> children;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private Collection<Option> options;
+    private List<Option> options;
 }

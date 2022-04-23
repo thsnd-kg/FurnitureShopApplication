@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.ProductVariantDto;
+import com.furnitureshop.product.dto.variant.CreateProductVariantDto;
 import com.furnitureshop.product.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,23 +27,8 @@ public class ProductVariantController {
         return ResponseHandler.getResponse(service.getProductVariants(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{variant-id}")
-    public Object getProductVariantByVariantId(@PathVariable("variant-id") Long variantId) {
-        return ResponseHandler.getResponse(service.getProductVariantsByVariantId(variantId), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{product-id}")
-    public Object getProductVariantByProductId(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(service.getProductVariantsByProductId(productId), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/product/{product-id}/variant/{variant-id}")
-    public Object getOptionById(@PathVariable("product-id") Long productId, @PathVariable("variant-id") Long variantId) {
-        return ResponseHandler.getResponse(service.getProductVariantById(variantId, productId), HttpStatus.OK);
-    }
-
     @PostMapping
-    public Object createProductVariant(@Valid @RequestBody ProductVariantDto newProductVariant, BindingResult errors) {
+    public Object createProductVariant(@Valid @RequestBody CreateProductVariantDto newProductVariant, BindingResult errors) {
         try {
             if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);

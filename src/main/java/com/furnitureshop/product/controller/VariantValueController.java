@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.VariantValueDto;
+import com.furnitureshop.product.dto.variant.CreateVariantValueDto;
 import com.furnitureshop.product.service.VariantValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,27 +40,15 @@ public class VariantValueController {
         return ResponseHandler.getResponse(service.getOptionValue(productId, optionId), HttpStatus.OK);
     }
 
-    @PostMapping
-    public Object createProductVariant(@Valid @RequestBody VariantValueDto newVariantValue, BindingResult errors) {
-        try {
-            if (errors.hasErrors())
-                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
-
-            return ResponseHandler.getResponse(service.createVariantValue(newVariantValue), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping
-    public Object updateProductVariant(@Valid @RequestBody VariantValueDto updatedVariantValue, BindingResult errors) {
-        try {
-            if (errors.hasErrors())
-                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
-
-            return ResponseHandler.getResponse(service.updateVariantValue(updatedVariantValue), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @PutMapping
+//    public Object updateProductVariant(@Valid @RequestBody VariantValueDto updatedVariantValue, BindingResult errors) {
+//        try {
+//            if (errors.hasErrors())
+//                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+//
+//            return ResponseHandler.getResponse(service.updateVariantValue(updatedVariantValue), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

@@ -1,7 +1,5 @@
 package com.furnitureshop.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.furnitureshop.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,50 +14,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VariantValue {
-    @Column(name = "product_id")
     @Id
-    private Long productId;
+    @JoinColumn(name = "variant_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    ProductVariant productVariant;
 
-    @Column(name = "variant_id")
     @Id
-    private Long variantId;
+    @JoinColumn(name = "option_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Option option;
 
-    @Column(name = "option_id")
-    @Id
-    private Long optionId;
-
-    @Column(name = "option_value")
-    private String optionValue;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "product_id",
-                    referencedColumnName = "product_id",
-                    nullable = false,
-                    insertable = false,
-                    updatable = false),
-            @JoinColumn(name = "variant_id",
-                    referencedColumnName = "variant_id",
-                    nullable = false,
-                    insertable = false,
-                    updatable = false)
-    })
-    private ProductVariant productVariant;
-
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "option_id",
-                    referencedColumnName = "option_id",
-                    nullable = false,
-                    insertable = false,
-                    updatable = false),
-            @JoinColumn(name = "category_id",
-                    referencedColumnName = "category_id",
-                    nullable = false,
-                    insertable = false,
-                    updatable = false)
-    })
-    private Option option;
+    @Column(name = "option_value",
+            length = 50)
+    String optionValue;
 }
 

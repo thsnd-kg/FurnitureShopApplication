@@ -1,16 +1,13 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.OptionDto;
+import com.furnitureshop.product.dto.category.CreateOptionDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Option;
-import com.furnitureshop.product.entity.OptionPK;
 import com.furnitureshop.product.repository.OptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OptionServiceImpl implements OptionService {
@@ -27,57 +24,23 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> getOptionsByCategoryId(Long categoryId) {
-        return optionRepository.findByCategoryId(categoryId);
+    public Option getOptionByOptionId(Long optionId) {
+        return optionRepository.findById(optionId).orElse(null);
     }
 
     @Override
-    public Option getOptionById(Long optionId, Long categoryId) {
-        return optionRepository.findById(new OptionPK(optionId, categoryId)).orElse(null);
-    }
-
-    @Override
-    public Option createOption(OptionDto dto, Category category) {
-        Option option = handleData(dto, false, category);
-        return optionRepository.save(option);
-    }
-
-    @Override
-    public Option updateOption(OptionDto dto, Category category) {
-        Option option = handleData(dto, true, category);
-        return optionRepository.save(option);
-    }
-
-    public boolean isExisted(Long optionId, Long categoryId) {
-        Optional<Option> option = optionRepository.findById(new OptionPK(optionId, categoryId));
-
-        return option.isPresent();
-    }
-
-    public Option handleData(OptionDto dto, boolean hasId, Category category) {
+    public Option createOption(CreateOptionDto dto, Category category) {
         Option option = new Option();
 
-        if (hasId) {
-            if (dto.getOptionId() == null)
-                throw new IllegalStateException("Option id must not be null");
-
-            if (isExisted(dto.getOptionId(), dto.getCategoryId()))
-                option = optionRepository.getById(new OptionPK(dto.getOptionId(), dto.getCategoryId()));
-            else
-                throw new IllegalStateException("Option not exists");
-        } else {
-            List<Option> options = optionRepository.findByCategoryId(dto.getCategoryId());
-            Option max = options.stream().max(Comparator.comparing(Option::getOptionId)).orElse(null);
-            long id = max == null ? 0 : max.getOptionId();
-            option.setOptionId(id + 1);
-        }
-
-        option.setCategoryId(dto.getCategoryId());
         option.setCategory(category);
+        option.setOptionName(dto.getOptionName());
 
-        if (dto.getOptionName() != null)
-            option.setOptionName(dto.getOptionName());
-
-        return option;
+        return optionRepository.save(option);
     }
+
+//    @Override
+//    public Option updateOption(CreateOptionDto dto, Category category) {
+//        Option option = handleData(dto, true, category);
+//        return optionRepository.save(option);
+//    }
 }
