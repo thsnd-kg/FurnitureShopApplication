@@ -1,14 +1,14 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.VariantValueDto;
 import com.furnitureshop.product.dto.variant.CreateVariantValueDto;
-import com.furnitureshop.product.entity.*;
+import com.furnitureshop.product.entity.Option;
+import com.furnitureshop.product.entity.ProductVariant;
+import com.furnitureshop.product.entity.VariantValue;
 import com.furnitureshop.product.repository.VariantValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
@@ -16,8 +16,7 @@ public class VariantValueServiceImpl implements VariantValueService {
     private final OptionService optionService;
 
     @Autowired
-    public VariantValueServiceImpl(VariantValueRepository variantValueRepository,
-                                   OptionService optionService) {
+    public VariantValueServiceImpl(VariantValueRepository variantValueRepository, OptionService optionService) {
         this.variantValueRepository = variantValueRepository;
         this.optionService = optionService;
     }
@@ -28,24 +27,16 @@ public class VariantValueServiceImpl implements VariantValueService {
     }
 
     @Override
-    public VariantValue getVariantValueById(Long productId, Long variantId, Long optionId) {
-        return null;
-    }
-
-    @Override
     public VariantValue createVariantValue(CreateVariantValueDto dto, ProductVariant productVariant) {
-        return null;
-    }
+        VariantValue variantValue = new VariantValue();
 
-//    @Override
-//    public VariantValue updateVariantValue(VariantValueDto dto) {
-//        VariantValue variantValue = handleData(dto, true);
-//
-//        return variantValueRepository.save(variantValue);
-//    }
+        Option option = optionService.getOptionById(dto.getOptionId());
 
-    @Override
-    public List<String> getOptionValue(Long productId, Long optionId) {
-        return null;
+        variantValue.setOptionValue(dto.getOptionValue());
+        variantValue.setOptionImage(dto.getOptionImage());
+        variantValue.setProductVariant(productVariant);
+        variantValue.setOption(option);
+
+        return variantValueRepository.save(variantValue);
     }
 }

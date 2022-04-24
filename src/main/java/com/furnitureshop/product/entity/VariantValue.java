@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,17 +11,23 @@ import javax.persistence.*;
 @Setter
 public class VariantValue {
     @EmbeddedId
-    VariantValueKey id;
+    @Setter(AccessLevel.NONE)
+    private VariantValueKey id;
 
     @ManyToOne
     @MapsId("variantId")
     @JoinColumn(name = "variant_id")
-    ProductVariant productVariant;
+    private ProductVariant productVariant;
 
     @ManyToOne
     @MapsId("optionId")
     @JoinColumn(name = "option_id")
-    Option option;
+    private Option option;
 
-    String optionValue;
+    @Column(name = "option_value")
+    private String optionValue;
+
+    @Column(name = "option_image",
+            length = 300)
+    private String optionImage;
 }

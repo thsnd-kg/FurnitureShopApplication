@@ -1,10 +1,8 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,16 +10,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     @Column(name = "product_id")
     private Long productId;
 
     @Column(name = "product_name",
-            length = 50)
+            length = 50,
+            nullable = false)
     private String productName;
 
     @Column(name = "product_desc",
@@ -40,6 +40,7 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductVariant> productVariants;
 }

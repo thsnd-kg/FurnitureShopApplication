@@ -30,10 +30,11 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand getBrandById(Long brandId) {
         Optional<Brand> brand = repo.findById(brandId);
-        if(brand.isPresent())
-            return brand.get();
 
-        throw new IllegalStateException("Brand does not exist");
+        if (!brand.isPresent())
+            throw new IllegalStateException("Brand does not exists");
+
+        return brand.get();
     }
 
     @Override
@@ -61,10 +62,7 @@ public class BrandServiceImpl implements BrandService {
 
     public boolean isExisted(Long brandId){
         Optional<Brand> brand = repo.findById(brandId);
-        if(brand.isPresent())
-            return true;
-
-        return false;
+        return brand.isPresent();
     }
 
     public Brand handleData(BrandDto dto, boolean hasId){

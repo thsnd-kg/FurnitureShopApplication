@@ -1,14 +1,12 @@
 package com.furnitureshop.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.furnitureshop.common.entity.BaseEntity;
 import com.furnitureshop.importer.entity.ImporterDetail;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -16,9 +14,10 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductVariant {
+public class ProductVariant extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     @Column(name = "variant_id")
     private Long variantId;
 
@@ -38,14 +37,13 @@ public class ProductVariant {
             length = 50)
     private String sku;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "productVariant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<VariantValue> variantValues = new ArrayList<>();
+    @OneToMany(mappedBy = "productVariant")
+    private List<VariantValue> variantValues;
 
     @JsonIgnore
     @OneToMany(mappedBy = "productVariant")

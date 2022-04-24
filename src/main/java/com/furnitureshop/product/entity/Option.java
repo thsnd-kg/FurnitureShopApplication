@@ -1,9 +1,10 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -12,21 +13,24 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "options")
-public class Option {
+public class Option implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Column(name = "option_id")
     private Long optionId;
 
-    @Column(name = "option_name", length = 50)
+    @Column(name = "option_name",
+            length = 50,
+            nullable = false)
     private String optionName;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "option")
     @Setter(AccessLevel.NONE)
-    private List<VariantValue> variantValues = new ArrayList<>();
+    private List<VariantValue> variantValues;
 }

@@ -1,22 +1,24 @@
 package com.furnitureshop.product.dto.variant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateProductVariantDto {
-    @NotNull(message = "Product id must not be null")
+    @NotNull(message = "{productVariant.product.not-null}")
     private Long productId;
 
-    @NotBlank(message = "Image must not be blank")
+    @Size(max = 300, message = "{productVariant.image.size}")
     private String image;
 
-    @NotBlank(message = "Sku must not be blank")
+    @Size(max = 50, message = "{productVariant.sku.size}")
     private String sku;
 
     private Collection<CreateVariantValueDto> variantValues;

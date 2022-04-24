@@ -9,7 +9,7 @@ import java.util.List;
 public interface OptionService {
     List<Option> getOptions();
 
-    Option getOptionByOptionId(Long optionId);
+    Option getOptionById(Long optionId);
 
     Option createOption(CreateOptionDto dto, Category category);
 }

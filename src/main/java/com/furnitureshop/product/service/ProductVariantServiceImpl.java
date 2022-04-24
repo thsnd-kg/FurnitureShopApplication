@@ -8,9 +8,7 @@ import com.furnitureshop.product.repository.ProductVariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductVariantServiceImpl implements ProductVariantService {
@@ -34,7 +32,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     public ProductVariant createProductVariant(CreateProductVariantDto dto) {
         ProductVariant productVariant = new ProductVariant();
 
-        Product product = productService.getProduct(dto.getProductId());
+        Product product = productService.getProductById(dto.getProductId());
 
         productVariant.setProduct(product);
         productVariant.setImage(dto.getImage());

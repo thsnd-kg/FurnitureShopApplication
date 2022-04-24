@@ -8,24 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OptionServiceImpl implements OptionService {
-    private final OptionRepository optionRepository;
+    private final OptionRepository repository;
 
     @Autowired
     public OptionServiceImpl(OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
+        this.repository = optionRepository;
     }
 
     @Override
     public List<Option> getOptions() {
-        return optionRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
-    public Option getOptionByOptionId(Long optionId) {
-        return optionRepository.findById(optionId).orElse(null);
+    public Option getOptionById(Long optionId) {
+        Optional<Option> option = repository.findById(optionId);
+
+        if (!option.isPresent())
+            throw new IllegalStateException("Option does not exists");
+
+        return option.get();
     }
 
     @Override
@@ -35,12 +41,6 @@ public class OptionServiceImpl implements OptionService {
         option.setCategory(category);
         option.setOptionName(dto.getOptionName());
 
-        return optionRepository.save(option);
+        return repository.save(option);
     }
-
-//    @Override
-//    public Option updateOption(CreateOptionDto dto, Category category) {
-//        Option option = handleData(dto, true, category);
-//        return optionRepository.save(option);
-//    }
 }

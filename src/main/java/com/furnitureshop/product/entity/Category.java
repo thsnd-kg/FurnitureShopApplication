@@ -19,10 +19,13 @@ public class Category extends BaseEntity {
     @Column(name = "category_id")
     protected Long categoryId;
 
-    @Column(name = "category_name", length = 50)
+    @Column(name = "category_name",
+            length = 50,
+            nullable = false)
     private String categoryName;
 
-    @Column(name = "category_desc", length = 100)
+    @Column(name = "category_desc",
+            length = 100)
     private String categoryDesc;
 
     @Column(name = "is_deleted",
@@ -33,7 +36,6 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;

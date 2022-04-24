@@ -12,10 +12,12 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final OptionService optionService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, OptionService optionService) {
         this.categoryRepository = categoryRepository;
+        this.optionService = optionService;
     }
 
     @Override
@@ -31,10 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(Long categoryId) {
         Optional<Category> category = categoryRepository.findById(categoryId);
-        if(category.isPresent())
-            return category.get();
 
-        throw new IllegalStateException("Category does not exist");
+        if (!category.isPresent())
+            throw new IllegalStateException("Category does not exists");
+
+        return category.get();
     }
 
     @Override
@@ -50,7 +53,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(CreateCategoryDto dto) {
-        return null;
+        Category category = new Category();
+
+        category.setCategoryDesc(dto.getCategoryDesc());
+        category.setCategoryName(dto.getCategoryName());
+
+        if (dto.getParentId() != null) {
+            Category parent = categoryRepository.findById(dto.getParentId()).orElse(null);
+
+            if (parent == null) {
+                throw new IllegalStateException("Parent does not exists");
+            }
+
+            category.setParent(parent);
+        }
+
+        Category result = categoryRepository.save(category);
+
+        dto.getOptionDtos().forEach(option -> optionService.createOption(option, result));
+
+        return result;
     }
 
     @Override

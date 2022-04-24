@@ -22,7 +22,9 @@ public class Brand extends BaseEntity {
     private Long brandId;
 
     @Column(name = "brand_name",
-            length = 50)
+            length = 50,
+            nullable = false,
+            unique = true)
     private String brandName;
 
     @Column(name = "brand_desc",
