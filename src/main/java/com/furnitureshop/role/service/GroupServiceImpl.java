@@ -50,8 +50,8 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Group addRole(AddRoleDto dto) {
-		Group group = repository.getById(dto.getGroupId());
-		Role role = roleRepository.getById(dto.getRoleId());
+		Group group = repository.getOne(dto.getGroupId());
+		Role role = roleRepository.getOne(dto.getRoleId());
 		group.addRole(role);
 		return repository.save(group);
 	}
@@ -59,8 +59,8 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	@Transactional
 	public Group addUser(AddUserDto dto) {
-		Group group = repository.getById(dto.getGroupId());
-		User user = userRepository.getById(dto.getUserId());
+		Group group = repository.getOne(dto.getGroupId());
+		User user = userRepository.getOne(dto.getUserId());
 		
 		return group.addUser(user);
 	}
