@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,16 +21,21 @@ public class Brand extends BaseEntity {
     @Column(name = "brand_id")
     private Long brandId;
 
-    @Column(name = "brand_name", length = 50)
+    @Column(name = "brand_name",
+            length = 50,
+            nullable = false,
+            unique = true)
     private String brandName;
 
-    @Column(name = "brand_description", length = 100)
-    private String brandDescription;
+    @Column(name = "brand_desc",
+            length = 100)
+    private String brandDesc;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(name = "is_deleted",
+            columnDefinition = "boolean default false")
     private Boolean isDeleted;
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand")
-    private Collection<Product> products;
+    private List<Product> products;
 }

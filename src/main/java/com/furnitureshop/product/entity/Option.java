@@ -1,43 +1,36 @@
 package com.furnitureshop.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.furnitureshop.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@IdClass(OptionPK.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "options")
-public class Option extends BaseEntity {
-    @Column(name = "option_id")
+public class Option implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "option_id")
     private Long optionId;
 
-    @Column(name = "category_id")
-    @Id
-    private Long categoryId;
-
-    @Column(name = "option_name", length = 50)
+    @Column(name = "option_name",
+            length = 50,
+            nullable = false)
     private String optionName;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",
-            referencedColumnName = "category_id",
-            insertable = false,
-            updatable = false,
-            nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @JsonIgnore
     @OneToMany(mappedBy = "option")
-    private Collection<VariantValue> variantValues;
+    @Setter(AccessLevel.NONE)
+    private List<VariantValue> variantValues;
 }

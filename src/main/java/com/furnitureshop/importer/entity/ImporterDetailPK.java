@@ -1,40 +1,38 @@
-package com.furnitureshop.product.entity;
+package com.furnitureshop.importer.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductVariantPK implements Serializable {
-    @Column(name = "product_id")
+public class ImporterDetailPK implements Serializable {
     @Id
+    @Column(name = "import_id")
+    private Long importId;
+
+    @Id
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "variant_id")
     @Id
+    @Column(name = "variant_id")
     private Long variantId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductVariantPK that = (ProductVariantPK) o;
-        return productId.equals(that.productId) && variantId.equals(that.variantId);
+        ImporterDetailPK that = (ImporterDetailPK) o;
+        return importId.equals(that.importId) && productId.equals(that.productId) && variantId.equals(that.variantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, variantId);
+        return Objects.hash(importId, productId, variantId);
     }
 }
-

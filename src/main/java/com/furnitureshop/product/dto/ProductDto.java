@@ -22,4 +22,10 @@ public class ProductDto {
     @NotBlank(message = "Product name must not be blank")
     @Size(max = 50, message = "Product name must be less than 50 characters")
     private String productName;
+
+    @Size(max = 100, message = "Product name must be less than 100 characters")
+    private String productDescription;
+
+    @NotBlank(message = "Image must not be blank")
+    private String image;
 }
