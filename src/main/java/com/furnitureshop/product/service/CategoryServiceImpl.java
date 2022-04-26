@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(!isExisted(categoryId))
             throw new IllegalStateException("Category does not exist");
 
-        Category category = categoryRepository.getById(categoryId);
+        Category category = categoryRepository.getOne(categoryId);
         category.setIsDeleted(true);
         categoryRepository.save(category);
         return true;

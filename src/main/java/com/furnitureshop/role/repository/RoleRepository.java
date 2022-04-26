@@ -15,7 +15,6 @@ import java.util.List;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 	
 	@Transactional(readOnly = true)
-	@EntityGraph(attributePaths = "groups", type = EntityGraphType.FETCH)
 	@Query("SELECT r FROM Role r") // JPQL - Java Persistence Query Language
 	List<RoleDto> findAllDto();
 

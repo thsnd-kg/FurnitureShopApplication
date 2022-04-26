@@ -54,7 +54,7 @@ public class BrandServiceImpl implements BrandService {
         if(!isExisted(brandId))
             throw new IllegalStateException("Brand does not exist");
 
-        Brand brand = repo.getById(brandId);
+        Brand brand = repo.getOne(brandId);
         brand.setIsDeleted(true);
         repo.save(brand);
         return true;
@@ -72,7 +72,7 @@ public class BrandServiceImpl implements BrandService {
             if (dto.getBrandId() == null)
                 throw new IllegalStateException("Brand Id must not be null");
             if (isExisted(dto.getBrandId()))
-                brand = repo.getById(dto.getBrandId());
+                brand = repo.getOne(dto.getBrandId());
         }
 
         if(dto.getBrandName() != null)
