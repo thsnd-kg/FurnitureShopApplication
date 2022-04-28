@@ -49,11 +49,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findByProductName(String name, int offset, String orderBy) {
-        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by(orderBy).ascending()));
-    }
-
-    @Override
     public Product createProduct(CreateProductDto dto) {
         Product product = new Product();
 

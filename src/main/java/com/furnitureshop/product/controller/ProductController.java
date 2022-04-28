@@ -35,9 +35,9 @@ public class ProductController {
     }
 
     @GetMapping("/{offset}")
-    public Object getProducts(@PathVariable int offset, @RequestParam String name, @RequestParam String field) {
+    public Object getProducts(@PathVariable int offset, @RequestParam String name) {
         try {
-            Page<Product> products = service.findByProductName(name, offset, field);
+            Page<Product> products = service.findByProductName(name, offset);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

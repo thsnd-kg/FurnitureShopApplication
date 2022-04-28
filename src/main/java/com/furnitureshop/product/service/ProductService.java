@@ -14,8 +14,6 @@ public interface ProductService {
 
     Page<Product> findByProductName(String name, int offset);
 
-    Page<Product> findByProductName(String name, int offset, String orderBy);
-
     Product createProduct(CreateProductDto dto);
 
     Product updateProduct(UpdateProductDto dto);
