@@ -1,6 +1,7 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.ProductDto;
+import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
@@ -13,67 +14,50 @@ import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepository repository;
     private final BrandService brandService;
     private final CategoryService categoryService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, BrandService brandService, CategoryService categoryService) {
-        this.productRepository = productRepository;
+    public ProductServiceImpl(ProductRepository repository, BrandService brandService, CategoryService categoryService) {
+        this.repository = repository;
         this.brandService = brandService;
         this.categoryService = categoryService;
     }
 
     @Override
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
-    public Product getProduct(Long productId) {
-        return productRepository.findById(productId).orElse(null);
+    public Product getProductById(Long productId) {
+        Optional<Product> product = repository.findById(productId);
+
+        if (!product.isPresent())
+            throw new IllegalStateException("Product does not exists");
+
+        return product.get();
     }
 
     @Override
-    public Product createProduct(ProductDto dto) {
-        Product product = handleData(dto, false);
+    public Product createProduct(CreateProductDto dto) {
+        Product product = new Product();
 
-        return productRepository.save(product);
+        Brand brand = brandService.getBrandById(dto.getBrandId());
+        Category category = categoryService.getCategoryById(dto.getCategoryId());
+
+        product.setProductName(dto.getProductName());
+        product.setProductDesc(dto.getProductDesc());
+        product.setImage(dto.getImage());
+        product.setBrand(brand);
+        product.setCategory(category);
+
+        return repository.save(product);
     }
 
     @Override
     public Product updateProduct(ProductDto dto) {
-        Product product = handleData(dto, true);
-
-        return productRepository.save(product);
-    }
-
-    public boolean isExisted(Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
-
-        return product.isPresent();
-    }
-
-    public Product handleData(ProductDto dto, boolean hasId) {
-        Product product = new Product();
-
-        if (hasId) {
-            if (dto.getProductId() == null)
-                throw new IllegalStateException("Product id must not be null");
-
-            if (isExisted(dto.getProductId()))
-                product = productRepository.getById(dto.getProductId());
-            else
-                throw new IllegalStateException("Product not exists");
-        }
-
-        Category category = categoryService.getCategoryById(dto.getCategoryId());
-        Brand brand = brandService.getBrandById(dto.getBrandId());
-
-        product.setCategory(category);
-        product.setBrand(brand);
-        product.setProductName(dto.getProductName());
-
-        return product;
+        return null;
     }
 }

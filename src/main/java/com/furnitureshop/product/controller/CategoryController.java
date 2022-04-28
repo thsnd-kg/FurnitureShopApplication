@@ -1,7 +1,7 @@
 package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
-import com.furnitureshop.product.dto.CategoryDto;
+import com.furnitureshop.product.dto.category.CreateCategoryDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Object createCategory(@Valid @RequestBody CategoryDto newCategory, BindingResult errors) {
+    public Object createCategory(@Valid @RequestBody CreateCategoryDto newCategory, BindingResult errors) {
         try {
             if(errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
@@ -56,7 +56,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public Object updateCategory(@RequestBody CategoryDto updatedCategory){
+    public Object updateCategory(@RequestBody CreateCategoryDto updatedCategory){
         try{
             Category category = service.updateCategory(updatedCategory);
             if(category == null)

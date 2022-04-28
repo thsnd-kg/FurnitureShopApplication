@@ -17,9 +17,10 @@ public class ProductHashMap {
 
             productVariant.getVariantValues().forEach(variantValue -> {
                 Map<String, Object> option = new LinkedHashMap<>();
-                option.put("option_id", variantValue.getOptionId());
+                option.put("option_id", variantValue.getOption().getOptionId());
                 option.put("option_name", variantValue.getOption().getOptionName());
                 option.put("option_value", variantValue.getOptionValue());
+                option.put("option_image", variantValue.getOptionImage());
                 options.add(option);
             });
 
@@ -39,7 +40,7 @@ public class ProductHashMap {
         result.put("category_name", product.getCategory().getCategoryName());
         result.put("brand_id", product.getBrand().getBrandId());
         result.put("brand_name", product.getBrand().getBrandName());
-        result.put("description", product.getProductDescription());
+        result.put("description", product.getProductDesc());
         result.put("image_url", product.getImage());
         result.put("variants", variants);
 

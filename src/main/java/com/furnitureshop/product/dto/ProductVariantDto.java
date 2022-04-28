@@ -26,4 +26,6 @@ public class ProductVariantDto {
 
     @NotBlank(message = "Sku must not be blank")
     private String sku;
+
+    private Collection<VariantValueDto> variantValues;
 }

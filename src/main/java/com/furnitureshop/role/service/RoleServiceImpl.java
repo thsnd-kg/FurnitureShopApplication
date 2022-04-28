@@ -43,7 +43,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public Role update(UpdateRoleDto dto, Long id) {
-		Role role = repository.getById(id);
+		Role role = repository.getOne(id);
 		
 		role.setName(dto.getName().toUpperCase()); // add uppercase
 		role.setDescription(dto.getDescription());
