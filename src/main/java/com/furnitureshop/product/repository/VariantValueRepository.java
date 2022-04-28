@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VariantValueRepository extends JpaRepository<VariantValue, VariantValuePK> {
-    @Query("SELECT DISTINCT v.option.optionId, v.optionValue, v.optionImage FROM VariantValue v WHERE v.productVariant.product.productId = ?1")
+    @Query("SELECT v.option.optionId, v.optionValue, v.optionImage FROM VariantValue v WHERE v.optionValue IN (SELECT DISTINCT a.optionValue FROM VariantValue a WHERE a.productVariant.product.productId = ?1)")
     VariantValue getOptionValue(Long productId);
 }
