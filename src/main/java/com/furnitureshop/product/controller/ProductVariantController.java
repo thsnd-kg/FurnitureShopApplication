@@ -40,6 +40,6 @@ public class ProductVariantController {
 
     @GetMapping("/product/{product-id}")
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(service.getOptionValue(productId), HttpStatus.OK);
+        return ResponseHandler.getResponse(service.getOptionValues(productId), HttpStatus.OK);
     }
 }

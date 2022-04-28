@@ -36,7 +36,7 @@ public class VariantValueServiceImpl implements VariantValueService {
     }
 
     @Override
-    public List<VariantValue> getOptionValue(Long productId) {
-        return repository.getOptionValue(productId).orElse(null);
+    public List<VariantValue> findByProductId(Long productId) {
+        return repository.findByProductId(productId).orElse(null);
     }
 }
