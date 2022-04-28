@@ -11,5 +11,5 @@ public interface ProductVariantService {
 
     ProductVariant createProductVariant(CreateProductVariantDto dto);
 
-    List<VariantValue> getOptionValues(Long productId);
+    List<Object> getOptionValues(Long productId);
 }

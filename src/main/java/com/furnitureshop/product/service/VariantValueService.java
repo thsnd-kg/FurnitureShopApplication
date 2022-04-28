@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface VariantValueService {
     VariantValue createVariantValue(CreateVariantValueDto dto, ProductVariant productVariant);
-    List<VariantValue> findByProductId(Long productId);
+    List<Object> findByProductId(Long productId);
 }

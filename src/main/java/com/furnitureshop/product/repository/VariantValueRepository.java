@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface VariantValueRepository extends JpaRepository<VariantValue, VariantValuePK> {
     @Query("SELECT DISTINCT(vv.optionValue) FROM VariantValue vv WHERE vv.productVariant.product.productId = ?1")
-    Optional<List<VariantValue>> findByProductId(Long productId);
+    Optional<List<Object>> findByProductId(Long productId);
 }
