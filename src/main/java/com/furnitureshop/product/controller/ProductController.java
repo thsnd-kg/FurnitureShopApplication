@@ -26,9 +26,9 @@ public class ProductController {
     }
 
     @GetMapping("/pagination/{offset}/{pageSize}")
-    public Object getProducts(@PathVariable int offset, @PathVariable Optional<Integer> pageSize) {
+    public Object getProducts(@PathVariable int offset, @PathVariable int pageSize) {
         try {
-            Page<Product> products = service.getProductsWithPagination(offset, pageSize.orElse(5));
+            Page<Product> products = service.getProductsWithPagination(offset, pageSize);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
