@@ -8,14 +8,16 @@ import com.furnitureshop.product.repository.VariantValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
-    private final VariantValueRepository variantValueRepository;
+    private final VariantValueRepository repository;
     private final OptionService optionService;
 
     @Autowired
-    public VariantValueServiceImpl(VariantValueRepository variantValueRepository, OptionService optionService) {
-        this.variantValueRepository = variantValueRepository;
+    public VariantValueServiceImpl(VariantValueRepository repository, OptionService optionService) {
+        this.repository = repository;
         this.optionService = optionService;
     }
 
@@ -30,6 +32,11 @@ public class VariantValueServiceImpl implements VariantValueService {
         variantValue.setProductVariant(productVariant);
         variantValue.setOption(option);
 
-        return variantValueRepository.save(variantValue);
+        return repository.save(variantValue);
+    }
+
+    @Override
+    public List<Object> findByProductId(Long productId) {
+        return repository.findByProductId(productId).orElse(null);
     }
 }

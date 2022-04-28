@@ -10,7 +10,10 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProductDto {
+public class UpdateProductDto {
+    @NotNull(message = "{product.product.not-null}")
+    private Long productId;
+
     @NotNull(message = "{product.category.not-null}")
     private Long categoryId;
 

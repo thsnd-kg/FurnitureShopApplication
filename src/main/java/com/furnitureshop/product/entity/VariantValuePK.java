@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class VariantValueKey implements Serializable {
+public class VariantValuePK implements Serializable {
     @Column(name = "variant_id")
     Long variantId;
 
@@ -17,7 +17,7 @@ public class VariantValueKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VariantValueKey that = (VariantValueKey) o;
+        VariantValuePK that = (VariantValuePK) o;
         return variantId.equals(that.variantId) && optionId.equals(that.optionId);
     }
 

@@ -1,8 +1,8 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.dto.variant.CreateProductVariantDto;
 import com.furnitureshop.product.entity.ProductVariant;
+import com.furnitureshop.product.entity.VariantValue;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ public interface ProductVariantService {
 
     ProductVariant createProductVariant(CreateProductVariantDto dto);
 
-    ProductVariant updateProductVariant(ProductVariantDto dto);
+    List<Object> getOptionValues(Long productId);
 }

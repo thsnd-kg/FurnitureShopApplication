@@ -25,8 +25,8 @@ public class Product extends BaseEntity {
     private String productName;
 
     @Column(name = "product_desc",
-            length = 100)
-    private String productDesc;
+            length = 1000)
+    private String productDesc = "No description";
 
     @Column(name = "image",
             length = 300)
@@ -41,6 +41,7 @@ public class Product extends BaseEntity {
     private Category category;
 
     @JsonIgnore
+    @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "product")
     private List<ProductVariant> productVariants;
 }
