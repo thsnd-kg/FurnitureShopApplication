@@ -3,6 +3,7 @@ package com.furnitureshop.product.service;
 import com.furnitureshop.product.dto.variant.CreateProductVariantDto;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.ProductVariant;
+import com.furnitureshop.product.entity.VariantValue;
 import com.furnitureshop.product.repository.ProductVariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,10 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         dto.getVariantValues().forEach(variantValue -> variantValueService.createVariantValue(variantValue, result));
 
         return result;
+    }
+
+    @Override
+    public VariantValue getOptionValue(Long productId) {
+        return variantValueService.getOptionValue(productId);
     }
 }

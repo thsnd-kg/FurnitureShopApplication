@@ -32,4 +32,9 @@ public class VariantValueServiceImpl implements VariantValueService {
 
         return repository.save(variantValue);
     }
+
+    @Override
+    public VariantValue getOptionValue(Long productId) {
+        return repository.getOptionValue(productId);
+    }
 }

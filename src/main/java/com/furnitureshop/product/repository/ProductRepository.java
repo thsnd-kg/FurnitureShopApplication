@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p.productName FROM Product p WHERE p.productName LIKE %?1%")
+    @Query("SELECT p FROM Product p WHERE p.productName LIKE %?1%")
     Page<Product> findByProductName(String productName, Pageable pageRequest);
 }
