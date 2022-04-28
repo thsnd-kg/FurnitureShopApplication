@@ -1,7 +1,6 @@
 package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
-import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.dto.variant.CreateProductVariantDto;
 import com.furnitureshop.product.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +27,12 @@ public class ProductVariantController {
     }
 
     @PostMapping
-    public Object createProductVariant(@Valid @RequestBody CreateProductVariantDto newProductVariant, BindingResult errors) {
+    public Object createProductVariant(@Valid @RequestBody CreateProductVariantDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-            return ResponseHandler.getResponse(service.createProductVariant(newProductVariant), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping
-    public Object updateProductVariant(@Valid @RequestBody ProductVariantDto updatedProductVariant, BindingResult errors) {
-        try {
-            if (errors.hasErrors())
-                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
-
-            return ResponseHandler.getResponse(service.updateProductVariant(updatedProductVariant), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.createProductVariant(dto), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

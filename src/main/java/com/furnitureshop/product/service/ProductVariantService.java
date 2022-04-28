@@ -1,6 +1,5 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.ProductVariantDto;
 import com.furnitureshop.product.dto.variant.CreateProductVariantDto;
 import com.furnitureshop.product.entity.ProductVariant;
 
@@ -10,6 +9,4 @@ public interface ProductVariantService {
     List<ProductVariant> getProductVariants();
 
     ProductVariant createProductVariant(CreateProductVariantDto dto);
-
-    ProductVariant updateProductVariant(ProductVariantDto dto);
 }

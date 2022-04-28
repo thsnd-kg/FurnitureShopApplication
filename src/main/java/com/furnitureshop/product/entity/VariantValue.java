@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class VariantValue {
     @EmbeddedId
     @Setter(AccessLevel.NONE)
-    private VariantValueKey id;
+    private VariantValuePK id;
 
     @ManyToOne
     @MapsId("variantId")

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
-    private final VariantValueRepository variantValueRepository;
+    private final VariantValueRepository repository;
     private final OptionService optionService;
 
     @Autowired
-    public VariantValueServiceImpl(VariantValueRepository variantValueRepository, OptionService optionService) {
-        this.variantValueRepository = variantValueRepository;
+    public VariantValueServiceImpl(VariantValueRepository repository, OptionService optionService) {
+        this.repository = repository;
         this.optionService = optionService;
     }
 
@@ -30,6 +30,6 @@ public class VariantValueServiceImpl implements VariantValueService {
         variantValue.setProductVariant(productVariant);
         variantValue.setOption(option);
 
-        return variantValueRepository.save(variantValue);
+        return repository.save(variantValue);
     }
 }

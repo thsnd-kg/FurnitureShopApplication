@@ -1,17 +1,18 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.ProductDto;
 import com.furnitureshop.product.dto.product.CreateProductDto;
+import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Product;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductService {
-    List<Product> getProducts();
-
     Product getProductById(Long productId);
+
+    Page<Product> getProductsWithPagination(int offset, int pageSize);
+
+    Page<Product> getProductsWithPaginationAndSorting(int offset, int pageSize, String field);
 
     Product createProduct(CreateProductDto dto);
 
-    Product updateProduct(ProductDto dto);
+    Product updateProduct(UpdateProductDto dto);
 }

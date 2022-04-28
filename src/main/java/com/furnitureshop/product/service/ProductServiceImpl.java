@@ -1,15 +1,18 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.ProductDto;
 import com.furnitureshop.product.dto.product.CreateProductDto;
+import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,11 +29,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return repository.findAll();
-    }
-
-    @Override
     public Product getProductById(Long productId) {
         Optional<Product> product = repository.findById(productId);
 
@@ -38,6 +36,16 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalStateException("Product does not exists");
 
         return product.get();
+    }
+
+    @Override
+    public Page<Product> getProductsWithPagination(int offset, int pageSize) {
+        return repository.findAll(PageRequest.of(offset, pageSize));
+    }
+
+    @Override
+    public Page<Product> getProductsWithPaginationAndSorting(int offset, int pageSize, String field) {
+        return repository.findAll(PageRequest.of(offset, pageSize, Sort.by(field).ascending()));
     }
 
     @Override
@@ -57,7 +65,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(ProductDto dto) {
-        return null;
+    public Product updateProduct(UpdateProductDto dto) {
+        Product product = getProductById(dto.getProductId());
+
+        if (!Objects.equals(dto.getBrandId(), product.getBrand().getBrandId())) {
+            Brand brand = brandService.getBrandById(dto.getBrandId());
+            product.setBrand(brand);
+        }
+
+        if (!Objects.equals(dto.getCategoryId(), product.getCategory().getCategoryId())) {
+            Category category = categoryService.getCategoryById(dto.getCategoryId());
+            product.setCategory(category);
+        }
+
+        product.setProductName(dto.getProductName());
+        product.setProductDesc(dto.getProductDesc());
+        product.setImage(dto.getImage());
+
+        return repository.save(product);
     }
 }
