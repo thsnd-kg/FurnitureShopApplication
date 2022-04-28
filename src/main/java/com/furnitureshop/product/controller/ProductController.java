@@ -34,8 +34,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{offset}")
-    public Object getProducts(@PathVariable int offset, @RequestParam String name) {
+    @GetMapping("/page/{offset}")
+    public Object getProducts(@RequestParam String name, @PathVariable int offset) {
         try {
             Page<Product> products = service.findByProductName(name, offset);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
