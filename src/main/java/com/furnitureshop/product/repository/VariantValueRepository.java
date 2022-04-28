@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface VariantValueRepository extends JpaRepository<VariantValue, VariantValuePK> {
     @Query("SELECT DISTINCT vv.option.optionId, vv.optionValue, vv.optionImage FROM VariantValue vv WHERE vv.productVariant IN " +
             "(SELECT pv.variantId FROM ProductVariant pv WHERE pv.product.productId = ?1)" +
             "ORDER BY vv.option.optionId")
-    VariantValue getOptionValue(Long productId);
+    Optional<List<VariantValue>> getOptionValue(Long productId);
 }

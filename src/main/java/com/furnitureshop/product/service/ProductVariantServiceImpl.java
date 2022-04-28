@@ -46,7 +46,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     @Override
-    public VariantValue getOptionValue(Long productId) {
+    public List<VariantValue> getOptionValue(Long productId) {
         return variantValueService.getOptionValue(productId);
     }
 }
