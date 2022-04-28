@@ -3,9 +3,11 @@ package com.furnitureshop.order.controller;
 import com.furnitureshop.order.entity.Voucher;
 import com.furnitureshop.order.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -19,12 +21,12 @@ public class VoucherController {
     }
 
     @GetMapping
-    public List<Voucher> getVouchers() {
+    public Page<Voucher> getVouchers() {
         return service.getVouchers();
     }
 
-    @GetMapping("/id")
-    public Voucher getVoucher(@RequestParam Long voucherId) {
+    @GetMapping("/{voucher-id}")
+    public Voucher getVoucher(@PathVariable("voucher-id") Long voucherId) {
         return service.getVoucherById(voucherId);
     }
 }

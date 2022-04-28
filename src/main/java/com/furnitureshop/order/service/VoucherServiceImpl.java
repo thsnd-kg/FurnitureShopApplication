@@ -3,6 +3,8 @@ package com.furnitureshop.order.service;
 import com.furnitureshop.order.entity.Voucher;
 import com.furnitureshop.order.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public List<Voucher> getVouchers() {
-        return repository.findAll();
+    public Page<Voucher> getVouchers() {
+        return repository.findAll(PageRequest.of(0, 5));
     }
 }

@@ -1,11 +1,10 @@
 package com.furnitureshop.order.service;
 
 import com.furnitureshop.order.entity.Voucher;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface VoucherService {
     Voucher getVoucherById(Long voucherId);
 
-    List<Voucher> getVouchers();
+    Page<Voucher> getVouchers();
 }
