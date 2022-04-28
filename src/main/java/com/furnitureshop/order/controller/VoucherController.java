@@ -23,7 +23,7 @@ public class VoucherController {
         return service.getVouchers();
     }
 
-    @GetMapping
+    @GetMapping("/id")
     public Voucher getVoucher(@RequestParam Long voucherId) {
         return service.getVoucherById(voucherId);
     }
