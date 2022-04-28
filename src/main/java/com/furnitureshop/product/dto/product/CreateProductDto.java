@@ -21,7 +21,7 @@ public class CreateProductDto {
     @Size(max = 50, message = "{product.name.size}")
     private String productName;
 
-    @Size(max = 50, message = "{product.desc.size}")
+    @Size(max = 1000, message = "{product.desc.size}")
     private String productDesc;
 
     @NotNull(message = "{product.name.not-null}")

@@ -25,7 +25,7 @@ public class Product extends BaseEntity {
     private String productName;
 
     @Column(name = "product_desc",
-            length = 100)
+            length = 1000)
     private String productDesc = "No description";
 
     @Column(name = "image",
