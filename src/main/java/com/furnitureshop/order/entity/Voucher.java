@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,4 +43,8 @@ public class Voucher extends BaseEntity {
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "voucher")
+    @Column(name = "order_id")
+    private List<Order> orders;
 }

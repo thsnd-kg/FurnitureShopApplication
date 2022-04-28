@@ -5,12 +5,16 @@ import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Product;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public interface ProductService {
     Product getProductById(Long productId);
 
     Page<Product> getProductsWithPagination(int offset, int pageSize);
 
-    Page<Product> getProductsWithPaginationAndSorting(int offset, int pageSize, String field);
+    Page<Product> findByProductName(String name, int offset);
+
+    Page<Product> findByProductName(String name, int offset, String orderBy);
 
     Product createProduct(CreateProductDto dto);
 

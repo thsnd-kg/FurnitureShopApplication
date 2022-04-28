@@ -44,8 +44,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsWithPaginationAndSorting(int offset, int pageSize, String field) {
-        return repository.findAll(PageRequest.of(offset, pageSize, Sort.by(field).ascending()));
+    public Page<Product> findByProductName(String name, int offset) {
+        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending()));
+    }
+
+    @Override
+    public Page<Product> findByProductName(String name, int offset, String orderBy) {
+        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by(orderBy).ascending()));
     }
 
     @Override

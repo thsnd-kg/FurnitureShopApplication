@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -35,10 +34,10 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/paginationAndSorting/{offset}/{pageSize}/{field}")
-    public Object getProducts(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+    @GetMapping("/{offset}")
+    public Object getProducts(@PathVariable int offset, @RequestParam String name, @RequestParam String field) {
         try {
-            Page<Product> products = service.getProductsWithPaginationAndSorting(offset, pageSize, field);
+            Page<Product> products = service.findByProductName(name, offset, field);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
