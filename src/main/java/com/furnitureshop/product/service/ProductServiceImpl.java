@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,6 +37,11 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalStateException("Product does not exists");
 
         return product.get();
+    }
+
+    @Override
+    public List<Product> getProducts() {
+        return repository.findAll();
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Product;
+import com.furnitureshop.product.hashmap.ProductHashMap;
 import com.furnitureshop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -48,6 +53,17 @@ public class ProductController {
     public Object getProductById(@PathVariable("product-id") Long productId) {
         try {
             return ResponseHandler.getResponse(service.getProductById(productId), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public Object getProducts() {
+        try {
+            List<Map<String, Object>> result = new ArrayList<>();
+            service.getProducts().forEach(product -> result.add(ProductHashMap.get(product)));
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
