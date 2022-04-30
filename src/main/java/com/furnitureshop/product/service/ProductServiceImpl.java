@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findByProductName(String name, int offset) {
         return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending()));
+    }
+
+    @Override
+    public List<Product> getProducts() {
+        return repository.findAll();
     }
 
     @Override

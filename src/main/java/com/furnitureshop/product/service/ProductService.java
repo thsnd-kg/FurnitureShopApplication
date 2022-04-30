@@ -5,6 +5,7 @@ import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Product;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -13,6 +14,8 @@ public interface ProductService {
     Page<Product> getProductsWithPagination(int offset, int pageSize);
 
     Page<Product> findByProductName(String name, int offset);
+
+    List<Product> getProducts();
 
     Product createProduct(CreateProductDto dto);
 
