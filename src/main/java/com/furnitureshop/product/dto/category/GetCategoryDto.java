@@ -18,7 +18,12 @@ public class GetCategoryDto {
         this.categoryId = category.getCategoryId();
         this.categoryName = category.getCategoryName();
         this.categoryDesc = category.getCategoryDesc();
-        this.parent = new GetCategoryDto(category.getParent());
         this.options = category.getOptions().stream().map(GetOptionDto::new).collect(Collectors.toList());
+
+        if (category.getParent() != null) {
+            this.parent = new GetCategoryDto(category.getParent());
+        } else {
+            this.parent = null;
+        }
     }
 }
