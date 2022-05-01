@@ -8,10 +8,10 @@ import java.util.Objects;
 @Embeddable
 public class VariantValuePK implements Serializable {
     @Column(name = "variant_id")
-    Long variantId;
+    private Long variantId;
 
     @Column(name = "option_id")
-    Long optionId;
+    private Long optionId;
 
     @Override
     public boolean equals(Object o) {
