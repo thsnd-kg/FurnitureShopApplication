@@ -11,7 +11,7 @@ public class GetCategoryDto {
     private Long categoryId;
     private String categoryName;
     private String categoryDesc;
-    private GetCategoryDto parent;
+    private Long parentId;
     private List<GetOptionDto> options;
 
     public GetCategoryDto(Category category) {
@@ -21,9 +21,9 @@ public class GetCategoryDto {
         this.options = category.getOptions().stream().map(GetOptionDto::new).collect(Collectors.toList());
 
         if (category.getParent() != null) {
-            this.parent = new GetCategoryDto(category.getParent());
+            this.parentId = category.getParent().getCategoryId();
         } else {
-            this.parent = null;
+            this.parentId = null;
         }
     }
 }
