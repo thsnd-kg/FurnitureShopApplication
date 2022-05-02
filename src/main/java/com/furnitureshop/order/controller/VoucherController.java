@@ -1,11 +1,13 @@
 package com.furnitureshop.order.controller;
 
+import com.furnitureshop.order.dto.voucher.CreateVoucherDto;
 import com.furnitureshop.order.entity.Voucher;
 import com.furnitureshop.order.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +30,10 @@ public class VoucherController {
     @GetMapping("/{voucher-id}")
     public Voucher getVoucher(@PathVariable("voucher-id") Long voucherId) {
         return service.getVoucherById(voucherId);
+    }
+
+    @PostMapping
+    public Voucher createVoucher(@Valid @RequestBody CreateVoucherDto dto) {
+        return service.createVoucher(dto);
     }
 }
