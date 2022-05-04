@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.category.CreateCategoryDto;
+import com.furnitureshop.product.dto.category.GetCategoryDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -21,22 +24,31 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive){
-        if(isActive)
-            return ResponseHandler.getResponse(service.getCategoriesActive(), HttpStatus.OK);
+    public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive) {
+        if (isActive) {
+            List<Category> categories = service.getCategoriesActive();
+            List<GetCategoryDto> result = categories.stream().map(GetCategoryDto::new).collect(Collectors.toList());
 
-        return ResponseHandler.getResponse(service.getCategories(), HttpStatus.OK);
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
+        }
+
+        List<Category> categories = service.getCategories();
+        List<GetCategoryDto> result = categories.stream().map(GetCategoryDto::new).collect(Collectors.toList());
+
+        return ResponseHandler.getResponse(result, HttpStatus.OK);
     }
 
 
     @GetMapping(path = "/{category-id}")
-    public Object getCategoryById(@PathVariable("category-id") Long categoryId){
-        try{
-            if(categoryId == null)
+    public Object getCategoryById(@PathVariable("category-id") Long categoryId) {
+        try {
+            if (categoryId == null)
                 throw new IllegalStateException("Category Id must not be null");
 
-            return service.getCategoryById(categoryId);
-        }catch (Exception e){
+            Category category = service.getCategoryById(categoryId);
+
+            return new GetCategoryDto(category);
+        } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }

@@ -1,5 +1,6 @@
 package com.furnitureshop.order.service;
 
+import com.furnitureshop.order.dto.voucher.CreateVoucherDto;
 import com.furnitureshop.order.entity.Voucher;
 import com.furnitureshop.order.repository.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,19 @@ public class VoucherServiceImpl implements VoucherService {
     @Override
     public Page<Voucher> getVouchers() {
         return repository.findAll(PageRequest.of(0, 5));
+    }
+
+    @Override
+    public Voucher createVoucher(CreateVoucherDto dto) {
+        Voucher voucher = new Voucher();
+
+        voucher.setVoucherDesc(dto.getVoucherDesc());
+        voucher.setVoucherValue(dto.getVoucherValue());
+        voucher.setAmount(dto.getAmount());
+        voucher.setCappedAt(dto.getCappedAt());
+        voucher.setValidDate(dto.getValidDate());
+        voucher.setExpirationDate(dto.getExpirationDate());
+
+        return repository.save(voucher);
     }
 }

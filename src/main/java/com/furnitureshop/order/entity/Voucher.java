@@ -1,10 +1,7 @@
 package com.furnitureshop.order.entity;
 
 import com.furnitureshop.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +15,7 @@ import java.util.List;
 public class Voucher extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     @Column(name = "voucher")
     private Long voucherId;
 
@@ -46,5 +44,6 @@ public class Voucher extends BaseEntity {
 
     @OneToMany(mappedBy = "voucher")
     @Column(name = "order_id")
+    @Setter(AccessLevel.NONE)
     private List<Order> orders;
 }
