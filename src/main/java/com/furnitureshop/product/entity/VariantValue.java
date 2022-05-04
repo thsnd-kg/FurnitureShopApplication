@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class VariantValue {
+    @JsonIgnore
     @EmbeddedId
     @Setter(AccessLevel.NONE)
     private VariantValuePK id;

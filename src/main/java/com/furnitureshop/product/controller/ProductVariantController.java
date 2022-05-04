@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -41,5 +42,10 @@ public class ProductVariantController {
     @GetMapping("/product/{product-id}")
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
         return ResponseHandler.getResponse(service.getOptionValues(productId), HttpStatus.OK);
+    }
+
+    @GetMapping("/variantId")
+    public Object getVariantId(@RequestParam Long productId, @RequestParam List<String> optionValues) {
+        return ResponseHandler.getResponse(service.findVariantId(productId, optionValues), HttpStatus.OK);
     }
 }

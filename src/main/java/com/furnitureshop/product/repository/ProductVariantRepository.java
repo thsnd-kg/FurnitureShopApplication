@@ -1,5 +1,6 @@
 package com.furnitureshop.product.repository;
 
+import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.ProductVariant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
+    List<ProductVariant> getProductVariantByProduct(Product product);
 }

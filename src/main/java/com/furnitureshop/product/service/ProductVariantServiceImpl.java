@@ -47,7 +47,11 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     public List<Object> getOptionValues(Long productId) {
-        System.out.println("a");
-        return variantValueService.findByProductId(productId);
+        return variantValueService.getOptionValues(productId);
+    }
+
+    @Override
+    public List<Long> findVariantId(Long productId, List<String> optionValue) {
+        return variantValueService.findVariantId(productId, optionValue);
     }
 }

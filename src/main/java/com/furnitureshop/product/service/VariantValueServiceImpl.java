@@ -2,13 +2,16 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.variant.CreateVariantValueDto;
 import com.furnitureshop.product.entity.Option;
+import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.ProductVariant;
 import com.furnitureshop.product.entity.VariantValue;
 import com.furnitureshop.product.repository.VariantValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VariantValueServiceImpl implements VariantValueService {
@@ -36,7 +39,24 @@ public class VariantValueServiceImpl implements VariantValueService {
     }
 
     @Override
-    public List<Object> findByProductId(Long productId) {
-        return repository.findByProductId(productId).orElse(null);
+    public List<Long> findVariantId(Long productId, List<String> optionValues) {
+        List<List<Long>> result = new ArrayList<>();
+
+        optionValues.forEach(optionValue -> {
+            Optional<List<Long>> res = repository.findVariantId(productId, optionValue);
+
+            res.ifPresent(result::add);
+        });
+
+        for (int i = 1; i < result.size(); i++) {
+            result.get(0).retainAll(result.get(i));
+        }
+
+        return result.get(0);
+    }
+
+    @Override
+    public List<Object> getOptionValues(Long productId) {
+        return repository.getOptionValues(productId).orElse(null);
     }
 }
