@@ -2,9 +2,9 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.product.CreateProductDto;
+import com.furnitureshop.product.dto.product.GetProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.Product;
-import com.furnitureshop.product.hashmap.ProductHashMap;
 import com.furnitureshop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,9 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -31,8 +30,8 @@ public class ProductController {
     @GetMapping("/pagination/{offset}/{pageSize}")
     public Object getProducts(@PathVariable int offset, @PathVariable int pageSize) {
         try {
-            Page<Product> products = service.getProductsWithPagination(offset, pageSize);
-            return ResponseHandler.getResponse(products, HttpStatus.OK);
+            Page<GetProductDto> result = service.getProductsWithPagination(offset, pageSize).map(GetProductDto::new);
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -41,8 +40,8 @@ public class ProductController {
     @GetMapping("/page/{offset}")
     public Object getProducts(@RequestParam String name, @PathVariable int offset) {
         try {
-            Page<Product> products = service.findByProductName(name, offset);
-            return ResponseHandler.getResponse(products, HttpStatus.OK);
+            Page<GetProductDto> result = service.findByProductName(name, offset).map(GetProductDto::new);
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +50,8 @@ public class ProductController {
     @GetMapping(path = "/{product-id}")
     public Object getProductById(@PathVariable("product-id") Long productId) {
         try {
-            return ResponseHandler.getResponse(service.getProductById(productId), HttpStatus.OK);
+            GetProductDto product = new GetProductDto(service.getProductById(productId));
+            return ResponseHandler.getResponse(product, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -60,8 +60,7 @@ public class ProductController {
     @GetMapping
     public Object getProducts() {
         try {
-            List<Map<String, Object>> result = new ArrayList<>();
-            service.getProducts().forEach(product -> result.add(ProductHashMap.get(product)));
+            List<GetProductDto> result = service.getProducts().stream().map(GetProductDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

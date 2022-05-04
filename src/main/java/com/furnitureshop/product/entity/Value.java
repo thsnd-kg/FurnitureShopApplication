@@ -1,5 +1,6 @@
 package com.furnitureshop.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +10,16 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class VariantValue {
+public class Value {
+    @JsonIgnore
     @EmbeddedId
     @Setter(AccessLevel.NONE)
-    private VariantValuePK id;
+    private ValuePK id;
 
     @ManyToOne
     @MapsId("variantId")
     @JoinColumn(name = "variant_id")
-    private ProductVariant productVariant;
+    private Variant variant;
 
     @ManyToOne
     @MapsId("optionId")

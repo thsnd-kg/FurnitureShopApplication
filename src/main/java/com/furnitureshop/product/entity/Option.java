@@ -32,5 +32,5 @@ public class Option implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "option")
     @Setter(AccessLevel.NONE)
-    private List<VariantValue> variantValues;
+    private List<Value> values;
 }

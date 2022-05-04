@@ -1,6 +1,6 @@
 package com.furnitureshop.importer.entity;
 
-import com.furnitureshop.product.entity.ProductVariant;
+import com.furnitureshop.product.entity.Variant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +42,5 @@ public class ImporterDetail {
             @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false),
             @JoinColumn(name = "variant_id", referencedColumnName = "variant_id", insertable = false, updatable = false)
     })
-    private ProductVariant productVariant;
+    private Variant variant;
 }

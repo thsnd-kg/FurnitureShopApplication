@@ -11,7 +11,7 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProductVariantDto {
+public class CreateVariantDto {
     @NotNull(message = "{productVariant.product.not-null}")
     private Long productId;
 
@@ -21,5 +21,5 @@ public class CreateProductVariantDto {
     @Size(max = 50, message = "{productVariant.sku.size}")
     private String sku;
 
-    private Collection<CreateVariantValueDto> variantValues;
+    private Collection<CreateValueDto> variantValues;
 }

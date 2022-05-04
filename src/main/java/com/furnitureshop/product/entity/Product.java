@@ -43,5 +43,5 @@ public class Product extends BaseEntity {
     @JsonIgnore
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "product")
-    private List<ProductVariant> productVariants;
+    private List<Variant> variants;
 }
