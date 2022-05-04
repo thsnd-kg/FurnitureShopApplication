@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface ValueRepository extends JpaRepository<Value, ValuePK> {
-    @Query("SELECT DISTINCT v.option.optionId, v.optionValue, v.optionImage FROM Value v WHERE v.productVariant.product.productId = ?1")
+    @Query("SELECT DISTINCT v.option.optionId, v.optionValue, v.optionImage FROM Value v WHERE v.variant.product.productId = ?1")
     Optional<List<Object>> getOptionValues(Long productId);
 
-    @Query("SELECT v.productVariant.variantId FROM Value v WHERE v.productVariant.product.productId = ?1 AND v.optionValue = ?2")
+    @Query("SELECT v.variant.variantId FROM Value v WHERE v.variant.product.productId = ?1 AND v.optionValue = ?2")
     Optional<List<Long>> findVariantId(Long productId, String optionValue);
 }
