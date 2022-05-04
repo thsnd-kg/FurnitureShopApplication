@@ -1,11 +1,10 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.variant.CreateVariantValueDto;
+import com.furnitureshop.product.dto.variant.CreateValueDto;
 import com.furnitureshop.product.entity.Option;
-import com.furnitureshop.product.entity.Product;
-import com.furnitureshop.product.entity.ProductVariant;
-import com.furnitureshop.product.entity.VariantValue;
-import com.furnitureshop.product.repository.VariantValueRepository;
+import com.furnitureshop.product.entity.Value;
+import com.furnitureshop.product.entity.Variant;
+import com.furnitureshop.product.repository.ValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,28 +13,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class VariantValueServiceImpl implements VariantValueService {
-    private final VariantValueRepository repository;
+public class ValueServiceImpl implements ValueService {
+    private final ValueRepository repository;
     private final OptionService optionService;
 
     @Autowired
-    public VariantValueServiceImpl(VariantValueRepository repository, OptionService optionService) {
+    public ValueServiceImpl(ValueRepository repository, OptionService optionService) {
         this.repository = repository;
         this.optionService = optionService;
     }
 
     @Override
-    public VariantValue createVariantValue(CreateVariantValueDto dto, ProductVariant productVariant) {
-        VariantValue variantValue = new VariantValue();
+    public Value createVariantValue(CreateValueDto dto, Variant variant) {
+        Value value = new Value();
 
         Option option = optionService.getOptionById(dto.getOptionId());
 
-        variantValue.setOptionValue(dto.getOptionValue());
-        variantValue.setOptionImage(dto.getOptionImage());
-        variantValue.setProductVariant(productVariant);
-        variantValue.setOption(option);
+        value.setOptionValue(dto.getOptionValue());
+        value.setOptionImage(dto.getOptionImage());
+        value.setVariant(variant);
+        value.setOption(option);
 
-        return repository.save(variantValue);
+        return repository.save(value);
     }
 
     @Override

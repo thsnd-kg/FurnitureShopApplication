@@ -12,3 +12,4 @@ buildNumber.properties
 .idea
 FurnitureShopApplication.iml
 src/main/resources/application.properties
+src/main/java/com/furnitureshop/security/config/SecurityConfig.java

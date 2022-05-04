@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductVariant extends BaseEntity implements Serializable {
+public class Variant extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -42,10 +42,10 @@ public class ProductVariant extends BaseEntity implements Serializable {
     private Product product;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "productVariant")
-    private List<VariantValue> variantValues;
+    @OneToMany(mappedBy = "variant")
+    private List<Value> values;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "productVariant")
+    @OneToMany(mappedBy = "variant")
     private List<ImporterDetail> imports;
 }

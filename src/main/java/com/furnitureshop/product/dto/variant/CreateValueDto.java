@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateVariantValueDto {
+public class CreateValueDto {
     @NotNull(message = "{variantValue.option.not-null}")
     private Long optionId;
 
