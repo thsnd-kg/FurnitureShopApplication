@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/product_variant")
+@RequestMapping("/api/variant")
 public class VariantController {
     private final VariantService service;
 
@@ -23,29 +23,33 @@ public class VariantController {
     }
 
     @GetMapping
-    public Object getProductVariants() {
-        return ResponseHandler.getResponse(service.getProductVariants(), HttpStatus.OK);
+    public Object getVariants() {
+        return ResponseHandler.getResponse(service.getVariants(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public Object createProductVariant(@Valid @RequestBody CreateVariantDto dto, BindingResult errors) {
+    @GetMapping("/{variant-id}")
+    public Object getVariant(@PathVariable("variant-id") Long variantId) {
         try {
-            if (errors.hasErrors())
-                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
-
-            return ResponseHandler.getResponse(service.createProductVariant(dto), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.getVariant(variantId), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/product/{product-id}")
-    public Object getOptionValue(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(service.getOptionValues(productId), HttpStatus.OK);
+    @PostMapping
+    public Object createVariant(@Valid @RequestBody CreateVariantDto dto, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            return ResponseHandler.getResponse(service.createVariant(dto), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/variantId")
-    public Object getVariantId(@RequestParam Long productId, @RequestParam List<String> optionValues) {
-        return ResponseHandler.getResponse(service.findVariantId(productId, optionValues), HttpStatus.OK);
+    @GetMapping("/search")
+    public Object getVariant(@RequestParam Long productId, @RequestParam List<String> optionValues) {
+        return ResponseHandler.getResponse(service.findVariant(productId, optionValues), HttpStatus.OK);
     }
 }
