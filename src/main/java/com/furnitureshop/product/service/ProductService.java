@@ -2,11 +2,11 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Product;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
     Product getProductById(Long productId);

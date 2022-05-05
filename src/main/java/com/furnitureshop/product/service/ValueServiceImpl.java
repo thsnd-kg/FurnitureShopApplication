@@ -1,6 +1,7 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.variant.CreateValueDto;
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.entity.Value;
 import com.furnitureshop.product.entity.Variant;
@@ -24,7 +25,7 @@ public class ValueServiceImpl implements ValueService {
     }
 
     @Override
-    public Value createVariantValue(CreateValueDto dto, Variant variant) {
+    public Value createValue(CreateValueDto dto, Variant variant) {
         Value value = new Value();
 
         Option option = optionService.getOptionById(dto.getOptionId());
@@ -38,11 +39,11 @@ public class ValueServiceImpl implements ValueService {
     }
 
     @Override
-    public List<Long> findVariantId(Long productId, List<String> optionValues) {
-        List<List<Long>> result = new ArrayList<>();
+    public Variant findVariant(Long productId, List<String> optionValues) {
+        List<List<Variant>> result = new ArrayList<>();
 
         optionValues.forEach(optionValue -> {
-            Optional<List<Long>> res = repository.findVariantId(productId, optionValue);
+            Optional<List<Variant>> res = repository.findVariantId(productId, optionValue);
 
             res.ifPresent(result::add);
         });
@@ -51,11 +52,15 @@ public class ValueServiceImpl implements ValueService {
             result.get(0).retainAll(result.get(i));
         }
 
-        return result.get(0);
+        System.out.println(result.get(0));
+        if (result.get(0).size() != 1)
+            throw new IllegalStateException("Variant invalid");
+
+        return result.get(0).get(0);
     }
 
     @Override
-    public List<Object> getOptionValues(Long productId) {
+    public List<GetValueDto> getOptionValues(Long productId) {
         return repository.getOptionValues(productId).orElse(null);
     }
 }

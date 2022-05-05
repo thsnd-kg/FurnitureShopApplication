@@ -2,6 +2,7 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
