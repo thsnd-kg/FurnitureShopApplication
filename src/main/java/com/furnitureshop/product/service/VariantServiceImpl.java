@@ -1,13 +1,16 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.variant.CreateVariantDto;
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.Variant;
 import com.furnitureshop.product.repository.VariantRepository;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VariantServiceImpl implements VariantService {
@@ -23,12 +26,23 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public List<Variant> getProductVariants() {
+    public List<Variant> getVariants() {
         return repository.findAll();
     }
 
     @Override
-    public Variant createProductVariant(CreateVariantDto dto) {
+    public Variant getVariant(Long variantId) {
+        Optional<Variant> variant = repository.findById(variantId);
+
+        if (!variant.isPresent()) {
+            throw new IllegalStateException("Variant not exists");
+        }
+
+        return variant.get();
+    }
+
+    @Override
+    public Variant createVariant(CreateVariantDto dto) {
         Variant variant = new Variant();
 
         Product product = productService.getProductById(dto.getProductId());
@@ -39,18 +53,13 @@ public class VariantServiceImpl implements VariantService {
 
         Variant result = repository.save(variant);
 
-        dto.getVariantValues().forEach(variantValue -> valueService.createVariantValue(variantValue, result));
+        dto.getVariantValues().forEach(variantValue -> valueService.createValue(variantValue, result));
 
         return result;
     }
 
     @Override
-    public List<Object> getOptionValues(Long productId) {
-        return valueService.getOptionValues(productId);
-    }
-
-    @Override
-    public List<Long> findVariantId(Long productId, List<String> optionValue) {
-        return valueService.findVariantId(productId, optionValue);
+    public Variant findVariant(Long productId, List<String> optionValue) {
+        return valueService.findVariant(productId, optionValue);
     }
 }

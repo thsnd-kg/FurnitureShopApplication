@@ -1,7 +1,9 @@
 package com.furnitureshop.product.repository;
 
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Value;
 import com.furnitureshop.product.entity.ValuePK;
+import com.furnitureshop.product.entity.Variant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,9 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface ValueRepository extends JpaRepository<Value, ValuePK> {
-    @Query("SELECT DISTINCT v.option.optionId, v.optionValue, v.optionImage FROM Value v WHERE v.variant.product.productId = ?1")
-    Optional<List<Object>> getOptionValues(Long productId);
+    @Query("SELECT DISTINCT new com.furnitureshop.product.dto.variant.GetValueDto(v.option.optionId, v.option.optionName, v.optionValue, v.optionImage) FROM Value v WHERE v.variant.product.productId = ?1 ORDER BY v.option.optionId")
+    Optional<List<GetValueDto>> getOptionValues(Long productId);
 
-    @Query("SELECT v.variant.variantId FROM Value v WHERE v.variant.product.productId = ?1 AND v.optionValue = ?2")
-    Optional<List<Long>> findVariantId(Long productId, String optionValue);
+    @Query("SELECT v.variant FROM Value v WHERE v.variant.product.productId = ?1 AND v.optionValue = ?2")
+    Optional<List<Variant>> findVariantId(Long productId, String optionValue);
 }

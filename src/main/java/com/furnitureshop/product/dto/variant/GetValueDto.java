@@ -19,4 +19,11 @@ public class GetValueDto {
         this.optionValue = value.getOptionValue();
         this.optionImage = value.getOptionImage();
     }
+
+    public GetValueDto(Long optionId, String optionName, String optionValue, String optionImage) {
+        this.optionId = optionId;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
+        this.optionImage = optionImage;
+    }
 }

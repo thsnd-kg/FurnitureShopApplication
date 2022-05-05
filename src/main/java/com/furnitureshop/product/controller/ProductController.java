@@ -4,8 +4,8 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.GetProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
-import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.service.ProductService;
+import com.furnitureshop.product.service.ValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/product")
 public class ProductController {
     private final ProductService service;
+    private final ValueService valueService;
 
     @Autowired
-    public ProductController(ProductService service) {
+    public ProductController(ProductService service, ValueService valueService) {
         this.service = service;
+        this.valueService = valueService;
     }
 
     @GetMapping("/pagination/{offset}/{pageSize}")
@@ -35,6 +37,11 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/{product-id}/option")
+    public Object getOptionValue(@PathVariable("product-id") Long productId) {
+        return ResponseHandler.getResponse(valueService.getOptionValues(productId), HttpStatus.OK);
     }
 
     @GetMapping("/page/{offset}")
