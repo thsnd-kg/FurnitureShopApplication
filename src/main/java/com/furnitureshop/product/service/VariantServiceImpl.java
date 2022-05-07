@@ -1,15 +1,15 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.variant.CreateVariantDto;
-import com.furnitureshop.product.dto.variant.GetValueDto;
+import com.furnitureshop.product.dto.variant.UpdateVariantDto;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.entity.Variant;
 import com.furnitureshop.product.repository.VariantRepository;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,7 +31,7 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public Variant getVariant(Long variantId) {
+    public Variant getVariantById(Long variantId) {
         Optional<Variant> variant = repository.findById(variantId);
 
         if (!variant.isPresent()) {
@@ -50,16 +50,47 @@ public class VariantServiceImpl implements VariantService {
         variant.setProduct(product);
         variant.setImage(dto.getImage());
         variant.setSku(dto.getSku());
+        variant.setPrice(dto.getPrice());
 
         Variant result = repository.save(variant);
 
-        dto.getVariantValues().forEach(variantValue -> valueService.createValue(variantValue, result));
+        dto.getValues().forEach(value -> valueService.createValue(value, result));
 
         return result;
     }
 
     @Override
+    public Variant updateVariant(UpdateVariantDto dto) {
+        Variant variant = getVariantById(dto.getVariantId());
+
+        if (!Objects.equals(variant.getProduct().getProductId(), dto.getProductId())) {
+            Product product = productService.getProductById(dto.getProductId());
+            variant.setProduct(product);
+        }
+
+        valueService.updateValue(dto.getValues(), variant);
+
+        variant.setImage(dto.getImage());
+        variant.setSku(dto.getSku());
+        variant.setPrice(dto.getPrice());
+
+        return repository.save(variant);
+    }
+
+    @Override
     public Variant findVariant(Long productId, List<String> optionValue) {
         return valueService.findVariant(productId, optionValue);
+    }
+
+    @Override
+    public Boolean deleteVariant(Long variantId) {
+        Variant variant = getVariantById(variantId);
+
+        valueService.deleteValue(variantId);
+
+        variant.setIsDeleted(true);
+        repository.save(variant);
+
+        return true;
     }
 }

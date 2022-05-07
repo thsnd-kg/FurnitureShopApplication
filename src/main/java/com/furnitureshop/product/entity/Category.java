@@ -30,7 +30,7 @@ public class Category extends BaseEntity {
 
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")

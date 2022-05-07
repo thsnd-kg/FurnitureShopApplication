@@ -1,11 +1,16 @@
 package com.furnitureshop.product.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class ValuePK implements Serializable {
     @Column(name = "variant_id")
     private Long variantId;

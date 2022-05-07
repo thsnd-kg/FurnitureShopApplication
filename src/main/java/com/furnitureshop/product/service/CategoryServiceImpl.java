@@ -1,6 +1,8 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.category.CreateCategoryDto;
+import com.furnitureshop.product.dto.category.CreateOptionDto;
+import com.furnitureshop.product.dto.category.UpdateCategoryDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,28 +13,28 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repository;
     private final OptionService optionService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, OptionService optionService) {
-        this.categoryRepository = categoryRepository;
+    public CategoryServiceImpl(CategoryRepository repository, OptionService optionService) {
+        this.repository = repository;
         this.optionService = optionService;
     }
 
     @Override
     public List<Category> getCategories() {
-        return categoryRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<Category> getCategoriesActive() {
-        return categoryRepository.findByIsDeletedFalse();
+        return repository.findByIsDeletedFalse();
     }
 
     @Override
     public Category getCategoryById(Long categoryId) {
-        Optional<Category> category = categoryRepository.findById(categoryId);
+        Optional<Category> category = repository.findById(categoryId);
 
         if (!category.isPresent())
             throw new IllegalStateException("Category does not exists");
@@ -45,9 +47,10 @@ public class CategoryServiceImpl implements CategoryService {
         if(!isExisted(categoryId))
             throw new IllegalStateException("Category does not exist");
 
-        Category category = categoryRepository.getOne(categoryId);
+        Category category = repository.getOne(categoryId);
         category.setIsDeleted(true);
-        categoryRepository.save(category);
+        repository.save(category);
+
         return true;
     }
 
@@ -59,30 +62,47 @@ public class CategoryServiceImpl implements CategoryService {
         category.setCategoryName(dto.getCategoryName());
 
         if (dto.getParentId() != null) {
-            Category parent = categoryRepository.findById(dto.getParentId()).orElse(null);
+            Optional<Category> parent = repository.findById(dto.getParentId());
 
-            if (parent == null) {
+            if (!parent.isPresent()) {
                 throw new IllegalStateException("Parent does not exists");
             }
 
-            category.setParent(parent);
+            category.setParent(parent.get());
         }
 
-        Category result = categoryRepository.save(category);
+        Category result = repository.save(category);
 
-        dto.getOptionDtos().forEach(option -> optionService.createOption(option, result));
+        result.setOptions(optionService.createOption(dto.getOptions(), result));
 
         return result;
     }
 
     @Override
-    public Category updateCategory(CreateCategoryDto dto) {
-        return null;
+    public Category updateCategory(UpdateCategoryDto dto) {
+        Category category = getCategoryById(dto.getCategoryId());
+
+        category.setCategoryName(dto.getCategoryName());
+        category.setCategoryDesc(dto.getCategoryDesc());
+
+        if (dto.getParentId() != null) {
+            Optional<Category> parent = repository.findById(dto.getParentId());
+
+            if (!parent.isPresent()) {
+                throw new IllegalStateException("Parent does not exists");
+            }
+
+            category.setParent(parent.get());
+        }
+
+        optionService.updateOption(dto.getOptions());
+
+        return repository.save(category);
     }
 
     @Override
     public boolean isExisted(Long categoryId) {
-        Optional<Category> category = categoryRepository.findById(categoryId);
+        Optional<Category> category = repository.findById(categoryId);
         return category.isPresent();
     }
 }

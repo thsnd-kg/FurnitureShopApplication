@@ -21,8 +21,7 @@ public class Variant extends BaseEntity implements Serializable {
     @Column(name = "variant_id")
     private Long variantId;
 
-    @Column(name = "price",
-            columnDefinition = "integer default 0")
+    @Column(name = "price")
     private Integer price;
 
     @Column(name = "image",
@@ -31,11 +30,15 @@ public class Variant extends BaseEntity implements Serializable {
 
     @Column(name = "quantity",
             columnDefinition = "integer default 0")
-    private Integer quantity;
+    private Integer quantity = 0;
 
     @Column(name = "sku",
             length = 50)
     private String sku;
+
+    @Column(name = "is_deleted",
+            columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

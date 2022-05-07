@@ -1,12 +1,14 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.category.CreateOptionDto;
+import com.furnitureshop.product.dto.category.UpdateOptionDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.repository.OptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,12 +37,33 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public Option createOption(CreateOptionDto dto, Category category) {
-        Option option = new Option();
+    public List<Option> createOption(List<CreateOptionDto> dtos, Category category) {
+        List<Option> options = new ArrayList<>();
 
-        option.setCategory(category);
-        option.setOptionName(dto.getOptionName());
+        for (CreateOptionDto dto : dtos) {
+            Option option = new Option();
 
-        return repository.save(option);
+            option.setCategory(category);
+            option.setOptionName(dto.getOptionName());
+
+            options.add(option);
+        }
+
+        return repository.saveAll(options);
+    }
+
+    @Override
+    public List<Option> updateOption(List<UpdateOptionDto> dtos) {
+        List<Option> options = new ArrayList<>();
+
+        for (UpdateOptionDto dto : dtos) {
+            Option option = getOptionById(dto.getOptionId());
+
+            option.setOptionName(dto.getOptionName());
+
+            options.add(option);
+        }
+
+        return repository.saveAll(options);
     }
 }
