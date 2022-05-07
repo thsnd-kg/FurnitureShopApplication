@@ -6,6 +6,7 @@ import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.repository.ProductRepository;
+import com.furnitureshop.product.repository.VariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,18 +41,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsWithPagination(int offset, int pageSize) {
-        return repository.findAll(PageRequest.of(offset, pageSize));
+    public List<Product> findByProductName(String name, int offset) {
+        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending())).getContent();
     }
 
     @Override
-    public Page<Product> findByProductName(String name, int offset) {
-        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending()));
+    public List<Product> getProducts(int offset) {
+        return repository.findAll(PageRequest.of(offset, 5)).getContent();
     }
 
     @Override
-    public List<Product> getProducts() {
-        return repository.findAll();
+    public List<Product> getProductsActive(int offset) {
+        return repository.findByIsDeletedFalse(PageRequest.of(offset, 5)).getContent();
     }
 
     @Override
@@ -96,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = getProductById(productId);
 
         product.setIsDeleted(true);
+        repository.deleteVariantByProductId(productId);
         repository.save(product);
 
         return true;

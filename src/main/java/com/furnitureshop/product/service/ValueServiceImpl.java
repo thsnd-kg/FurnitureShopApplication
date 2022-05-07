@@ -39,17 +39,6 @@ public class ValueServiceImpl implements ValueService {
     }
 
     @Override
-    public List<Value> getValuesByVariantId(Long variantId) {
-        Optional<List<Value>> values = repository.findById_VariantId(variantId);
-
-        if (!values.isPresent()) {
-            throw new IllegalStateException("Values are not exists");
-        }
-
-        return values.get();
-    }
-
-    @Override
     public Value createValue(CreateValueDto dto, Variant variant) {
         Value value = new Value();
 
@@ -94,22 +83,9 @@ public class ValueServiceImpl implements ValueService {
         }
 
         if (result.get(0).size() != 1)
-            throw new IllegalStateException("Variant invalid");
+            throw new IllegalStateException("Variant not found");
 
         return result.get(0).get(0);
-    }
-
-    @Override
-    public Boolean deleteValue(Long variantId) {
-        List<Value> values = getValuesByVariantId(variantId);
-
-        for (Value value : values) {
-            value.setIsDeleted(true);
-        }
-
-        repository.saveAll(values);
-
-        return true;
     }
 
     @Override

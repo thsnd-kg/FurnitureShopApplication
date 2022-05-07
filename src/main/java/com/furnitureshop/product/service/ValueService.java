@@ -12,8 +12,6 @@ import java.util.List;
 public interface ValueService {
     Value getValueById(ValuePK id);
 
-    List<Value> getValuesByVariantId(Long variantId);
-
     Value createValue(CreateValueDto dto, Variant variant);
 
     List<Value> updateValue(List<UpdateValueDto> dtos, Variant variant);
@@ -21,6 +19,4 @@ public interface ValueService {
     List<GetValueDto> getOptionValues(Long productId);
 
     Variant findVariant(Long productId, List<String> optionValues);
-
-    Boolean deleteValue(Long variantId);
 }
