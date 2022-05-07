@@ -60,6 +60,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping
+    public Object getProducts() {
+        try {
+            List<GetProductDto> products = service.getProducts().stream().map(GetProductDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(products, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/page/{offset}")
     public Object getProducts(@RequestParam(value = "onlyActive") Boolean isActive, @PathVariable int offset) {
         try {
