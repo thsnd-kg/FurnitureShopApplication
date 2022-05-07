@@ -21,9 +21,5 @@ public class UpdateCategoryDto {
     @Size(max = 100, message = "Category description must be less than 100 characters")
     private String categoryDesc;
 
-    @NotNull(message = "Options must not be null")
-    @NotEmpty(message = "Options must not be empty")
-    private List<@Valid UpdateOptionDto> options;
-
     private Long parentId;
 }

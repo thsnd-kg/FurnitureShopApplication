@@ -95,8 +95,6 @@ public class CategoryServiceImpl implements CategoryService {
             category.setParent(parent.get());
         }
 
-        optionService.updateOption(dto.getOptions());
-
         return repository.save(category);
     }
 
