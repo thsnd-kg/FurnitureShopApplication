@@ -30,16 +30,6 @@ public class ProductController {
         this.valueService = valueService;
     }
 
-    @GetMapping("/pagination/{offset}/{pageSize}")
-    public Object getProducts(@PathVariable int offset, @PathVariable int pageSize) {
-        try {
-            Page<GetProductDto> result = service.getProductsWithPagination(offset, pageSize).map(GetProductDto::new);
-            return ResponseHandler.getResponse(result, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping("/{product-id}/option")
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
         try {
@@ -50,17 +40,17 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/page/{offset}")
+    @GetMapping("/page/{offset}/search")
     public Object getProducts(@RequestParam String name, @PathVariable int offset) {
         try {
-            Page<GetProductDto> result = service.findByProductName(name, offset).map(GetProductDto::new);
-            return ResponseHandler.getResponse(result, HttpStatus.OK);
+            List<GetProductDto> products = service.findByProductName(name, offset).stream().map(GetProductDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping(path = "/{product-id}")
+    @GetMapping("/{product-id}")
     public Object getProductById(@PathVariable("product-id") Long productId) {
         try {
             GetProductDto product = new GetProductDto(service.getProductById(productId));
@@ -70,10 +60,15 @@ public class ProductController {
         }
     }
 
-    @GetMapping
-    public Object getProducts() {
+    @GetMapping("/page/{offset}")
+    public Object getProducts(@RequestParam(value = "onlyActive") Boolean isActive, @PathVariable int offset) {
         try {
-            List<GetProductDto> result = service.getProducts().stream().map(GetProductDto::new).collect(Collectors.toList());
+            if (isActive) {
+                List<GetProductDto> products = service.getProductsActive(offset).stream().map(GetProductDto::new).collect(Collectors.toList());
+                return ResponseHandler.getResponse(products, HttpStatus.OK);
+            }
+
+            List<GetProductDto> result = service.getProducts(offset).stream().map(GetProductDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

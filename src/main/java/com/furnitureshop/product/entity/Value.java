@@ -32,8 +32,4 @@ public class Value {
     @Column(name = "option_image",
             length = 300)
     private String optionImage;
-
-    @Column(name = "is_deleted",
-            columnDefinition = "boolean default false")
-    private Boolean isDeleted = false;
 }

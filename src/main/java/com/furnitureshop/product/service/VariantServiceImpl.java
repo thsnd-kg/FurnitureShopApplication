@@ -86,8 +86,6 @@ public class VariantServiceImpl implements VariantService {
     public Boolean deleteVariant(Long variantId) {
         Variant variant = getVariantById(variantId);
 
-        valueService.deleteValue(variantId);
-
         variant.setIsDeleted(true);
         repository.save(variant);
 

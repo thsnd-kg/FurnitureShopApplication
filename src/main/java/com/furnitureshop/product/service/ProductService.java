@@ -2,7 +2,6 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
-import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -11,11 +10,11 @@ import java.util.List;
 public interface ProductService {
     Product getProductById(Long productId);
 
-    Page<Product> getProductsWithPagination(int offset, int pageSize);
+    List<Product> findByProductName(String name, int offset);
 
-    Page<Product> findByProductName(String name, int offset);
+    List<Product> getProducts(int offset);
 
-    List<Product> getProducts();
+    List<Product> getProductsActive(int offset);
 
     Product createProduct(CreateProductDto dto);
 
