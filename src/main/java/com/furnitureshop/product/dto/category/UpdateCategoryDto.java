@@ -1,7 +1,6 @@
 package com.furnitureshop.product.dto.category;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -10,8 +9,10 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
-@Setter
-public class CreateCategoryDto {
+public class UpdateCategoryDto {
+    @NotNull(message = "Category id must not be null")
+    private Long categoryId;
+
     @NotNull(message = "Category name must not be null")
     @NotBlank(message = "Category name must not be blank")
     private String categoryName;
@@ -19,9 +20,9 @@ public class CreateCategoryDto {
     @Size(max = 100, message = "Category description must be less than 100 characters")
     private String categoryDesc;
 
-    @NotNull(message = "List option must not be null")
-    @NotEmpty(message = "List option must not be empty")
-    private List<CreateOptionDto> options;
+    @NotNull(message = "Options must not be null")
+    @NotEmpty(message = "Options must not be empty")
+    private List<UpdateOptionDto> options;
 
     private Long parentId;
 }

@@ -1,6 +1,8 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.category.CreateCategoryDto;
+import com.furnitureshop.product.dto.category.GetCategoryDto;
+import com.furnitureshop.product.dto.category.UpdateCategoryDto;
 import com.furnitureshop.product.entity.Category;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public interface CategoryService {
 
     Category createCategory(CreateCategoryDto dto);
 
-    Category updateCategory(CreateCategoryDto updatedCategory);
+    Category updateCategory(UpdateCategoryDto dto);
 
     boolean isExisted(Long categoryId);
 }

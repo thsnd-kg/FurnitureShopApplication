@@ -1,16 +1,12 @@
 package com.furnitureshop.product.dto.variant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class CreateValueDto {
+public class UpdateValueDto {
     @NotNull(message = "{value.option.not-null}")
     private Long optionId;
 

@@ -4,6 +4,7 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.GetProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
+import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.service.ProductService;
 import com.furnitureshop.product.service.ValueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 public class ProductController {
     private final ProductService service;
     private final ValueService valueService;
@@ -41,7 +42,12 @@ public class ProductController {
 
     @GetMapping("/{product-id}/option")
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
-        return ResponseHandler.getResponse(valueService.getOptionValues(productId), HttpStatus.OK);
+        try {
+            List<GetValueDto> values = valueService.getOptionValues(productId);
+            return ResponseHandler.getResponse(values, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/page/{offset}")
@@ -80,7 +86,8 @@ public class ProductController {
             if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-            return ResponseHandler.getResponse(service.createProduct(dto), HttpStatus.OK);
+            GetProductDto product = new GetProductDto(service.createProduct(dto));
+            return ResponseHandler.getResponse(product, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -92,7 +99,17 @@ public class ProductController {
             if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-            return ResponseHandler.getResponse(service.updateProduct(dto), HttpStatus.OK);
+            GetProductDto product = new GetProductDto(service.updateProduct(dto));
+            return ResponseHandler.getResponse(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{product-id}")
+    public Object deleteProduct(@PathVariable("product-id") Long productId) {
+        try {
+            return ResponseHandler.getResponse(service.deleteProduct(productId), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

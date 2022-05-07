@@ -14,7 +14,7 @@ public class Value {
     @JsonIgnore
     @EmbeddedId
     @Setter(AccessLevel.NONE)
-    private ValuePK id;
+    private ValuePK id = new ValuePK();
 
     @ManyToOne
     @MapsId("variantId")
@@ -32,4 +32,8 @@ public class Value {
     @Column(name = "option_image",
             length = 300)
     private String optionImage;
+
+    @Column(name = "is_deleted",
+            columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 }

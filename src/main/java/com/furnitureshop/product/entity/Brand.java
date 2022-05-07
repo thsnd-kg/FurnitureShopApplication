@@ -23,8 +23,7 @@ public class Brand extends BaseEntity {
 
     @Column(name = "brand_name",
             length = 50,
-            nullable = false,
-            unique = true)
+            nullable = false)
     private String brandName;
 
     @Column(name = "brand_desc",
@@ -33,7 +32,7 @@ public class Brand extends BaseEntity {
 
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand")

@@ -32,6 +32,10 @@ public class Product extends BaseEntity {
             length = 300)
     private String image;
 
+    @Column(name = "is_deleted",
+            columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
+
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;

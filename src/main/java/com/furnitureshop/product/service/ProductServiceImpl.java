@@ -2,7 +2,6 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
-import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
@@ -90,5 +89,15 @@ public class ProductServiceImpl implements ProductService {
         product.setImage(dto.getImage());
 
         return repository.save(product);
+    }
+
+    @Override
+    public Boolean deleteProduct(Long productId) {
+        Product product = getProductById(productId);
+
+        product.setIsDeleted(true);
+        repository.save(product);
+
+        return true;
     }
 }

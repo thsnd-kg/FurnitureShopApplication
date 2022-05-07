@@ -6,6 +6,7 @@ import com.furnitureshop.product.entity.ValuePK;
 import com.furnitureshop.product.entity.Variant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ValueRepository extends JpaRepository<Value, ValuePK> {
 
     @Query("SELECT v.variant FROM Value v WHERE v.variant.product.productId = ?1 AND v.optionValue = ?2")
     Optional<List<Variant>> findVariantId(Long productId, String optionValue);
+
+    Optional<List<Value>> findById_VariantId(Long variantId);
 }

@@ -56,7 +56,7 @@ public class BrandController {
     }
 
     @PutMapping
-    public Object updateBrand(@RequestBody BrandDto updatedBrand, BindingResult errors){
+    public Object updateBrand(@RequestBody BrandDto updatedBrand, BindingResult errors) {
         try{
             if(errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
