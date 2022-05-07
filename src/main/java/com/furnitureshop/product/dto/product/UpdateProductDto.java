@@ -8,8 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class UpdateProductDto {
     @NotNull(message = "{product.product.not-null}")
     private Long productId;

@@ -11,9 +11,10 @@ public class UpdateValueDto {
     private Long optionId;
 
     @NotNull(message = "{value.optionValue.not-null}")
-    @Size(max = 50, message = "{value.optionValue.size}")
+    @Size(min = 1, max = 50, message = "{value.optionValue.size}")
     private String optionValue;
 
-    @Size(max = 300, message = "{value.optionImage.size}")
+    @NotNull(message = "Option image must not be null")
+    @Size(min = 1, max = 300, message = "{value.optionImage.size}")
     private String optionImage;
 }

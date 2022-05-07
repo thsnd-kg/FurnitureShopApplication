@@ -2,10 +2,8 @@ package com.furnitureshop.product.dto.variant;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
@@ -26,5 +24,6 @@ public class UpdateVariantDto {
     private String sku;
 
     @NotNull(message = "Values must not be null")
-    private List<UpdateValueDto> values;
+    @NotEmpty(message = "Values must not be empty")
+    private List<@Valid UpdateValueDto> values;
 }

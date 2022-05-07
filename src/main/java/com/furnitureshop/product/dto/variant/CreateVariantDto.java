@@ -4,15 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.Collection;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class CreateVariantDto {
     @NotNull(message = "{variant.product.not-null}")
     private Long productId;
@@ -27,5 +23,6 @@ public class CreateVariantDto {
     private String sku;
 
     @NotNull(message = "Values must not be null")
-    private Collection<CreateValueDto> values;
+    @NotEmpty(message = "Values must not be empty")
+    private Collection<@Valid CreateValueDto> values;
 }

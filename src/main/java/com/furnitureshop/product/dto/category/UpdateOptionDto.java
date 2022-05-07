@@ -11,7 +11,7 @@ public class UpdateOptionDto {
     @NotNull(message = "Option id must not be null")
     private Long optionId;
 
-    @NotBlank(message = "Option name must not be blank")
-    @Size(max = 100, message = "Option name must be less than 100 characters")
+    @NotNull(message = "Option name must not be null")
+    @Size(min = 1, max = 100, message = "Option name must be less than 100 characters")
     private String optionName;
 }
