@@ -1,7 +1,6 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.category.CreateOptionDto;
-import com.furnitureshop.product.dto.category.UpdateOptionDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.repository.OptionRepository;
@@ -44,21 +43,6 @@ public class OptionServiceImpl implements OptionService {
             Option option = new Option();
 
             option.setCategory(category);
-            option.setOptionName(dto.getOptionName());
-
-            options.add(option);
-        }
-
-        return repository.saveAll(options);
-    }
-
-    @Override
-    public List<Option> updateOption(List<UpdateOptionDto> dtos) {
-        List<Option> options = new ArrayList<>();
-
-        for (UpdateOptionDto dto : dtos) {
-            Option option = getOptionById(dto.getOptionId());
-
             option.setOptionName(dto.getOptionName());
 
             options.add(option);

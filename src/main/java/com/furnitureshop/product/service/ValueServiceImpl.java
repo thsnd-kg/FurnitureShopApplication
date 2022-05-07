@@ -1,6 +1,5 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.category.UpdateOptionDto;
 import com.furnitureshop.product.dto.variant.CreateValueDto;
 import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.dto.variant.UpdateValueDto;

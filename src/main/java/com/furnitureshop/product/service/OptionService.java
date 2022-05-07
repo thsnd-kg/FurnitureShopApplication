@@ -1,7 +1,6 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.category.CreateOptionDto;
-import com.furnitureshop.product.dto.category.UpdateOptionDto;
 import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Option;
 
@@ -13,6 +12,4 @@ public interface OptionService {
     Option getOptionById(Long optionId);
 
     List<Option> createOption(List<CreateOptionDto> dtos, Category category);
-
-    List<Option> updateOption(List<UpdateOptionDto> dtos);
 }
