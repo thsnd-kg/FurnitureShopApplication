@@ -51,6 +51,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProducts() {
+        return repository.findAll();
+    }
+
+    @Override
     public List<Product> getProductsActive(int offset) {
         return repository.findByIsDeletedFalse(PageRequest.of(offset, 5)).getContent();
     }

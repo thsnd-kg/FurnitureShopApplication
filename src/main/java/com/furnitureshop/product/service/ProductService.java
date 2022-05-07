@@ -14,6 +14,8 @@ public interface ProductService {
 
     List<Product> getProducts(int offset);
 
+    List<Product> getProducts();
+
     List<Product> getProductsActive(int offset);
 
     Product createProduct(CreateProductDto dto);
