@@ -7,7 +7,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -45,8 +47,8 @@ public class Variant extends BaseEntity implements Serializable {
     private Product product;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "variant")
-    private List<Value> values;
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
+    private Set<Value> values = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "variant")

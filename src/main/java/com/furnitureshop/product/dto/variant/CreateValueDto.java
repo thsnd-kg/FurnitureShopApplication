@@ -10,14 +10,14 @@ import javax.validation.constraints.Size;
 
 @Getter
 public class CreateValueDto {
-    @NotNull(message = "{value.option.not-null}")
+    @NotNull(message = "{option.not-null}")
     private Long optionId;
 
-    @NotNull(message = "{value.optionValue.not-null}")
-    @Size(min = 1, max = 50, message = "{value.optionValue.size}")
+    @NotNull(message = "{option-value.not-null}")
+    @Size(min = 1, max = 50, message = "{option-value.size}")
     private String optionValue;
 
-    @NotNull(message = "Option image must not be null")
-    @Size(min = 1, max = 300, message = "{value.optionImage.size}")
+    @NotNull(message = "{option-image.not-null}")
+    @Size(min = 1, max = 300, message = "{option-image.size}")
     private String optionImage;
 }

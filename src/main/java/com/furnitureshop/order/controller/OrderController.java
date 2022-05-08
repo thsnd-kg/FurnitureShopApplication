@@ -1,18 +1,21 @@
 package com.furnitureshop.order.controller;
 
 import com.furnitureshop.common.ResponseHandler;
+import com.furnitureshop.order.dto.order.CreateOrderDto;
+import com.furnitureshop.order.dto.order.GetOrderDto;
 import com.furnitureshop.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
-@Controller
-@RequestMapping("/api/order")
+@RestController
+@RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService service;
 
@@ -23,11 +26,34 @@ public class OrderController {
 
     @GetMapping
     public Object getOrders() {
-        return ResponseHandler.getResponse(service.getOrders(), HttpStatus.OK);
+        try {
+            List<GetOrderDto> orders = service.getOrders().stream().map(GetOrderDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(orders, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{order-id}")
     public Object getOrder(@PathVariable("order-id") Long orderId) {
-        return ResponseHandler.getResponse(service.getOrder(orderId), HttpStatus.OK);
+        try {
+            GetOrderDto order = new GetOrderDto(service.getOrder(orderId));
+            return ResponseHandler.getResponse(order, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping
+    public Object createOrder(@Valid @RequestBody CreateOrderDto dto, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            GetOrderDto order = new GetOrderDto(service.createOrder(dto));
+            return ResponseHandler.getResponse(order, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }
