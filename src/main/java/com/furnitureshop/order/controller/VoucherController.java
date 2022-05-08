@@ -1,19 +1,22 @@
 package com.furnitureshop.order.controller;
 
+import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.order.dto.voucher.CreateVoucherDto;
+import com.furnitureshop.order.dto.voucher.GetVoucherDto;
 import com.furnitureshop.order.entity.Voucher;
 import com.furnitureshop.order.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/voucher")
+@RequestMapping("/api/vouchers")
 public class VoucherController {
     private final VoucherService service;
 
@@ -23,17 +26,35 @@ public class VoucherController {
     }
 
     @GetMapping
-    public Page<Voucher> getVouchers() {
-        return service.getVouchers();
+    public Object getVouchers() {
+        try {
+            List<GetVoucherDto> vouchers = service.getVouchers().stream().map(GetVoucherDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(vouchers, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{voucher-id}")
-    public Voucher getVoucher(@PathVariable("voucher-id") Long voucherId) {
-        return service.getVoucherById(voucherId);
+    public Object getVoucher(@PathVariable("voucher-id") Long voucherId) {
+        try {
+            GetVoucherDto voucher = new GetVoucherDto(service.getVoucherById(voucherId));
+            return ResponseHandler.getResponse(voucher, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping
-    public Voucher createVoucher(@Valid @RequestBody CreateVoucherDto dto) {
-        return service.createVoucher(dto);
+    public Object createVoucher(@Valid @RequestBody CreateVoucherDto dto, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            GetVoucherDto voucher = new GetVoucherDto(service.createVoucher(dto));
+            return ResponseHandler.getResponse(voucher, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }

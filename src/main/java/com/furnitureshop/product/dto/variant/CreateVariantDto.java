@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Getter
 public class CreateVariantDto {
-    @NotNull(message = "{variant.product.not-null}")
+    @NotNull(message = "{product.not-null}")
     private Long productId;
 
     @Size(max = 300, message = "{variant.image.size}")

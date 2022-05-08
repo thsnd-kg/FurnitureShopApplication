@@ -1,9 +1,10 @@
 package com.furnitureshop.product.service;
 
+import com.furnitureshop.product.dto.variant.CreateValueDto;
 import com.furnitureshop.product.dto.variant.CreateVariantDto;
+import com.furnitureshop.product.dto.variant.UpdateValueDto;
 import com.furnitureshop.product.dto.variant.UpdateVariantDto;
-import com.furnitureshop.product.entity.Product;
-import com.furnitureshop.product.entity.Variant;
+import com.furnitureshop.product.entity.*;
 import com.furnitureshop.product.repository.VariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,14 @@ public class VariantServiceImpl implements VariantService {
     private final VariantRepository repository;
     private final ProductService productService;
     private final ValueService valueService;
+    private final OptionService optionService;
 
     @Autowired
-    public VariantServiceImpl(VariantRepository repository, ProductService productService, ValueService valueService) {
+    public VariantServiceImpl(VariantRepository repository, ProductService productService, ValueService valueService, OptionService optionService) {
         this.repository = repository;
         this.productService = productService;
         this.valueService = valueService;
+        this.optionService = optionService;
     }
 
     @Override
@@ -42,37 +45,54 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public Variant createVariant(CreateVariantDto dto) {
+    public Variant createVariant(CreateVariantDto createVariant) {
         Variant variant = new Variant();
 
-        Product product = productService.getProductById(dto.getProductId());
+        Product product = productService.getProductById(createVariant.getProductId());
 
         variant.setProduct(product);
-        variant.setImage(dto.getImage());
-        variant.setSku(dto.getSku());
-        variant.setPrice(dto.getPrice());
+        variant.setImage(createVariant.getImage());
+        variant.setSku(createVariant.getSku());
+        variant.setPrice(createVariant.getPrice());
 
-        Variant result = repository.save(variant);
+        for (CreateValueDto createValue : createVariant.getValues()) {
+            Value value = new Value();
 
-        dto.getValues().forEach(value -> valueService.createValue(value, result));
+            Option option = optionService.getOptionById(createValue.getOptionId());
 
-        return result;
+            value.setOptionValue(createValue.getOptionValue());
+            value.setOptionImage(createValue.getOptionImage());
+            value.setVariant(variant);
+            value.setOption(option);
+
+            variant.getValues().add(value);
+        }
+
+        return repository.save(variant);
     }
 
     @Override
-    public Variant updateVariant(UpdateVariantDto dto) {
-        Variant variant = getVariantById(dto.getVariantId());
+    public Variant updateVariant(UpdateVariantDto updateVariant) {
+        Variant variant = getVariantById(updateVariant.getVariantId());
+        variant.getValues().clear();
 
-        if (!Objects.equals(variant.getProduct().getProductId(), dto.getProductId())) {
-            Product product = productService.getProductById(dto.getProductId());
+        if (!Objects.equals(variant.getProduct().getProductId(), updateVariant.getProductId())) {
+            Product product = productService.getProductById(updateVariant.getProductId());
             variant.setProduct(product);
         }
 
-        valueService.updateValue(dto.getValues(), variant);
+        for (UpdateValueDto dto : updateVariant.getValues()) {
+            Value value = valueService.getValueById(variant.getVariantId(), dto.getOptionId());
 
-        variant.setImage(dto.getImage());
-        variant.setSku(dto.getSku());
-        variant.setPrice(dto.getPrice());
+            value.setOptionValue(dto.getOptionValue());
+            value.setOptionImage(dto.getOptionImage());
+
+            variant.getValues().add(value);
+        }
+
+        variant.setImage(updateVariant.getImage());
+        variant.setSku(updateVariant.getSku());
+        variant.setPrice(updateVariant.getPrice());
 
         return repository.save(variant);
     }

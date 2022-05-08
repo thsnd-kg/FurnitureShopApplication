@@ -32,8 +32,8 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Page<Voucher> getVouchers() {
-        return repository.findAll(PageRequest.of(0, 5));
+    public List<Voucher> getVouchers() {
+        return repository.findAll();
     }
 
     @Override

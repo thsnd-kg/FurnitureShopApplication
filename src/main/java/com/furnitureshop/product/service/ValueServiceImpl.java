@@ -1,9 +1,7 @@
 package com.furnitureshop.product.service;
 
-import com.furnitureshop.product.dto.variant.CreateValueDto;
 import com.furnitureshop.product.dto.variant.GetValueDto;
 import com.furnitureshop.product.dto.variant.UpdateValueDto;
-import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.entity.Value;
 import com.furnitureshop.product.entity.ValuePK;
 import com.furnitureshop.product.entity.Variant;
@@ -18,53 +16,22 @@ import java.util.Optional;
 @Service
 public class ValueServiceImpl implements ValueService {
     private final ValueRepository repository;
-    private final OptionService optionService;
 
     @Autowired
-    public ValueServiceImpl(ValueRepository repository, OptionService optionService) {
+    public ValueServiceImpl(ValueRepository repository) {
         this.repository = repository;
-        this.optionService = optionService;
     }
 
     @Override
-    public Value getValueById(ValuePK id) {
+    public Value getValueById(Long variantId, Long optionId) {
+        ValuePK id = new ValuePK(variantId, optionId);
         Optional<Value> value = repository.findById(id);
 
-        if (!value.isPresent()){
+        if (!value.isPresent()) {
             throw new IllegalStateException("Value is not exists");
         }
 
         return value.get();
-    }
-
-    @Override
-    public Value createValue(CreateValueDto dto, Variant variant) {
-        Value value = new Value();
-
-        Option option = optionService.getOptionById(dto.getOptionId());
-
-        value.setOptionValue(dto.getOptionValue());
-        value.setOptionImage(dto.getOptionImage());
-        value.setVariant(variant);
-        value.setOption(option);
-
-        return repository.save(value);
-    }
-
-    @Override
-    public List<Value> updateValue(List<UpdateValueDto> dtos, Variant variant) {
-        List<Value> values = new ArrayList<>();
-
-        for (UpdateValueDto dto : dtos) {
-            Value value = getValueById(new ValuePK(variant.getVariantId(), dto.getOptionId()));
-
-            value.setOptionValue(dto.getOptionValue());
-            value.setOptionImage(dto.getOptionImage());
-
-            values.add(value);
-        }
-
-        return repository.saveAll(values);
     }
 
     @Override

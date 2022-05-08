@@ -1,20 +1,19 @@
-package com.furnitureshop.importer.entity;
+package com.furnitureshop.order.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImporterDetailPK implements Serializable {
-    @Column(name = "import_id")
-    private Long importId;
+public class OrderDetailPK implements Serializable {
+    @Column(name = "order_id")
+    private Long orderId;
 
     @Column(name = "variant_id")
     private Long variantId;
@@ -23,12 +22,12 @@ public class ImporterDetailPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImporterDetailPK that = (ImporterDetailPK) o;
-        return importId.equals(that.importId) && variantId.equals(that.variantId);
+        OrderDetailPK that = (OrderDetailPK) o;
+        return orderId.equals(that.orderId) && variantId.equals(that.variantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(importId, variantId);
+        return Objects.hash(orderId, variantId);
     }
 }

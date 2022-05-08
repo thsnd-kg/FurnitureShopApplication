@@ -1,7 +1,8 @@
 package com.furnitureshop.importer.controller;
 
 import com.furnitureshop.common.ResponseHandler;
-import com.furnitureshop.importer.dto.ImporterDto;
+import com.furnitureshop.importer.dto.CreateImporterDto;
+import com.furnitureshop.importer.dto.GetImporterDto;
 import com.furnitureshop.importer.service.ImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,17 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/api/imports")
 public class ImporterController {
-    private final ImporterService importerService;
+    private final ImporterService service;
 
     @Autowired
     public ImporterController(ImporterService importerService) {
-        this.importerService = importerService;
+        this.service = importerService;
     }
 
     @GetMapping
     public Object getImports() {
         try {
-            return ResponseHandler.getResponse(importerService.getImports(), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.getImports(), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -37,19 +38,20 @@ public class ImporterController {
             if (importId == null)
                 throw new IllegalStateException("Import id must not be null");
 
-            return ResponseHandler.getResponse(importerService.getImport(importId), HttpStatus.OK);
+            return ResponseHandler.getResponse(service.getImport(importId), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping
-    public Object createImport(@Valid @RequestBody ImporterDto importerDto, BindingResult errors) {
+    public Object createImport(@Valid @RequestBody CreateImporterDto dto, BindingResult errors) {
         try {
             if(errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-            return ResponseHandler.getResponse(importerService.createImport(importerDto, null), HttpStatus.OK);
+            GetImporterDto importer = new GetImporterDto(service.createImport(dto));
+            return ResponseHandler.getResponse(importer, HttpStatus.OK);
         }
         catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

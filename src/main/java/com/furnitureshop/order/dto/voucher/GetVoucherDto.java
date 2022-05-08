@@ -1,0 +1,29 @@
+package com.furnitureshop.order.dto.voucher;
+
+import com.furnitureshop.order.entity.Voucher;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class GetVoucherDto {
+    private Long voucherId;
+    private String voucherDesc;
+    private Integer amount;
+    private LocalDateTime validDate;
+    private LocalDateTime expirationDate;
+    private Integer voucherValue;
+    private Integer cappedAt;
+    private Boolean isDeleted;
+
+    public GetVoucherDto(Voucher voucher) {
+        this.voucherId = voucher.getVoucherId();
+        this.voucherDesc = voucher.getVoucherDesc();
+        this.amount = voucher.getAmount();
+        this.validDate = voucher.getValidDate();
+        this.expirationDate = voucher.getExpirationDate();
+        this.voucherValue = voucher.getVoucherValue();
+        this.cappedAt = voucher.getCappedAt();
+        this.isDeleted = voucher.getIsDeleted();
+    }
+}
