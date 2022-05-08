@@ -1,25 +1,26 @@
 package com.furnitureshop.importer.service;
 
-import com.furnitureshop.importer.dto.ImporterDetailDto;
-import com.furnitureshop.importer.dto.ImporterDto;
+import com.furnitureshop.importer.dto.CreateImporterDetailDto;
+import com.furnitureshop.importer.dto.CreateImporterDto;
 import com.furnitureshop.importer.entity.Importer;
 import com.furnitureshop.importer.entity.ImporterDetail;
 import com.furnitureshop.importer.repository.ImporterRepository;
+import com.furnitureshop.product.entity.Variant;
+import com.furnitureshop.product.service.VariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ImporterServiceImpl implements ImporterService {
     private final ImporterRepository repository;
-    private final ImporterDetailService importDetailService;
+    private final VariantService variantService;
 
     @Autowired
-    public ImporterServiceImpl(ImporterRepository repository, ImporterDetailService importDetailService) {
+    public ImporterServiceImpl(ImporterRepository repository, VariantService variantService) {
         this.repository = repository;
-        this.importDetailService = importDetailService;
+        this.variantService = variantService;
     }
 
     @Override
@@ -33,24 +34,25 @@ public class ImporterServiceImpl implements ImporterService {
     }
 
     @Override
-    public Importer createImport(ImporterDto dto, List<ImporterDetailDto> importDetailDtos) {
+    public Importer createImport(CreateImporterDto dto) {
         Importer importer = new Importer();
 
-        importer.setImportId(dto.getImportId());
-        importer.setImportDesc(dto.getImportDesc());
+        if (dto.getImportDesc() != null) {
+            importer.setImportDesc(dto.getImportDesc());
+        }
 
-        Long importId = repository.save(importer).getImportId();
-        List<ImporterDetail> importerDetails = new ArrayList<>();
+        for (CreateImporterDetailDto createImporterDetail : dto.getImportDetails()) {
+            ImporterDetail importerDetail = new ImporterDetail();
 
-        importDetailDtos.forEach(importDetailDto -> importerDetails.add(importDetailService.createImportDetail(importId, importDetailDto)));
+            Variant variant = variantService.getVariantById(createImporterDetail.getVariantId());
 
-        importer.setImportDetails(importerDetails);
+            importerDetail.setQuantity(createImporterDetail.getQuantity());
+            importerDetail.setPrice(createImporterDetail.getPrice());
+            importerDetail.setImporter(importer);
+            importerDetail.setVariant(variant);
 
-        importer.setTotalPrice(importer
-                .getImportDetails()
-                .stream()
-                .mapToInt(ImporterDetail::getPrice)
-                .sum());
+            importer.getImportDetails().add(importerDetail);
+        }
 
         return repository.save(importer);
     }

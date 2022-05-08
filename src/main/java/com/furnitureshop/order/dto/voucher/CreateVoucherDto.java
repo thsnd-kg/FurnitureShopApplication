@@ -27,6 +27,6 @@ public class CreateVoucherDto {
     private Integer voucherValue;
 
     @NotNull(message = "Capped at must not be null")
-    @PositiveOrZero
+    @Positive(message = "Capped at must greater than 0")
     private Integer cappedAt;
 }
