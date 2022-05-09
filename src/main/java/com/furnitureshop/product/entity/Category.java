@@ -5,6 +5,7 @@ import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,7 @@ public class Category extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -42,9 +43,9 @@ public class Category extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Category> children;
+    private List<Category> children = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private List<Option> options;
+    private List<Option> options = new ArrayList<>();
 }

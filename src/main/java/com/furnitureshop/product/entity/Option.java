@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,5 +33,5 @@ public class Option implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "option")
     @Setter(AccessLevel.NONE)
-    private List<Value> values;
+    private List<Value> values = new ArrayList<>();
 }

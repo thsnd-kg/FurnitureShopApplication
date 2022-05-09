@@ -5,6 +5,7 @@ import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,5 +48,5 @@ public class Product extends BaseEntity {
     @JsonIgnore
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "product")
-    private List<Variant> variants;
+    private List<Variant> variants = new ArrayList<>();
 }
