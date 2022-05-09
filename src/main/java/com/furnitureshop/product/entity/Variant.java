@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,5 +53,5 @@ public class Variant extends BaseEntity implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "variant")
-    private List<ImporterDetail> imports;
+    private List<ImporterDetail> imports = new ArrayList<>();
 }
