@@ -41,13 +41,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByProductName(String name, int offset) {
-        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending())).getContent();
+    public Page<Product> findByProductName(String name, int offset) {
+        return repository.findByProductName(name, PageRequest.of(offset, 5, Sort.by("productId").ascending()));
     }
 
     @Override
-    public List<Product> getProducts(int offset) {
-        return repository.findAll(PageRequest.of(offset, 5)).getContent();
+    public Page<Product> getProducts(int offset) {
+        return repository.findAll(PageRequest.of(offset, 5));
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductsActive(int offset) {
-        return repository.findByIsDeletedFalse(PageRequest.of(offset, 5)).getContent();
+    public Page<Product> getProductsActive(int offset) {
+        return repository.findByIsDeletedFalse(PageRequest.of(offset, 5));
     }
 
     @Override

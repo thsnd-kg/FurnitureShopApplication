@@ -43,7 +43,7 @@ public class ProductController {
     @GetMapping("/page/{offset}/search")
     public Object getProducts(@RequestParam String name, @PathVariable int offset) {
         try {
-            List<GetProductDto> products = service.findByProductName(name, offset).stream().map(GetProductDto::new).collect(Collectors.toList());
+            Page<GetProductDto> products = service.findByProductName(name, offset).map(GetProductDto::new);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
@@ -74,11 +74,11 @@ public class ProductController {
     public Object getProducts(@RequestParam(value = "onlyActive") Boolean isActive, @PathVariable int offset) {
         try {
             if (isActive) {
-                List<GetProductDto> products = service.getProductsActive(offset).stream().map(GetProductDto::new).collect(Collectors.toList());
+                Page<GetProductDto> products = service.getProductsActive(offset).map(GetProductDto::new);
                 return ResponseHandler.getResponse(products, HttpStatus.OK);
-            }
+            }   
 
-            List<GetProductDto> result = service.getProducts(offset).stream().map(GetProductDto::new).collect(Collectors.toList());
+            Page<GetProductDto> result = service.getProducts(offset).map(GetProductDto::new);
             return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
