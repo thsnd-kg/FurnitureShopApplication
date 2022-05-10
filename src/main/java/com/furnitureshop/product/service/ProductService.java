@@ -10,13 +10,13 @@ import java.util.List;
 public interface ProductService {
     Product getProductById(Long productId);
 
-    Page<Product> findByProductName(String name, int offset);
+    Page<Product> findByProductName(String name, int page, int size);
 
-    Page<Product> getProducts(int offset);
+    Page<Product> getProducts(int page, int size);
 
     List<Product> getProducts();
 
-    Page<Product> getProductsActive(int offset);
+    Page<Product> getProductsActive(int page, int size);
 
     Product createProduct(CreateProductDto dto);
 
