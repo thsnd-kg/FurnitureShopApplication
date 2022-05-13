@@ -24,5 +24,5 @@ public class CreateVariantDto {
 
     @NotNull(message = "Values must not be null")
     @NotEmpty(message = "Values must not be empty")
-    private Collection<@Valid CreateValueDto> values;
+    private Collection<@Valid CreateValueDto> options;
 }

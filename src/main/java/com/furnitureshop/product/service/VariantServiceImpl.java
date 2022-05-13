@@ -55,7 +55,7 @@ public class VariantServiceImpl implements VariantService {
         variant.setSku(createVariant.getSku());
         variant.setPrice(createVariant.getPrice());
 
-        for (CreateValueDto createValue : createVariant.getValues()) {
+        for (CreateValueDto createValue : createVariant.getOptions()) {
             Value value = new Value();
 
             Option option = optionService.getOptionById(createValue.getOptionId());
@@ -81,7 +81,7 @@ public class VariantServiceImpl implements VariantService {
             variant.setProduct(product);
         }
 
-        for (UpdateValueDto dto : updateVariant.getValues()) {
+        for (UpdateValueDto dto : updateVariant.getOptions()) {
             Value value = valueService.getValueById(variant.getVariantId(), dto.getOptionId());
 
             value.setOptionValue(dto.getOptionValue());

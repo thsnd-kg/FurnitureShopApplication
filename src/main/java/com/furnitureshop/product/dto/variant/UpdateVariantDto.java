@@ -25,5 +25,5 @@ public class UpdateVariantDto {
 
     @NotNull(message = "Values must not be null")
     @NotEmpty(message = "Values must not be empty")
-    private List<@Valid UpdateValueDto> values;
+    private List<@Valid UpdateValueDto> options;
 }
