@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @Controller
@@ -26,7 +28,8 @@ public class ImporterController {
     @GetMapping
     public Object getImports() {
         try {
-            return ResponseHandler.getResponse(service.getImports(), HttpStatus.OK);
+            List<GetImporterDto> importers = service.getImports().stream().map(GetImporterDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(importers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +41,8 @@ public class ImporterController {
             if (importId == null)
                 throw new IllegalStateException("Import id must not be null");
 
-            return ResponseHandler.getResponse(service.getImport(importId), HttpStatus.OK);
+            GetImporterDto importer = new GetImporterDto(service.getImport(importId));
+            return ResponseHandler.getResponse(importer, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
