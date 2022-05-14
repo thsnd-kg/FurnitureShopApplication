@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -17,7 +17,7 @@ public class CreateImporterDto {
 
     @NotNull
     @FutureOrPresent
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @NotNull
     @NotEmpty
