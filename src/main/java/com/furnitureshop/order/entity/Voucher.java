@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,6 +18,10 @@ public class Voucher extends BaseEntity {
     @Setter(AccessLevel.NONE)
     @Column(name = "voucher")
     private Long voucherId;
+
+    @Column(name = "voucher_name",
+            length = 100)
+    private String voucherName;
 
     @Column(name = "voucher_desc",
             length = 100)
@@ -40,10 +44,10 @@ public class Voucher extends BaseEntity {
 
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "voucher")
     @Column(name = "order_id")
     @Setter(AccessLevel.NONE)
-    private List<Order> orders;
+    private Set<Order> orders;
 }

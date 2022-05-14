@@ -6,7 +6,10 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Getter
-public class CreateVoucherDto {
+public class UpdateVoucherDto {
+    @NotNull(message = "Voucher id must not be null")
+    private Long voucherId;
+
     @NotNull(message = "Voucher name must not be null")
     @Size(max = 100, message = "Voucher name must be less than 100 characters")
     private String voucherName;

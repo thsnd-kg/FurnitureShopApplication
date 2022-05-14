@@ -1,6 +1,7 @@
 package com.furnitureshop.importer.entity;
 
 import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,10 @@ public class Importer extends BaseEntity {
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "importer", cascade = CascadeType.ALL)
     private Set<ImporterDetail> importDetails = new HashSet<>();

@@ -3,7 +3,7 @@ package com.furnitureshop.order.controller;
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.order.dto.voucher.CreateVoucherDto;
 import com.furnitureshop.order.dto.voucher.GetVoucherDto;
-import com.furnitureshop.order.entity.Voucher;
+import com.furnitureshop.order.dto.voucher.UpdateVoucherDto;
 import com.furnitureshop.order.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,12 @@ public class VoucherController {
     }
 
     @GetMapping
-    public Object getVouchers() {
+    public Object getVouchers(@RequestParam(value = "onlyActive") Boolean isActive) {
         try {
+            if (isActive) {
+                List<GetVoucherDto> vouchers = service.getVoucherActive().stream().map(GetVoucherDto::new).collect(Collectors.toList());
+            }
+
             List<GetVoucherDto> vouchers = service.getVouchers().stream().map(GetVoucherDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(vouchers, HttpStatus.OK);
         } catch (Exception e) {
@@ -53,6 +57,28 @@ public class VoucherController {
 
             GetVoucherDto voucher = new GetVoucherDto(service.createVoucher(dto));
             return ResponseHandler.getResponse(voucher, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping
+    public Object updateVoucher(@Valid @RequestBody UpdateVoucherDto dto, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            GetVoucherDto product = new GetVoucherDto(service.updateVoucher(dto));
+            return ResponseHandler.getResponse(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{voucher-id}")
+    public Object deleteVoucher(@PathVariable("voucher-id") Long voucherId) {
+        try {
+            return ResponseHandler.getResponse(service.deleteVoucher(voucherId), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

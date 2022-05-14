@@ -2,6 +2,7 @@ package com.furnitureshop.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.importer.entity.Importer;
 import com.furnitureshop.role.entity.Group;
 import lombok.*;
 
@@ -38,6 +39,9 @@ public class User extends BaseEntity {
     @Email
     @Column(unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Importer> importers = new HashSet<>();
 
     @JsonIgnore
     @Builder.Default
