@@ -3,6 +3,7 @@ package com.furnitureshop.common.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.furnitureshop.common.util.DateUtils;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,6 +17,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
 
+@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {

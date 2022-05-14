@@ -5,12 +5,13 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 
 @Getter
 public class GetImporterDetailDto {
-    private Long variantId;
-    private Integer quantity;
-    private Integer price;
+    private final Long variantId;
+    private final Integer quantity;
+    private final Integer price;
 
     public GetImporterDetailDto(ImporterDetail importerDetail) {
         this.variantId = importerDetail.getVariant().getVariantId();
