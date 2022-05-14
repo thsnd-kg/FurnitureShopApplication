@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class CreateImporterDto {
     @NotNull
-    private Long userId;
+    private String importerName;
 
     @NotNull
     private String importDesc;

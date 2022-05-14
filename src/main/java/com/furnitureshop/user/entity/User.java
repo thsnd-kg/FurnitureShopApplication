@@ -40,9 +40,6 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Importer> importers = new HashSet<>();
-
     @JsonIgnore
     @Builder.Default
     @ManyToMany(mappedBy = "users")

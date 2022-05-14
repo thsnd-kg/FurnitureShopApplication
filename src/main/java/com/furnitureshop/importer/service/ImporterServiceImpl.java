@@ -42,6 +42,7 @@ public class ImporterServiceImpl implements ImporterService {
         }
 
         importer.setTotalPrice(dto.getTotalPrice());
+        importer.setImporterName(dto.getImporterName());
 
         for (CreateImporterDetailDto createImporterDetail : dto.getImportDetails()) {
             ImporterDetail importerDetail = new ImporterDetail();

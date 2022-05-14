@@ -22,6 +22,9 @@ public class Importer extends BaseEntity {
     @Column(name = "import_id")
     private Long importId;
 
+    @Column(name = "importer_name")
+    private String importerName;
+
     @Column(name = "import_desc")
     private String importDesc;
 
@@ -31,10 +34,6 @@ public class Importer extends BaseEntity {
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @OneToMany(mappedBy = "importer", cascade = CascadeType.ALL)
     private Set<ImporterDetail> importDetails = new HashSet<>();
