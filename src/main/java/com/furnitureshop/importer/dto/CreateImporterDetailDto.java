@@ -7,14 +7,14 @@ import javax.validation.constraints.Positive;
 
 @Getter
 public class CreateImporterDetailDto {
-    @NotNull
+    @NotNull(message = "Variant id must not be null")
     private Long variantId;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "Quantity must not be null")
+    @Positive(message = "Quantity must greater than 0")
     private Integer quantity;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "Price must not be null")
+    @Positive(message = "Price must greater than 0")
     private Integer price;
 }
