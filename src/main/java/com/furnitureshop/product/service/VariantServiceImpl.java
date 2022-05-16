@@ -29,8 +29,13 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public List<Variant> getVariants() {
-        return repository.findAll();
+    public List<Variant> getVariantsActiveByProductId(Long productId) {
+        return repository.findActiveByProductId(productId);
+    }
+
+    @Override
+    public List<Variant> getVariantsByProductId(Long productId) {
+        return repository.findByProductId(productId);
     }
 
     @Override

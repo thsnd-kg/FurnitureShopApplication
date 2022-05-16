@@ -46,6 +46,7 @@ public class VoucherServiceImpl implements VoucherService {
     public Voucher createVoucher(CreateVoucherDto dto) {
         Voucher voucher = new Voucher();
 
+        voucher.setVoucherName(dto.getVoucherName());
         voucher.setVoucherDesc(dto.getVoucherDesc());
         voucher.setVoucherValue(dto.getVoucherValue());
         voucher.setAmount(dto.getAmount());
