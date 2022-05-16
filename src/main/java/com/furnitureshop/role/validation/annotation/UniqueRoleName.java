@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface UniqueRoleName {
-	String message() default "Role name has been used.";
+	public String message() default "Role name has been used.";
 	
 	Class<?>[] groups() default { };
 
