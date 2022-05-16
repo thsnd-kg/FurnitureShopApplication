@@ -5,15 +5,18 @@ import com.furnitureshop.role.dto.UpdateRoleDto;
 import com.furnitureshop.role.entity.Role;
 import com.furnitureshop.role.repository.RoleRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 // concrete
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 	private RoleRepository repository;
+
+	RoleServiceImpl(RoleRepository repository){
+		this.repository = repository;
+	}
 
 	
 	@Override
@@ -37,13 +40,18 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public boolean isExistedId(Long roleId) {
-		return repository.existsById(roleId);
+	public Role getRoleById(Long roleId) {
+		Optional<Role> role = repository.findById(roleId);
+
+		if(!role.isPresent())
+			throw new IllegalStateException("Role does not exists");
+
+		return role.get();
 	}
 
 	@Override
 	public Role update(UpdateRoleDto dto, Long id) {
-		Role role = repository.getOne(id);
+		Role role = repository.findById(id).get();
 		
 		role.setName(dto.getName().toUpperCase()); // add uppercase
 		role.setDescription(dto.getDescription());
@@ -53,7 +61,12 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public void deleteById(Long roleId) {
-		repository.deleteById(roleId);
-    }
+		repository.deleteById(roleId);;
+	}
+
+	@Override
+	public boolean isExistedId(Long roleId) {
+		return repository.existsById(roleId);
+	}
 
 }

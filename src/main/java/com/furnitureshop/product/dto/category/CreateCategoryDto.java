@@ -20,7 +20,6 @@ public class CreateCategoryDto {
     private String categoryDesc;
 
     @NotNull(message = "List option must not be null")
-    @NotEmpty(message = "List option must not be empty")
     private List<@Valid CreateOptionDto> options;
 
     private Long parentId;

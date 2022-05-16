@@ -1,4 +1,4 @@
-package com.furnitureshop.product.entity;
+package com.furnitureshop.product.search;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,6 @@ public class ProductPage {
     private int pageNumber = 0;
     private int pageSize = 10;
     private Sort.Direction sortDirection = Sort.Direction.ASC;
-    private String sortBy = "productName";
+    private ProductField sortBy = ProductField.productId;
 }
 

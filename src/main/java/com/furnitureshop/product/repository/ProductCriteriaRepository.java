@@ -1,9 +1,8 @@
 package com.furnitureshop.product.repository;
 
-import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
-import com.furnitureshop.product.entity.ProductPage;
-import com.furnitureshop.product.entity.ProductSearchCriteria;
+import com.furnitureshop.product.search.ProductPage;
+import com.furnitureshop.product.search.ProductSearchCriteria;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
@@ -66,14 +65,14 @@ public class ProductCriteriaRepository {
 
     private void setOrder(ProductPage productPage, CriteriaQuery<Product> criteriaQuery, Root<Product> productRoot) {
         if (productPage.getSortDirection().equals(Sort.Direction.ASC)) {
-            criteriaQuery.orderBy(criteriaBuilder.asc(productRoot.get(productPage.getSortBy())));
+            criteriaQuery.orderBy(criteriaBuilder.asc(productRoot.get(productPage.getSortBy().field)));
         } else {
-            criteriaQuery.orderBy(criteriaBuilder.desc(productRoot.get(productPage.getSortBy())));
+            criteriaQuery.orderBy(criteriaBuilder.desc(productRoot.get(productPage.getSortBy().field)));
         }
     }
 
     private Pageable getPageable(ProductPage productPage) {
-        Sort sort = Sort.by(productPage.getSortDirection(), productPage.getSortBy());
+        Sort sort = Sort.by(productPage.getSortDirection(), productPage.getSortBy().field);
         return PageRequest.of(productPage.getPageNumber(), productPage.getPageSize(), sort);
     }
 }

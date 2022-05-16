@@ -1,14 +1,14 @@
 package com.furnitureshop.user.service;
 
+import com.furnitureshop.user.dto.ChangePasswordDto;
 import com.furnitureshop.user.dto.CreateUserDto;
-import com.furnitureshop.user.dto.UserDto;
+import com.furnitureshop.user.dto.UpdateUserDto;
 import com.furnitureshop.user.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<UserDto> findAllDto();
 
     boolean isTakenUsername(String username);
 
@@ -16,4 +16,17 @@ public interface UserService {
 
     User createUser(CreateUserDto dto);
 
+    List<User> getUsers();
+
+    List<User> getCustomers();
+
+    void deleteUserByUsername(String username);
+
+    User getUserByUsername(String username);
+
+    User updateUser(UpdateUserDto dto);
+
+    User getProfile();
+
+    void changePassword(ChangePasswordDto dto);
 }

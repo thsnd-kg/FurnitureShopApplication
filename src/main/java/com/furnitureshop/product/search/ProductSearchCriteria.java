@@ -1,4 +1,4 @@
-package com.furnitureshop.product.entity;
+package com.furnitureshop.product.search;
 
 import lombok.Getter;
 import lombok.Setter;

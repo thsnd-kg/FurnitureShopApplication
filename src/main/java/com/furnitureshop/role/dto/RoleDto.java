@@ -2,7 +2,7 @@ package com.furnitureshop.role.dto;
 
 public interface RoleDto {
 	// projection
-    Long getId();
-	String getName();
-	String getDescription();
+	public Long getRoleId();
+	public String getName();
+	public String getDescription();
 }

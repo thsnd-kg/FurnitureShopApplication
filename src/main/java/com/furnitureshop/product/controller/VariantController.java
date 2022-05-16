@@ -26,9 +26,14 @@ public class VariantController {
     }
 
     @GetMapping
-    public Object getVariants() {
+    public Object getVariants(@RequestParam(name = "onlyActive") Boolean isActive, @RequestParam Long productId) {
         try {
-            List<GetVariantDto> variants = service.getVariants().stream().map(GetVariantDto::new).collect(Collectors.toList());
+            if (isActive) {
+                List<GetVariantDto> variants = service.getVariantsActiveByProductId(productId).stream().map(GetVariantDto::new).collect(Collectors.toList());
+                return ResponseHandler.getResponse(variants, HttpStatus.OK);
+            }
+
+            List<GetVariantDto> variants = service.getVariantsByProductId(productId).stream().map(GetVariantDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(variants, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

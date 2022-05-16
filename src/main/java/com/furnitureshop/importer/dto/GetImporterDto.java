@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 public class GetImporterDto {
     private final Long importId;
+    private final String importerName;
     private final String importDesc;
     private final Integer totalPrice;
     private final LocalDate createdAt;
@@ -18,6 +19,7 @@ public class GetImporterDto {
 
     public GetImporterDto(Importer importer) {
         this.importId = importer.getImportId();
+        this.importerName = importer.getImporterName();
         this.importDesc = importer.getImportDesc();
         this.totalPrice = importer.getTotalPrice();
         this.createdAt = importer.getCreatedAt().toLocalDate();

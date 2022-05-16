@@ -1,6 +1,7 @@
 package com.furnitureshop.importer.entity;
 
 import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,9 @@ public class Importer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "import_id")
     private Long importId;
+
+    @Column(name = "importer_name")
+    private String importerName;
 
     @Column(name = "import_desc")
     private String importDesc;

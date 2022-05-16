@@ -1,6 +1,7 @@
 package com.furnitureshop.order.service;
 
 import com.furnitureshop.order.dto.voucher.CreateVoucherDto;
+import com.furnitureshop.order.dto.voucher.UpdateVoucherDto;
 import com.furnitureshop.order.entity.Voucher;
 import org.springframework.data.domain.Page;
 
@@ -11,5 +12,11 @@ public interface VoucherService {
 
     List<Voucher> getVouchers();
 
+    List<Voucher> getVoucherActive();
+
     Voucher createVoucher(CreateVoucherDto dto);
+
+    Boolean deleteVoucher(Long voucherId);
+
+    Voucher updateVoucher(UpdateVoucherDto dto);
 }

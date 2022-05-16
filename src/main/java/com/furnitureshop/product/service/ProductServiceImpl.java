@@ -5,6 +5,8 @@ import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.entity.*;
 import com.furnitureshop.product.repository.ProductCriteriaRepository;
 import com.furnitureshop.product.repository.ProductRepository;
+import com.furnitureshop.product.search.ProductPage;
+import com.furnitureshop.product.search.ProductSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,11 +43,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findByProductName(String name, int page, int size) {
-        return repository.findByProductName(name, PageRequest.of(page, size, Sort.by("productId").ascending()));
-    }
-
-    @Override
     public Page<Product> getProducts(ProductPage productPage, ProductSearchCriteria productSearchCriteria) {
         return productCriteriaRepository.findAllWithFilters(productPage, productSearchCriteria);
     }
@@ -53,11 +50,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProducts() {
         return repository.findAll();
-    }
-
-    @Override
-    public Page<Product> getProductsActive(int page, int size) {
-        return repository.findByIsDeletedFalse(PageRequest.of(page, size));
     }
 
     @Override
