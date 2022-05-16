@@ -30,6 +30,7 @@ public class VoucherController {
         try {
             if (isActive) {
                 List<GetVoucherDto> vouchers = service.getVoucherActive().stream().map(GetVoucherDto::new).collect(Collectors.toList());
+                return ResponseHandler.getResponse(vouchers, HttpStatus.OK);
             }
 
             List<GetVoucherDto> vouchers = service.getVouchers().stream().map(GetVoucherDto::new).collect(Collectors.toList());
