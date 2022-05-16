@@ -9,7 +9,9 @@ import org.aspectj.weaver.ast.Var;
 import java.util.List;
 
 public interface VariantService {
-    List<Variant> getVariants();
+    List<Variant> getVariantsActiveByProductId(Long productId);
+
+    List<Variant> getVariantsByProductId(Long productId);
 
     Variant getVariantById(Long variantId);
 
