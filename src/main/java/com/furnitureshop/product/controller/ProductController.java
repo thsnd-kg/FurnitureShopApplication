@@ -5,6 +5,8 @@ import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.GetProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
 import com.furnitureshop.product.dto.variant.GetValueDto;
+import com.furnitureshop.product.entity.ProductPage;
+import com.furnitureshop.product.entity.ProductSearchCriteria;
 import com.furnitureshop.product.service.ProductService;
 import com.furnitureshop.product.service.ValueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public Object getProducts(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam int size, @RequestParam String name) {
+    public Object getProducts(@RequestParam(defaultValue = "0", required = false) int page,
+                              @RequestParam(defaultValue = "10", required = false) int size,
+                              @RequestParam String name) {
         try {
             Page<GetProductDto> products = service.findByProductName(name, page, size).map(GetProductDto::new);
             return ResponseHandler.getResponse(products, HttpStatus.OK);
@@ -70,15 +74,10 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/page/{page}/{size}")
-    public Object getProducts(@RequestParam(value = "onlyActive") Boolean isActive, @PathVariable("page") int page, @PathVariable("size") int size) {
+    @GetMapping("/page")
+    public Object getProducts(ProductPage productPage, ProductSearchCriteria productSearchCriteria) {
         try {
-            if (isActive) {
-                Page<GetProductDto> products = service.getProductsActive(page, size).map(GetProductDto::new);
-                return ResponseHandler.getResponse(products, HttpStatus.OK);
-            }   
-
-            Page<GetProductDto> result = service.getProducts(page, size).map(GetProductDto::new);
+            Page<GetProductDto> result = service.getProducts(productPage, productSearchCriteria).map(GetProductDto::new);
             return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

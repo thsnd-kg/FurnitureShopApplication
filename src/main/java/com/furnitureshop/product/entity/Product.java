@@ -5,6 +5,7 @@ import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.persistence.metamodel.StaticMetamodel;
 import java.util.ArrayList;
 import java.util.List;
 
