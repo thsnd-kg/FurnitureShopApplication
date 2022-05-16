@@ -11,10 +11,11 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private final Long jwtExpiration = 86400000L;
-    private final String jwtSecret = "thisismysecrettoken";
-    private final String authHeader = "Authorization";
-    private final String tokenPrefix = "Bearer ";
+
+    private Long jwtExpiration = 86400000L;
+    private String jwtSecret = "thisismysecrettoken";
+    private String authHeader = "Authorization";
+    private String tokenPrefix = "Bearer ";
 
     public String generateJwtToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -51,7 +52,7 @@ public class JwtUtils {
         String header = request.getHeader(authHeader);
 
         if(StringUtils.hasText(header) && header.startsWith(tokenPrefix))
-            return header.substring(tokenPrefix.length());
+            return header.substring(tokenPrefix.length(), header.length());
 
         return null;
     }

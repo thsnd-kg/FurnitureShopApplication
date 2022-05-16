@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
     private String message;
-    private final UserService service;
+    private UserService service;
 
     public UniqueEmailValidator(UserService userService) {
         service = userService;

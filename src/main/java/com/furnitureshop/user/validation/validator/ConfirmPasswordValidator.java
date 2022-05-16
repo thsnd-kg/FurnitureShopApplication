@@ -23,7 +23,7 @@ public class ConfirmPasswordValidator
             return false;
         }
 
-        if(dto.getPassword().equals(dto.getConfirmPassword()))
+        if(dto.getPassword().equals(dto.getConfirmPassword()) )
             return true;
 
         ValidatorUtils.addError(context, message);
