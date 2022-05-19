@@ -7,6 +7,7 @@ import com.furnitureshop.importer.entity.ImporterDetail;
 import com.furnitureshop.importer.repository.ImporterRepository;
 import com.furnitureshop.product.entity.Variant;
 import com.furnitureshop.product.service.VariantService;
+import com.furnitureshop.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.List;
 public class ImporterServiceImpl implements ImporterService {
     private final ImporterRepository repository;
     private final VariantService variantService;
+    private final UserService userService;
 
     @Autowired
-    public ImporterServiceImpl(ImporterRepository repository, VariantService variantService) {
+    public ImporterServiceImpl(ImporterRepository repository, VariantService variantService, UserService userService) {
         this.repository = repository;
         this.variantService = variantService;
+        this.userService = userService;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class ImporterServiceImpl implements ImporterService {
             importer.setImportDesc(dto.getImportDesc());
         }
 
-        importer.setTotalPrice(dto.getTotalPrice());
+        importer.setUser(userService.getProfile());
 
         for (CreateImporterDetailDto createImporterDetail : dto.getImportDetails()) {
             ImporterDetail importerDetail = new ImporterDetail();

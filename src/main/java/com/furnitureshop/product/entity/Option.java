@@ -5,8 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,5 +33,5 @@ public class Option implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "option")
     @Setter(AccessLevel.NONE)
-    private List<Value> values = new ArrayList<>();
+    private Set<Value> values = new HashSet<>();
 }

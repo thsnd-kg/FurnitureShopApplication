@@ -14,27 +14,28 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 public class Importer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "import_id")
     private Long importId;
 
-    @Column(name = "importer_name")
-    private String importerName;
-
     @Column(name = "import_desc")
     private String importDesc;
 
-    @Column(name = "total_price")
+    @Transient
     private Integer totalPrice;
 
-    @Column(name = "is_deleted",
-            columnDefinition = "boolean default false")
-    private Boolean isDeleted = false;
+    public Integer getTotalPrice() {
+        return importDetails.stream().mapToInt(i -> i.getPrice() * i.getQuantity()).sum();
+    }
 
-    @OneToMany(mappedBy = "importer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "importer", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Set<ImporterDetail> importDetails = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

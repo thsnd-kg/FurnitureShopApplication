@@ -7,9 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -43,15 +41,15 @@ public class Variant extends BaseEntity implements Serializable {
             columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
     private Set<Value> values = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "variant")
-    private List<ImporterDetail> imports = new ArrayList<>();
+    private Set<ImporterDetail> imports = new HashSet<>();
 }

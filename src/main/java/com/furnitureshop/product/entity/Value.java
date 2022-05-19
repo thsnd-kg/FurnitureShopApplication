@@ -16,11 +16,13 @@ public class Value {
     @Setter(AccessLevel.NONE)
     private ValuePK id = new ValuePK();
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("variantId")
     @JoinColumn(name = "variant_id")
     private Variant variant;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("optionId")
     @JoinColumn(name = "option_id")

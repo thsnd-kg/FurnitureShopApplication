@@ -51,12 +51,18 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Boolean deleteBrand(Long brandId) {
-        if(!isExisted(brandId))
-            throw new IllegalStateException("Brand does not exist");
+        Brand brand = getBrandById(brandId);
 
-        Brand brand = repo.getOne(brandId);
         brand.setIsDeleted(true);
+        brand.getProducts().forEach(product -> {
+            product.setIsDeleted(true);
+            product.getVariants().forEach(variant -> {
+                variant.setIsDeleted(true);
+            });
+        });
+
         repo.save(brand);
+
         return true;
     }
 

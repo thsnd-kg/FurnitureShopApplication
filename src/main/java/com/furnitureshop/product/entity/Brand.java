@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -37,5 +37,5 @@ public class Brand extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand")
-    private List<Product> products = new ArrayList<>();
+    private Set<Product> products = new HashSet<>();
 }

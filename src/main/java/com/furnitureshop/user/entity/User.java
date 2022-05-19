@@ -2,6 +2,7 @@ package com.furnitureshop.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.importer.entity.Importer;
 import com.furnitureshop.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -53,6 +56,6 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id")
     private Role role;
 
-
-
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private Set<Importer> imports = new HashSet<>();
 }
