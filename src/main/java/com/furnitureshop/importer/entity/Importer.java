@@ -22,8 +22,10 @@ public class Importer extends BaseEntity {
     @Column(name = "import_id")
     private Long importId;
 
-    @Column(name = "import_desc")
-    private String importDesc;
+    @Column(name = "import_desc",
+            length = 100,
+            columnDefinition = "varchar(100) default 'No description'")
+    private String importDesc = "No description";
 
     @Transient
     private Integer totalPrice;

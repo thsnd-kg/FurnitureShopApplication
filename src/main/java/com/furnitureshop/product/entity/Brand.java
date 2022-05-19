@@ -28,8 +28,9 @@ public class Brand extends BaseEntity {
     private String brandName;
 
     @Column(name = "brand_desc",
-            length = 100)
-    private String brandDesc;
+            length = 100,
+            columnDefinition = "varchar(100) default 'No description'")
+    private String brandDesc = "No description";
 
     @Column(name = "is_deleted",
             columnDefinition = "boolean default false")
