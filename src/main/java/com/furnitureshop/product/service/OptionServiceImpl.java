@@ -34,20 +34,4 @@ public class OptionServiceImpl implements OptionService {
 
         return option.get();
     }
-
-    @Override
-    public List<Option> createOption(List<CreateOptionDto> dtos, Category category) {
-        List<Option> options = new ArrayList<>();
-
-        for (CreateOptionDto dto : dtos) {
-            Option option = new Option();
-
-            option.setCategory(category);
-            option.setOptionName(dto.getOptionName());
-
-            options.add(option);
-        }
-
-        return repository.saveAll(options);
-    }
 }

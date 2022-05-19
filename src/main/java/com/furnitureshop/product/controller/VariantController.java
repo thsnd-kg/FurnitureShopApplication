@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/variants")
+@RequestMapping("/api")
 public class VariantController {
     private final VariantService service;
 
@@ -25,7 +25,7 @@ public class VariantController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("/website/variants")
     public Object getVariants(@RequestParam(name = "onlyActive") Boolean isActive, @RequestParam Long productId) {
         try {
             if (isActive) {
@@ -40,7 +40,7 @@ public class VariantController {
         }
     }
 
-    @GetMapping("/{variant-id}")
+    @GetMapping("/website/variants/{variant-id}")
     public Object getVariant(@PathVariable("variant-id") Long variantId) {
         try {
             GetVariantDto variant = new GetVariantDto(service.getVariantById(variantId));
@@ -50,7 +50,7 @@ public class VariantController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/variants")
     public Object createVariant(@Valid @RequestBody CreateVariantDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -63,7 +63,7 @@ public class VariantController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/variants")
     public Object updateVariant(@Valid @RequestBody UpdateVariantDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -76,7 +76,7 @@ public class VariantController {
         }
     }
 
-    @DeleteMapping("/{variant-id}")
+    @DeleteMapping("/variants/{variant-id}")
     public Object deleteVariant(@PathVariable("variant-id") Long variantId) {
         try {
             return ResponseHandler.getResponse(service.deleteVariant(variantId), HttpStatus.OK);
@@ -85,7 +85,7 @@ public class VariantController {
         }
     }
 
-    @GetMapping("/search")
+    @GetMapping("/variants/website/search")
     public Object getVariant(@RequestParam Long productId, @RequestParam List<String> optionValues) {
         try {
             GetVariantDto variant = new GetVariantDto(service.findVariant(productId, optionValues));

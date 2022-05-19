@@ -1,7 +1,6 @@
 package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.variant.GetValueDto;
-import com.furnitureshop.product.dto.variant.UpdateValueDto;
 import com.furnitureshop.product.entity.Value;
 import com.furnitureshop.product.entity.ValuePK;
 import com.furnitureshop.product.entity.Variant;

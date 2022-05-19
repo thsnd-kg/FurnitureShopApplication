@@ -4,12 +4,12 @@ import com.furnitureshop.product.dto.category.CreateCategoryDto;
 import com.furnitureshop.product.dto.category.CreateOptionDto;
 import com.furnitureshop.product.dto.category.UpdateCategoryDto;
 import com.furnitureshop.product.entity.Category;
+import com.furnitureshop.product.entity.Option;
 import com.furnitureshop.product.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -44,14 +44,29 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Boolean deleteCategory(Long categoryId) {
-        if(!isExisted(categoryId))
-            throw new IllegalStateException("Category does not exist");
+        Category category = getCategoryById(categoryId);
 
-        Category category = repository.getOne(categoryId);
-        category.setIsDeleted(true);
+        category = deleteRecursive(category);
         repository.save(category);
 
         return true;
+    }
+
+    Category deleteRecursive(Category category) {
+        category.setIsDeleted(true);
+
+        category.getProducts().forEach(product-> {
+            product.setIsDeleted(true);
+            product.getVariants().forEach(variant->
+                    variant.setIsDeleted(true));
+        });
+
+        Set<Category> children = new HashSet<>();
+        category.getChildren().forEach(child -> children.add(deleteRecursive(child)));
+
+        category.setChildren(children);
+
+        return category;
     }
 
     @Override
@@ -71,11 +86,16 @@ public class CategoryServiceImpl implements CategoryService {
             category.setParent(parent.get());
         }
 
-        Category result = repository.save(category);
+        for (CreateOptionDto createOptionDto : dto.getOptions()) {
+            Option option = new Option();
 
-        result.setOptions(optionService.createOption(dto.getOptions(), result));
+            option.setCategory(category);
+            option.setOptionName(createOptionDto.getOptionName());
 
-        return result;
+            category.getOptions().add(option);
+        }
+
+        return repository.save(category);
     }
 
     @Override

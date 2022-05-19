@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api")
 public class CategoryController {
     private final CategoryService service;
 
@@ -24,7 +24,7 @@ public class CategoryController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("/website/categories")
     public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive) {
         if (isActive) {
             List<GetCategoryDto> categories = service.getCategoriesActive().stream().map(GetCategoryDto::new).collect(Collectors.toList());
@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping(path = "/{category-id}")
+    @GetMapping(path = "/website/categories/{category-id}")
     public Object getCategoryById(@PathVariable("category-id") Long categoryId) {
         try {
             GetCategoryDto category = new GetCategoryDto(service.getCategoryById(categoryId));
@@ -46,7 +46,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/categories")
     public Object createCategory(@Valid @RequestBody CreateCategoryDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -60,7 +60,7 @@ public class CategoryController {
 
     }
 
-    @PutMapping
+    @PutMapping("/categories")
     public Object updateCategory(@Valid @RequestBody UpdateCategoryDto updatedCategory, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -73,7 +73,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping(path = "/{category-id}")
+    @DeleteMapping(path = "/categories/{category-id}")
     public Object deleteBrand(@PathVariable("category-id") Long categoryId) {
         try {
             return ResponseHandler.getResponse(service.deleteCategory(categoryId), HttpStatus.OK);

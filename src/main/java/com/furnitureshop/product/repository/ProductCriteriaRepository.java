@@ -31,16 +31,20 @@ public class ProductCriteriaRepository {
         setOrder(productPage, criteriaQuery, productRoot);
 
         TypedQuery<Product> typedQuery = entityManager.createQuery(criteriaQuery);
+        long productCount = typedQuery.getResultList().size();
+
         typedQuery.setFirstResult(productPage.getPageNumber() * productPage.getPageSize());
         typedQuery.setMaxResults(productPage.getPageSize());
 
         Pageable pageable = getPageable(productPage);
 
-        return new PageImpl<>(typedQuery.getResultList(), pageable, typedQuery.getResultList().size());
+        return new PageImpl<>(typedQuery.getResultList(), pageable, productCount);
     }
 
     private Predicate getPredicate(ProductSearchCriteria productSearchCriteria, Root<Product> productRoot) {
         List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(criteriaBuilder.isFalse(productRoot.get("isDeleted")));
 
         if (Objects.nonNull(productSearchCriteria.getProductName())) {
             predicates.add(criteriaBuilder.like(productRoot.get("productName"), "%" + productSearchCriteria.getProductName() + "%"));

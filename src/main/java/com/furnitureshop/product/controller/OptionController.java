@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/options")
+@RequestMapping("/api/website/options")
 public class OptionController {
     private final OptionService service;
 

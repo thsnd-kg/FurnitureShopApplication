@@ -5,8 +5,8 @@ import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -34,18 +34,17 @@ public class Category extends BaseEntity {
     private Boolean isDeleted = false;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
-    private List<Product> products = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products = new HashSet<>();
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Category> children = new ArrayList<>();
+    private Set<Category> children = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private List<Option> options = new ArrayList<>();
+    private Set<Option> options = new HashSet<>();
 }

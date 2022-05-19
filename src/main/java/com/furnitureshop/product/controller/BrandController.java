@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/brands")
+@RequestMapping("/api")
 public class BrandController {
     private final BrandService service;
 
@@ -21,8 +21,8 @@ public class BrandController {
         this.service = service;
     }
 
-    @GetMapping
-    public Object getBrands(@RequestParam(value = "onlyActive") Boolean isActive){
+    @GetMapping("/website/brands")
+    public Object getBrands(@RequestParam(value = "onlyActive") Boolean isActive) {
         if(isActive)
             return ResponseHandler.getResponse(service.getBrandsActive(), HttpStatus.OK);
 
@@ -30,19 +30,19 @@ public class BrandController {
     }
 
 
-    @GetMapping(path = "/{brand-id}")
-    public Object getBrandById(@PathVariable("brand-id") Long brandId){
-        try{
-            if(brandId == null)
+    @GetMapping(path = "/website/brands/{brand-id}")
+    public Object getBrandById(@PathVariable("brand-id") Long brandId) {
+        try {
+            if (brandId == null)
                 throw new IllegalStateException("Brand Id must not be null");
 
             return ResponseHandler.getResponse(service.getBrandById(brandId), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping
+    @PostMapping("/brands")
     public Object createBrand(@Valid @RequestBody BrandDto newBrand, BindingResult errors){
         try{
             if(errors.hasErrors())
@@ -55,7 +55,7 @@ public class BrandController {
 
     }
 
-    @PutMapping
+    @PutMapping("/brands")
     public Object updateBrand(@RequestBody BrandDto updatedBrand, BindingResult errors) {
         try{
             if(errors.hasErrors())
@@ -67,7 +67,7 @@ public class BrandController {
         }
     }
 
-    @DeleteMapping(path = "/{brand-id}")
+    @DeleteMapping(path = "/brands/{brand-id}")
     public Object deleteBrand(@PathVariable("brand-id") Long brandId){
         try{
             if(brandId == null)

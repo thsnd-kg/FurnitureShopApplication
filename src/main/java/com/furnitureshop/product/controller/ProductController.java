@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api")
 public class ProductController {
     private final ProductService service;
     private final ValueService valueService;
@@ -32,7 +32,7 @@ public class ProductController {
         this.valueService = valueService;
     }
 
-    @GetMapping("/{product-id}/option")
+    @GetMapping("/website/products/{product-id}/option")
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
         try {
             List<GetValueDto> values = valueService.getOptionValues(productId);
@@ -42,7 +42,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{product-id}")
+    @GetMapping("/website/products/{product-id}")
     public Object getProductById(@PathVariable("product-id") Long productId) {
         try {
             GetProductDto product = new GetProductDto(service.getProductById(productId));
@@ -52,7 +52,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/website/products")
     public Object getProducts() {
         try {
             List<GetProductDto> products = service.getProducts().stream().map(GetProductDto::new).collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/search")
+    @GetMapping("/website/products/search")
     public Object getProducts(ProductPage productPage, ProductSearchCriteria productSearchCriteria) {
         try {
             Page<GetProductDto> result = service.getProducts(productPage, productSearchCriteria).map(GetProductDto::new);
@@ -72,7 +72,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/products")
     public Object createProduct(@Valid @RequestBody CreateProductDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -85,7 +85,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/products")
     public Object updateProduct(@Valid @RequestBody UpdateProductDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
@@ -98,7 +98,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{product-id}")
+    @DeleteMapping("/products/{product-id}")
     public Object deleteProduct(@PathVariable("product-id") Long productId) {
         try {
             return ResponseHandler.getResponse(service.deleteProduct(productId), HttpStatus.OK);

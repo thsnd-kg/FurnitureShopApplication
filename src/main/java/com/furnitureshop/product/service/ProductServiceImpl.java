@@ -2,15 +2,15 @@ package com.furnitureshop.product.service;
 
 import com.furnitureshop.product.dto.product.CreateProductDto;
 import com.furnitureshop.product.dto.product.UpdateProductDto;
-import com.furnitureshop.product.entity.*;
+import com.furnitureshop.product.entity.Brand;
+import com.furnitureshop.product.entity.Category;
+import com.furnitureshop.product.entity.Product;
 import com.furnitureshop.product.repository.ProductCriteriaRepository;
 import com.furnitureshop.product.repository.ProductRepository;
 import com.furnitureshop.product.search.ProductPage;
 import com.furnitureshop.product.search.ProductSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -94,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = getProductById(productId);
 
         product.setIsDeleted(true);
-        repository.deleteVariantByProductId(productId);
+        product.getVariants().forEach(e -> e.setIsDeleted(true));
         repository.save(product);
 
         return true;

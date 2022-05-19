@@ -5,9 +5,8 @@ import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.metamodel.StaticMetamodel;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,16 +37,17 @@ public class Product extends BaseEntity {
             columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "product")
-    private List<Variant> variants = new ArrayList<>();
+    private Set<Variant> variants = new HashSet<>();
 }

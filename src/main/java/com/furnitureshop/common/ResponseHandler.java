@@ -24,7 +24,7 @@ public class ResponseHandler {
     public static ResponseEntity<Object> getResponse(BindingResult errors, HttpStatus status){
         Map<String, Object> map = new HashMap<>();
         map.put("content", "");
-        map.put("errors", ErrorUtils.getErrorMessages(errors));
+        map.put("errors", ErrorUtils.getErrorMessages(errors).get(0));
         map.put("timestamp", DateUtils.toString(LocalDateTime.now()));
         map.put("status", status.value());
 
