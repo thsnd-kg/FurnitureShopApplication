@@ -56,6 +56,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Set<Importer> imports = new HashSet<>();
 }

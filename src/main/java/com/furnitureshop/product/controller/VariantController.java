@@ -85,7 +85,7 @@ public class VariantController {
         }
     }
 
-    @GetMapping("/variants/website/search")
+    @GetMapping("/website/variants/search")
     public Object getVariant(@RequestParam Long productId, @RequestParam List<String> optionValues) {
         try {
             GetVariantDto variant = new GetVariantDto(service.findVariant(productId, optionValues));
