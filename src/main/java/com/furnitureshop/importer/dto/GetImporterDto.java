@@ -14,6 +14,7 @@ public class GetImporterDto {
     private final Long importId;
     private final String importDesc;
     private final Integer totalPrice;
+    private final User importer;
     private final LocalDate createdAt;
     private final List<GetImporterDetailDto> importDetails;
 
@@ -21,6 +22,7 @@ public class GetImporterDto {
         this.importId = importer.getImportId();
         this.importDesc = importer.getImportDesc();
         this.totalPrice = importer.getTotalPrice();
+        this.importer = importer.getUser();
         this.createdAt = importer.getCreatedAt().toLocalDate();
         this.importDetails = importer.getImportDetails().isEmpty()
                 ? new ArrayList<>()
