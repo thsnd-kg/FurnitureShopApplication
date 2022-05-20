@@ -10,6 +10,7 @@ import java.util.List;
 
 @Getter
 public class CreateOrderDto {
+    @NotNull
     private Long voucherId;
 
     @NotNull(message = "{list-order-detail.not-null}")
