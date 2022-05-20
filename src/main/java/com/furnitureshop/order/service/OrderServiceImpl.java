@@ -73,10 +73,9 @@ public class OrderServiceImpl implements OrderService {
             cart.getOrderDetails().add(orderDetail);
         });
 
-        if (dto.getVoucherId() != 0) {
-            Voucher voucher = voucherService.getVoucherById(dto.getVoucherId());
-            cart.setVoucher(voucher);
-        }
+        Voucher voucher = voucherService.getVoucherById(dto.getVoucherId());
+
+        cart.setVoucher(voucher);
 
         return repository.save(cart);
     }
