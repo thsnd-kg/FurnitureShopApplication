@@ -3,6 +3,8 @@ package com.furnitureshop.user.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
 import com.furnitureshop.importer.entity.Importer;
+import com.furnitureshop.order.entity.Order;
+import com.furnitureshop.order.entity.OrderDetail;
 import com.furnitureshop.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,4 +61,8 @@ public class User extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Set<Importer> imports = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders = new HashSet<>();
 }

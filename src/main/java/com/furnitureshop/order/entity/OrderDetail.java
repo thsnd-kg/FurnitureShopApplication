@@ -23,6 +23,7 @@ public class OrderDetail {
     @JoinColumn(name = "variant_id")
     private Variant variant;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")

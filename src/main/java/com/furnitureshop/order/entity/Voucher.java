@@ -1,5 +1,6 @@
 package com.furnitureshop.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.furnitureshop.common.entity.BaseEntity;
 import lombok.*;
 
@@ -46,8 +47,8 @@ public class Voucher extends BaseEntity {
             columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "voucher")
     @Column(name = "order_id")
-    @Setter(AccessLevel.NONE)
     private Set<Order> orders;
 }

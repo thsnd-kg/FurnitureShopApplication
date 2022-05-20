@@ -1,6 +1,7 @@
 package com.furnitureshop.order.entity;
 
 import com.furnitureshop.common.entity.BaseEntity;
+import com.furnitureshop.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,38 @@ public class Order extends BaseEntity {
     private Long orderId;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+    @Transient
+    private Integer totalPrice;
+
+    public Integer getTotalPrice() {
+        if (voucher != null) {
+            int sum = orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
+            int deal = sum * voucher.getVoucherValue() / 100;
+            System.out.println(deal);
+            System.out.println(sum);
+            System.out.println(voucher.getCappedAt());
+            if (deal > voucher.getCappedAt()) {
+                sum = sum - voucher.getCappedAt();
+            } else {
+                sum = sum - deal;
+            }
+
+            return sum;
+        }
+
+        return orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
+    }
 
     @ManyToOne
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderDetail> orderDetails = new HashSet<>();
