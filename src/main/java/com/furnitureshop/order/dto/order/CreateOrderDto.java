@@ -1,5 +1,6 @@
 package com.furnitureshop.order.dto.order;
 
+import com.furnitureshop.order.entity.OrderStatus;
 import lombok.Getter;
 
 import javax.validation.Valid;
@@ -9,8 +10,6 @@ import java.util.List;
 
 @Getter
 public class CreateOrderDto {
-    private String status;
-
     private Long voucherId;
 
     @NotNull(message = "{list-order-detail.not-null}")
