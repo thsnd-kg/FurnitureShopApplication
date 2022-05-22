@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 public class GetOrderDto {
     private final Long orderId;
     private final OrderStatus status;
-    private final Long voucherId;
+    private final Voucher voucher;
     private final List<GetOrderDetailDto> orderDetails;
 
     public GetOrderDto(Order order) {
         this.orderId = order.getOrderId();
         this.status = order.getStatus();
-        this.voucherId = order.getVoucher().getVoucherId();
+        this.voucher = order.getVoucher();
         this.orderDetails = order.getOrderDetails().isEmpty()
                 ? new ArrayList<>()
                 : order.getOrderDetails().stream().map(GetOrderDetailDto::new).collect(Collectors.toList());
