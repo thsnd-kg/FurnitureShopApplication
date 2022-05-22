@@ -65,13 +65,46 @@ public class OrderController {
         }
     }
 
-    @PostMapping
-    public Object createCart(@Valid @RequestBody CreateOrderDto dto, BindingResult errors) {
+    @PostMapping("/add-item")
+    public Object addCartItem(@Valid @RequestBody CreateOrderDetailDto dto, BindingResult errors) {
         try {
             if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
-            return ResponseHandler.getResponse(new GetOrderDto(service.createCart(dto)), HttpStatus.OK);
+            return ResponseHandler.getResponse(new GetOrderDto(service.addCartItem(dto)), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/remove-item")
+    public Object removeCartItem(@RequestBody Long variantId, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            return ResponseHandler.getResponse(new GetOrderDto(service.deleteCartItem(variantId)), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/add-voucher")
+    public Object addVoucher(@RequestBody Long voucherId, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            return ResponseHandler.getResponse(new GetOrderDto(service.addVoucher(voucherId)), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/remove-voucher")
+    public Object removeVoucher() {
+        try {
+            return ResponseHandler.getResponse(new GetOrderDto(service.removeVoucher()), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

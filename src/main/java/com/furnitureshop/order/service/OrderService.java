@@ -11,7 +11,13 @@ public interface OrderService {
 
     Order getOrder(Long orderId);
 
-    Order createCart(CreateOrderDto dto);
+    Order addCartItem(CreateOrderDetailDto dto);
+
+    Order deleteCartItem(Long variantId);
+
+    Order addVoucher(Long voucherId);
+
+    Order removeVoucher();
 
     List<Order> getYourOrders();
 

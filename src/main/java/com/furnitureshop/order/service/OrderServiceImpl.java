@@ -1,10 +1,7 @@
 package com.furnitureshop.order.service;
 
-import com.furnitureshop.order.dto.order.CreateOrderDto;
-import com.furnitureshop.order.entity.Order;
-import com.furnitureshop.order.entity.OrderDetail;
-import com.furnitureshop.order.entity.OrderStatus;
-import com.furnitureshop.order.entity.Voucher;
+import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
+import com.furnitureshop.order.entity.*;
 import com.furnitureshop.order.repository.OrderDetailRepository;
 import com.furnitureshop.order.repository.OrderRepository;
 import com.furnitureshop.product.entity.Variant;
@@ -14,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,29 +52,83 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createCart(CreateOrderDto dto) {
+    public Order addCartItem(CreateOrderDetailDto dto) {
         List<Order> orderList = repository.findByUser(userService.getProfile());
         Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElseGet(this::createCart);
 
-        List<OrderDetail> orderDetails = orderDetailRepository.getById_OrderId(cart.getOrderId());
-        orderDetailRepository.deleteAll(orderDetails);
+        Optional<OrderDetail> orderDetailOptional = orderDetailRepository.findById(new OrderDetailPK(cart.getOrderId(), dto.getVariantId()));
 
-        dto.getOrderDetails().forEach(orderDetailDto -> {
-            OrderDetail orderDetail = new OrderDetail();
-            Variant variant = variantService.getVariantById(orderDetailDto.getVariantId());
-            orderDetail.setOrder(cart);
-            orderDetail.setVariant(variant);
-            orderDetail.setQuantity(orderDetailDto.getQuantity());
+        if (orderDetailOptional.isPresent()) {
+            OrderDetail orderDetail = orderDetailOptional.get();
+            orderDetail.setQuantity(dto.getQuantity());
+
+            cart.getOrderDetails().removeIf(o -> Objects.equals(o.getVariant().getVariantId(), dto.getVariantId()));
 
             cart.getOrderDetails().add(orderDetail);
-        });
 
-        if (dto.getVoucherId() != 0) {
-            Voucher voucher = voucherService.getVoucherById(dto.getVoucherId());
-            cart.setVoucher(voucher);
+            return repository.save(cart);
         }
+
+        OrderDetail orderDetail = new OrderDetail();
+        Variant variant = variantService.getVariantById(dto.getVariantId());
+        orderDetail.setOrder(cart);
+        orderDetail.setVariant(variant);
+        orderDetail.setQuantity(dto.getQuantity());
+
+        cart.getOrderDetails().add(orderDetail);
+
+        return repository.save(cart);
+    }
+
+    @Override
+    public Order deleteCartItem(Long variantId) {
+        List<Order> orderList = repository.findByUser(userService.getProfile());
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+
+        if (!cartOptional.isPresent()) {
+            throw new IllegalStateException("Cart not found");
+        }
+
+        Order cart = cartOptional.get();
+
+        Optional<OrderDetail> orderDetailOptional = orderDetailRepository.findById(new OrderDetailPK(cartOptional.get().getOrderId(), variantId));
+
+        if (!orderDetailOptional.isPresent()) {
+            throw new IllegalStateException("Cart item not found");
+        }
+
+        OrderDetail orderDetail = orderDetailOptional.get();
+
+        cart.getOrderDetails().remove(orderDetail);
+
+        orderDetailRepository.delete(orderDetail);
+        return repository.save(cart);
+    }
+
+    @Override
+    public Order addVoucher(Long voucherId) {
+        List<Order> orderList = repository.findByUser(userService.getProfile());
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+
+        Order cart = cartOptional.orElseGet(this::createCart);
+
+        Voucher voucher = voucherService.getVoucherById(voucherId);
+
+        cart.setVoucher(voucher);
+
+        return repository.save(cart);
+    }
+
+    @Override
+    public Order removeVoucher() {
+        List<Order> orderList = repository.findByUser(userService.getProfile());
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+
+        Order cart = cartOptional.orElseGet(this::createCart);
+
+        cart.setVoucher(null);
 
         return repository.save(cart);
     }
