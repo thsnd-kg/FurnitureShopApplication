@@ -16,7 +16,6 @@ public class GetVariantDto {
     private final Integer importPrice = 1000;
     private final Integer quantity;
     private final String image;
-    private final Boolean isDeleted;
     private final List<GetValueDto> options;
 
     public GetVariantDto(Variant variant) {
@@ -26,7 +25,6 @@ public class GetVariantDto {
         this.price = variant.getPrice();
         this.quantity = variant.getQuantity();
         this.image = variant.getImage();
-        this.isDeleted = variant.getIsDeleted();
         this.options = variant.getValues().isEmpty() ? new ArrayList<>() : variant.getValues().stream().map(GetValueDto::new).collect(Collectors.toList());
     }
 }

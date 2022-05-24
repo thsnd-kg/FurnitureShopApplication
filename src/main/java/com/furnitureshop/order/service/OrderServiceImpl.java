@@ -1,6 +1,7 @@
 package com.furnitureshop.order.service;
 
 import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
+import com.furnitureshop.order.dto.order.UpdateOrderDto;
 import com.furnitureshop.order.entity.*;
 import com.furnitureshop.order.repository.OrderDetailRepository;
 import com.furnitureshop.order.repository.OrderRepository;
@@ -10,6 +11,7 @@ import com.furnitureshop.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,13 +41,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrder(Long orderId) {
-        return repository.getOne(orderId);
+        Optional<Order> order = repository.findById(orderId);
+
+        if (!order.isPresent()) {
+            throw new IllegalStateException("Order not exists");
+        }
+
+        return order.get();
     }
 
     public Order createCart() {
         Order order = new Order();
 
-        order.setStatus(OrderStatus.PUTTING);
+        order.setOrderStatus(OrderStatus.PUTTING);
+        order.setPaymentStatus(PaymentStatus.UNPAID);
         order.setUser(userService.getProfile());
 
         return repository.save(order);
@@ -54,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order addCartItem(CreateOrderDetailDto dto) {
         List<Order> orderList = repository.findByUser(userService.getProfile());
-        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElseGet(this::createCart);
 
@@ -85,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order deleteCartItem(Long variantId) {
         List<Order> orderList = repository.findByUser(userService.getProfile());
-        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         if (!cartOptional.isPresent()) {
             throw new IllegalStateException("Cart not found");
@@ -110,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order addVoucher(Long voucherId) {
         List<Order> orderList = repository.findByUser(userService.getProfile());
-        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElseGet(this::createCart);
 
@@ -124,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order removeVoucher() {
         List<Order> orderList = repository.findByUser(userService.getProfile());
-        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElseGet(this::createCart);
 
@@ -135,12 +144,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getYourOrders() {
-        return repository.findByUser(userService.getProfile()).stream().filter(o -> !o.getStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
+        return repository.findByUser(userService.getProfile()).stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
     }
 
-    private Order findCart() {
+    @Override
+    public Order getYourCart() {
         List<Order> orderList = repository.findByUser(userService.getProfile());
-        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getStatus().equals(OrderStatus.PUTTING)).findFirst();
+        Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElse(null);
 
@@ -153,10 +163,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order checkout() {
-        Order cart = findCart();
+        Order cart = getYourCart();
 
-        cart.setStatus(OrderStatus.PURCHASED);
+        cart.setOrderStatus(OrderStatus.PENDING);
+        cart.setCreatedAt(LocalDateTime.now());
 
         return repository.save(cart);
+    }
+
+    @Override
+    public Order changeOrderStatus(UpdateOrderDto dto) {
+        Order order = getOrder(dto.getOrderId());
+
+        order.setOrderStatus(dto.getOrderStatus());
+        order.setPaymentStatus(dto.getPaymentStatus());
+
+        return repository.save(order);
     }
 }

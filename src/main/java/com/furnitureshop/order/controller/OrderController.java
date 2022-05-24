@@ -2,9 +2,10 @@ package com.furnitureshop.order.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
-import com.furnitureshop.order.dto.order.CreateOrderDto;
 import com.furnitureshop.order.dto.order.GetOrderDto;
-import com.furnitureshop.order.entity.Order;
+import com.furnitureshop.order.dto.order.UpdateOrderDto;
+import com.furnitureshop.order.entity.OrderStatus;
+import com.furnitureshop.order.entity.PaymentStatus;
 import com.furnitureshop.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,16 @@ public class OrderController {
         try {
             List<GetOrderDto> orders = service.getYourOrders().stream().map(GetOrderDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(orders, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/cart")
+    public Object getYourCart() {
+        try {
+            GetOrderDto cart = new GetOrderDto(service.getYourCart());
+            return ResponseHandler.getResponse(cart, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }
@@ -105,6 +116,19 @@ public class OrderController {
     public Object removeVoucher() {
         try {
             return ResponseHandler.getResponse(new GetOrderDto(service.removeVoucher()), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/change-order-status")
+    public Object changeOrderStatus(@RequestBody UpdateOrderDto dto, BindingResult errors) {
+        try {
+            if (errors.hasErrors())
+                return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
+
+            GetOrderDto order = new GetOrderDto(service.changeOrderStatus(dto));
+            return ResponseHandler.getResponse(order, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

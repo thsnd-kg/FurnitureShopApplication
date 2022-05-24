@@ -23,9 +23,13 @@ public class Order extends BaseEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "status")
+    @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus = OrderStatus.PUTTING;
+
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
 
     @Transient
     private Integer totalPrice;
