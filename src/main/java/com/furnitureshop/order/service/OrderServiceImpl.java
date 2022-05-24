@@ -36,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders() {
-        return repository.findAll();
+        List<Order> orders = repository.findAll();
+
+        return orders.stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
     }
 
     @Override
