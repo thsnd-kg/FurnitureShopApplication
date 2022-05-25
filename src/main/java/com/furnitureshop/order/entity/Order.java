@@ -53,7 +53,7 @@ public class Order extends BaseEntity {
         return orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 

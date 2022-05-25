@@ -167,6 +167,11 @@ public class OrderServiceImpl implements OrderService {
     public Order checkout() {
         Order cart = getYourCart();
 
+        if (cart.getVoucher() != null) {
+            Integer voucherAmount = cart.getVoucher().getAmount();
+            cart.getVoucher().setAmount(voucherAmount - 1);
+        }
+
         cart.setOrderStatus(OrderStatus.PENDING);
         cart.setCreatedAt(LocalDateTime.now());
 

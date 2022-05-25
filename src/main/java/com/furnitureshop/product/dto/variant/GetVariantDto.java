@@ -17,6 +17,9 @@ public class GetVariantDto {
     private final Integer quantity;
     private final String image;
     private final List<GetValueDto> options;
+    private final String productName;
+    private final String brandName;
+    private final String categoryName;
 
     public GetVariantDto(Variant variant) {
         this.variantId = variant.getVariantId();
@@ -26,5 +29,8 @@ public class GetVariantDto {
         this.quantity = variant.getQuantity();
         this.image = variant.getImage();
         this.options = variant.getValues().isEmpty() ? new ArrayList<>() : variant.getValues().stream().map(GetValueDto::new).collect(Collectors.toList());
+        this.productName = variant.getProduct().getProductName();
+        this.brandName = variant.getProduct().getBrand().getBrandName();
+        this.categoryName = variant.getProduct().getCategory().getCategoryName();
     }
 }
