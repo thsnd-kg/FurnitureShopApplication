@@ -14,12 +14,10 @@ import java.util.*;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
-    private final OptionService optionService;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository repository, OptionService optionService) {
+    public CategoryServiceImpl(CategoryRepository repository) {
         this.repository = repository;
-        this.optionService = optionService;
     }
 
     @Override

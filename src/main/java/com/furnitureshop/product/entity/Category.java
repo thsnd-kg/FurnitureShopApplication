@@ -46,6 +46,6 @@ public class Category extends BaseEntity {
     private Set<Category> children = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Option> options = new HashSet<>();
 }
