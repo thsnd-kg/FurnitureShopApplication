@@ -4,16 +4,18 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
 import com.furnitureshop.order.dto.order.GetOrderDto;
 import com.furnitureshop.order.dto.order.UpdateOrderDto;
-import com.furnitureshop.order.entity.OrderStatus;
-import com.furnitureshop.order.entity.PaymentStatus;
+import com.furnitureshop.order.entity.Order;
 import com.furnitureshop.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -76,6 +78,32 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/report")
+    public Object orderReport(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                              @RequestParam String compression) {
+        try {
+            Map<LocalDate, List<GetOrderDto>> report = service.getOrderReport(start, end, compression)
+                    .entrySet().stream().collect(
+                            Collectors.toMap(Map.Entry::getKey,
+                                    e-> e.getValue().stream().map(GetOrderDto::new)
+                                            .collect(Collectors.toList())));
+
+            return ResponseHandler.getResponse(report, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/best-seller")
+    public Object bestSeller() {
+        try {
+            return ResponseHandler.getResponse(service.getBestSeller(), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/add-item")
     public Object addCartItem(@Valid @RequestBody CreateOrderDetailDto dto, BindingResult errors) {
         try {
@@ -129,6 +157,15 @@ public class OrderController {
 
             GetOrderDto order = new GetOrderDto(service.changeOrderStatus(dto));
             return ResponseHandler.getResponse(order, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{order-id}")
+    public Object deleteOrder(@PathVariable(name = "order-id") Long orderId) {
+        try {
+            return ResponseHandler.getResponse(service.deleteOrder(orderId), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

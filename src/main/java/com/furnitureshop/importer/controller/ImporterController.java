@@ -5,13 +5,16 @@ import com.furnitureshop.importer.dto.CreateImporterDto;
 import com.furnitureshop.importer.dto.GetImporterDto;
 import com.furnitureshop.importer.service.ImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -48,10 +51,27 @@ public class ImporterController {
         }
     }
 
+    @GetMapping("/report")
+    public Object importReport(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                                  @RequestParam String compression) {
+        try {
+            Map<LocalDate, List<GetImporterDto>> result = service.getImportReport(start, end, compression)
+                    .entrySet().stream().collect(
+                            Collectors.toMap(Map.Entry::getKey,
+                                    e -> e.getValue().stream().map(GetImporterDto::new)
+                                            .collect(Collectors.toList())));
+
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping
     public Object createImport(@Valid @RequestBody CreateImporterDto dto, BindingResult errors) {
         try {
-            if(errors.hasErrors())
+            if (errors.hasErrors())
                 return ResponseHandler.getResponse(errors, HttpStatus.BAD_REQUEST);
 
             GetImporterDto importer = new GetImporterDto(service.createImport(dto));

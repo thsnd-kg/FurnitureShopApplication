@@ -38,8 +38,6 @@ public class Order extends BaseEntity {
         if (voucher != null) {
             int sum = orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
             int deal = sum * voucher.getVoucherValue() / 100;
-            System.out.println(deal);
-            System.out.println(sum);
             System.out.println(voucher.getCappedAt());
             if (deal > voucher.getCappedAt()) {
                 sum = sum - voucher.getCappedAt();
@@ -63,4 +61,7 @@ public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderDetail> orderDetails = new HashSet<>();
+
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 }

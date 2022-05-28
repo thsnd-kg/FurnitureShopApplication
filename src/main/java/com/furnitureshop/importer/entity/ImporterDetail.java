@@ -24,7 +24,7 @@ public class ImporterDetail {
     @JoinColumn(name = "import_id")
     private Importer importer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("variantId")
     @JoinColumn(name = "variant_id")
     private Variant variant;

@@ -1,20 +1,22 @@
 package com.furnitureshop.order.service;
 
+import com.furnitureshop.common.util.AdjusterUtils;
 import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
 import com.furnitureshop.order.dto.order.UpdateOrderDto;
 import com.furnitureshop.order.entity.*;
 import com.furnitureshop.order.repository.OrderDetailRepository;
 import com.furnitureshop.order.repository.OrderRepository;
+import com.furnitureshop.product.dto.product.GetProductDto;
 import com.furnitureshop.product.entity.Variant;
+import com.furnitureshop.product.service.ProductService;
 import com.furnitureshop.product.service.VariantService;
 import com.furnitureshop.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,14 +26,16 @@ public class OrderServiceImpl implements OrderService {
     private final VariantService variantService;
     private final VoucherService voucherService;
     private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository repository, OrderDetailRepository orderDetailRepository, VariantService variantService, VoucherService voucherService, UserService userService) {
+    public OrderServiceImpl(OrderRepository repository, OrderDetailRepository orderDetailRepository, VariantService variantService, VoucherService voucherService, UserService userService, ProductService productService) {
         this.repository = repository;
         this.orderDetailRepository = orderDetailRepository;
         this.variantService = variantService;
         this.voucherService = voucherService;
         this.userService = userService;
+        this.productService = productService;
     }
 
     @Override
@@ -186,5 +190,46 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentStatus(dto.getPaymentStatus());
 
         return repository.save(order);
+    }
+
+    @Override
+    public Map<LocalDate, List<Order>> getOrderReport(LocalDate start, LocalDate end, String compression) {
+        return repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
+                .stream().filter(o -> o.getPaymentStatus().equals(PaymentStatus.PAID))
+                .collect(Collectors.groupingBy(item -> item.getCreatedAt().toLocalDate()
+                        .with(AdjusterUtils.getAdjuster().get(compression))));
+    }
+
+    @Override
+    public Object getBestSeller() {
+        List<OrderDetail> orderDetails = orderDetailRepository.findAll().stream().filter(o -> o.getOrder().getOrderStatus().equals(OrderStatus.COMPLETED)).collect(Collectors.toList());
+        List<Map<String, Object>> sold = new ArrayList<>();
+        LinkedHashMap<Long, Integer> sorted = new LinkedHashMap<>();
+
+        Map<Long, Integer> calc = orderDetails.stream().collect(Collectors
+                .groupingBy(o -> o.getVariant().getProduct().getProductId(),
+                        Collectors.summingInt(OrderDetail::getQuantity)));
+
+        calc.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> sorted.put(x.getKey(), x.getValue()));
+        sorted.forEach((aLong, integer) -> {
+            Map<String, Object> temp = new HashMap<>();
+
+            temp.put("product", new GetProductDto(productService.getProductById(aLong)));
+            temp.put("quantity_sold", integer);
+
+            sold.add(temp);
+        });
+
+        return sold;
+    }
+
+    @Override
+    public Boolean deleteOrder(Long orderId) {
+        Order order = getOrder(orderId);
+
+        order.setIsDeleted(true);
+        repository.save(order);
+
+        return true;
     }
 }
