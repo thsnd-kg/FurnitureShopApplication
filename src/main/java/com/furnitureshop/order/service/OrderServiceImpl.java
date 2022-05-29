@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders() {
-        List<Order> orders = repository.findAll();
+        List<Order> orders = repository.findAllByIsDeletedFalse();
 
         return orders.stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
     }
