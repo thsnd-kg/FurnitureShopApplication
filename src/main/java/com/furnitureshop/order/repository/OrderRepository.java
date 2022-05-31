@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByIsDeletedFalse();
+    List<Order> findAllByOrderStatusAndIsDeletedFalse(OrderStatus orderStatus);
     List<Order> findByUser(User user);
     List<Order> findByCreatedAtBetweenOrderByCreatedAt(LocalDateTime createdAt, LocalDateTime createdAt2);
 }

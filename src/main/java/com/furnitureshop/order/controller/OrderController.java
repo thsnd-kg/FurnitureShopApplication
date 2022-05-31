@@ -5,6 +5,7 @@ import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
 import com.furnitureshop.order.dto.order.GetOrderDto;
 import com.furnitureshop.order.dto.order.UpdateOrderDto;
 import com.furnitureshop.order.entity.Order;
+import com.furnitureshop.order.entity.OrderStatus;
 import com.furnitureshop.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +34,16 @@ public class OrderController {
     public Object getOrders() {
         try {
             List<GetOrderDto> orders = service.getOrders().stream().map(GetOrderDto::new).collect(Collectors.toList());
+            return ResponseHandler.getResponse(orders, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public Object getOrdersByStatus(@RequestParam OrderStatus orderStatus) {
+        try {
+            List<GetOrderDto> orders = service.getOrdersByOrderStatus(orderStatus).stream().map(GetOrderDto::new).collect(Collectors.toList());
             return ResponseHandler.getResponse(orders, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

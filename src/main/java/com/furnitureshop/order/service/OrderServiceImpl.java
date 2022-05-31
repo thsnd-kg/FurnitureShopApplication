@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrders() {
         List<Order> orders = repository.findAllByIsDeletedFalse();
 
-        return orders.stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
+        return orders.stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING) && !o.getIsDeleted()).collect(Collectors.toList());
     }
 
     @Override
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getYourOrders() {
-        return repository.findByUser(userService.getProfile()).stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING)).collect(Collectors.toList());
+        return repository.findByUser(userService.getProfile()).stream().filter(o -> !o.getOrderStatus().equals(OrderStatus.PUTTING) && !o.getIsDeleted()).collect(Collectors.toList());
     }
 
     @Override
@@ -231,5 +231,10 @@ public class OrderServiceImpl implements OrderService {
         repository.save(order);
 
         return true;
+    }
+
+    @Override
+    public List<Order> getOrdersByOrderStatus(OrderStatus orderStatus) {
+        return repository.findAllByOrderStatusAndIsDeletedFalse(orderStatus);
     }
 }
