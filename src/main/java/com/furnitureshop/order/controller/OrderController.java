@@ -40,7 +40,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/order-status")
     public Object getOrdersByStatus(@RequestParam OrderStatus orderStatus) {
         try {
             List<GetOrderDto> orders = service.getOrdersByOrderStatus(orderStatus).stream().map(GetOrderDto::new).collect(Collectors.toList());
