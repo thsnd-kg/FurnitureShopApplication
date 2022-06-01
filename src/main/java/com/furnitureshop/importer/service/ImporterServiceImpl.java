@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,5 +76,14 @@ public class ImporterServiceImpl implements ImporterService {
         return repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
                 .stream().collect(Collectors.groupingBy(item ->
                         item.getCreatedAt().toLocalDate().with(AdjusterUtils.getAdjuster().get(compression))));
+    }
+
+    @Override
+    public Object getTotalCost() {
+        List<Importer> importers = repository.findAll();
+        return new HashMap<String, Object>() {{
+            put("count_import", importers.size());
+            put("total_cost", importers.stream().map(Importer::getTotalPrice).mapToInt(Integer::intValue).sum());
+        }};
     }
 }

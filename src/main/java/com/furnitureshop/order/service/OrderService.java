@@ -37,4 +37,6 @@ public interface OrderService {
     Boolean deleteOrder(Long orderId);
 
     List<Order> getOrdersByOrderStatus(OrderStatus orderStatus);
+
+    Object getRevenue();
 }

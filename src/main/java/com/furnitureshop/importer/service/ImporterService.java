@@ -12,4 +12,5 @@ public interface ImporterService {
     Importer getImport(Long importId);
     Importer createImport(CreateImporterDto dto);
     Map<LocalDate, List<Importer>> getImportReport(LocalDate start, LocalDate end, String compression);
+    Object getTotalCost();
 }

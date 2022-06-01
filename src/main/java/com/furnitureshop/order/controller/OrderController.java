@@ -4,7 +4,6 @@ import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.order.dto.order.CreateOrderDetailDto;
 import com.furnitureshop.order.dto.order.GetOrderDto;
 import com.furnitureshop.order.dto.order.UpdateOrderDto;
-import com.furnitureshop.order.entity.Order;
 import com.furnitureshop.order.entity.OrderStatus;
 import com.furnitureshop.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,10 +96,20 @@ public class OrderController {
             Map<LocalDate, List<GetOrderDto>> report = service.getOrderReport(start, end, compression)
                     .entrySet().stream().collect(
                             Collectors.toMap(Map.Entry::getKey,
-                                    e-> e.getValue().stream().map(GetOrderDto::new)
+                                    e -> e.getValue().stream().map(GetOrderDto::new)
                                             .collect(Collectors.toList())));
 
             return ResponseHandler.getResponse(report, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/revenue")
+    public Object getRevenue() {
+        try {
+            Object result = service.getRevenue();
+            return ResponseHandler.getResponse(result, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         }

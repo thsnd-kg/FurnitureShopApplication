@@ -68,6 +68,15 @@ public class ImporterController {
         }
     }
 
+    @GetMapping("/total-cost")
+    public Object getTotalCost() {
+        try {
+            return ResponseHandler.getResponse(service.getTotalCost(), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping
     public Object createImport(@Valid @RequestBody CreateImporterDto dto, BindingResult errors) {
         try {

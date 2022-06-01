@@ -237,4 +237,13 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrdersByOrderStatus(OrderStatus orderStatus) {
         return repository.findAllByOrderStatusAndIsDeletedFalse(orderStatus);
     }
+
+    @Override
+    public Object getRevenue() {
+        List<Order> orders = repository.findAllByIsDeletedFalse().stream().filter(o -> o.getPaymentStatus() == PaymentStatus.PAID).collect(Collectors.toList());
+        return new HashMap<String, Object>(){{
+            put("count_paid_orders", orders.size());
+            put("revenue", orders.stream().map(Order::getTotalPrice).mapToInt(Integer::intValue).sum());
+        }};
+    }
 }
