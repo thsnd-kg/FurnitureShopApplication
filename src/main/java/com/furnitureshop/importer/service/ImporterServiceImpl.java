@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,9 +74,9 @@ public class ImporterServiceImpl implements ImporterService {
 
     @Override
     public Map<LocalDate, List<Importer>> getImportReport(LocalDate start, LocalDate end, String compression) {
-        return repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
+        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
                 .stream().collect(Collectors.groupingBy(item ->
-                        item.getCreatedAt().toLocalDate().with(AdjusterUtils.getAdjuster().get(compression))));
+                        item.getCreatedAt().toLocalDate().with(AdjusterUtils.getAdjuster().get(compression)))));
     }
 
     @Override
