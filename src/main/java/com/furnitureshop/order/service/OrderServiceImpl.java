@@ -194,10 +194,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<LocalDate, List<Order>> getOrderReport(LocalDate start, LocalDate end, String compression) {
-        return repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
+        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
                 .stream().filter(o -> o.getPaymentStatus().equals(PaymentStatus.PAID))
                 .collect(Collectors.groupingBy(item -> item.getCreatedAt().toLocalDate()
-                        .with(AdjusterUtils.getAdjuster().get(compression))));
+                        .with(AdjusterUtils.getAdjuster().get(compression)))));
     }
 
     @Override
