@@ -5,6 +5,7 @@ import com.furnitureshop.product.entity.Category;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class GetCategoryDto {
         this.categoryDesc = category.getCategoryDesc();
         this.isDeleted = category.getIsDeleted();
         this.options = category.getOptions().isEmpty() ? new ArrayList<>() : category.getOptions().stream().map(GetOptionDto::new).collect(Collectors.toList());
+        this.options.sort(Comparator.comparing(GetOptionDto::getOptionId));
         this.parentId = category.getParent() != null ? category.getParent().getCategoryId() : null;
     }
 }

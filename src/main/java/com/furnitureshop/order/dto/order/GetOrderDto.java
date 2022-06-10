@@ -25,8 +25,6 @@ public class GetOrderDto {
     private final Integer discount;
 
     public GetOrderDto(Order order) {
-        List<GetOrderDetailDto> temp;
-
         this.orderId = order.getOrderId();
         this.orderStatus = order.getOrderStatus();
         this.paymentStatus = order.getPaymentStatus();

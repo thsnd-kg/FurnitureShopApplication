@@ -1,11 +1,11 @@
 package com.furnitureshop.importer.dto;
 
 import com.furnitureshop.importer.entity.Importer;
-import com.furnitureshop.user.entity.User;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,5 +27,6 @@ public class GetImporterDto {
         this.importDetails = importer.getImportDetails().isEmpty()
                 ? new ArrayList<>()
                 : importer.getImportDetails().stream().map(GetImporterDetailDto::new).collect(Collectors.toList());
+        this.importDetails.sort(Comparator.comparing(o -> o.getVariant().getVariantId()));
     }
 }

@@ -4,6 +4,7 @@ import com.furnitureshop.product.entity.Variant;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class GetVariantDto {
         this.quantity = variant.getQuantity();
         this.image = variant.getImage();
         this.options = variant.getValues().isEmpty() ? new ArrayList<>() : variant.getValues().stream().map(GetValueDto::new).collect(Collectors.toList());
+        this.options.sort(Comparator.comparing(GetValueDto::getOptionId));
         this.productName = variant.getProduct().getProductName();
         this.brandName = variant.getProduct().getBrand().getBrandName();
         this.categoryName = variant.getProduct().getCategory().getCategoryName();
