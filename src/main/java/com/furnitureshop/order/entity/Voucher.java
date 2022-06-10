@@ -21,7 +21,8 @@ public class Voucher extends BaseEntity {
     private Long voucherId;
 
     @Column(name = "voucher_name",
-            length = 100)
+            length = 100,
+            unique = true)
     private String voucherName;
 
     @Column(name = "voucher_desc",

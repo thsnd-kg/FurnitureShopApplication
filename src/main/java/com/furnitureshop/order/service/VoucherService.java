@@ -10,6 +10,8 @@ import java.util.List;
 public interface VoucherService {
     Voucher getVoucherById(Long voucherId);
 
+    Voucher getVoucherByName(String voucherName);
+
     List<Voucher> getVouchers();
 
     List<Voucher> getVoucherActive();
@@ -19,4 +21,6 @@ public interface VoucherService {
     Boolean deleteVoucher(Long voucherId);
 
     Voucher updateVoucher(UpdateVoucherDto dto);
+
+    Boolean isExisted(String voucherName);
 }

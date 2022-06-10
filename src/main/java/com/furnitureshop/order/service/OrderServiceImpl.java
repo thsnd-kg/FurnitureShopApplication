@@ -77,6 +77,11 @@ public class OrderServiceImpl implements OrderService {
 
         if (orderDetailOptional.isPresent()) {
             OrderDetail orderDetail = orderDetailOptional.get();
+            Variant variant = variantService.getVariantById(orderDetail.getVariant().getVariantId());
+
+            if (variant.getQuantity() < dto.getQuantity())
+                throw new IllegalStateException("Maximum quantity: " + variant.getQuantity().toString());
+
             orderDetail.setQuantity(dto.getQuantity());
 
             cart.getOrderDetails().removeIf(o -> Objects.equals(o.getVariant().getVariantId(), dto.getVariantId()));
@@ -88,6 +93,10 @@ public class OrderServiceImpl implements OrderService {
 
         OrderDetail orderDetail = new OrderDetail();
         Variant variant = variantService.getVariantById(dto.getVariantId());
+
+        if (variant.getQuantity() < dto.getQuantity())
+            throw new IllegalStateException("Maximum quantity: " + variant.getQuantity().toString());
+
         orderDetail.setOrder(cart);
         orderDetail.setVariant(variant);
         orderDetail.setQuantity(dto.getQuantity());
@@ -123,13 +132,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order addVoucher(Long voucherId) {
+    public Order addVoucher(String voucherName) {
         List<Order> orderList = repository.findByUser(userService.getProfile());
         Optional<Order> cartOptional = orderList.stream().filter(o -> o.getOrderStatus().equals(OrderStatus.PUTTING)).findFirst();
 
         Order cart = cartOptional.orElseGet(this::createCart);
 
-        Voucher voucher = voucherService.getVoucherById(voucherId);
+        Voucher voucher = voucherService.getVoucherByName(voucherName);
+
+        if (voucher.getAmount() == 0)
+            throw new IllegalStateException("Voucher is out of stock");
 
         cart.setVoucher(voucher);
 
@@ -172,9 +184,20 @@ public class OrderServiceImpl implements OrderService {
         Order cart = getYourCart();
 
         if (cart.getVoucher() != null) {
+            if (cart.getVoucher().getValidDate().toLocalDate().isAfter(LocalDate.now()))
+                throw new IllegalStateException("Voucher cannot use now");
+
+            if (cart.getVoucher().getExpirationDate().toLocalDate().isBefore(LocalDate.now()))
+                throw new IllegalStateException("Voucher has expired");
+
             Integer voucherAmount = cart.getVoucher().getAmount();
             cart.getVoucher().setAmount(voucherAmount - 1);
         }
+
+        cart.getOrderDetails().forEach(orderDetail -> {
+            Integer oldQuantity = orderDetail.getVariant().getQuantity();
+            orderDetail.getVariant().setQuantity(oldQuantity - orderDetail.getQuantity());
+        });
 
         cart.setOrderStatus(OrderStatus.PENDING);
         cart.setCreatedAt(LocalDateTime.now());

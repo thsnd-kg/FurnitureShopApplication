@@ -32,26 +32,28 @@ public class Order extends BaseEntity {
     private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
 
     @Transient
+    Integer discount;
+
+    public Integer getDiscount() {
+        if (voucher == null) return 0;
+
+        int sum = getTotalPrice();
+        int deal = sum * voucher.getVoucherValue() / 100;
+
+        if (deal > voucher.getCappedAt())
+            return voucher.getCappedAt();
+
+        return deal;
+    }
+
+    @Transient
     private Integer totalPrice;
 
     public Integer getTotalPrice() {
-        if (voucher != null) {
-            int sum = orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
-            int deal = sum * voucher.getVoucherValue() / 100;
-            System.out.println(voucher.getCappedAt());
-            if (deal > voucher.getCappedAt()) {
-                sum = sum - voucher.getCappedAt();
-            } else {
-                sum = sum - deal;
-            }
-
-            return sum;
-        }
-
         return orderDetails.stream().mapToInt(i -> i.getVariant().getPrice() * i.getQuantity()).sum();
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 

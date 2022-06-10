@@ -50,6 +50,16 @@ public class VoucherController {
         }
     }
 
+    @GetMapping("/{voucher-name}")
+    public Object getVoucherByName(@PathVariable("voucher-name") String voucherName) {
+        try {
+            GetVoucherDto voucher = new GetVoucherDto(service.getVoucherByName(voucherName));
+            return ResponseHandler.getResponse(voucher, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping
     public Object createVoucher(@Valid @RequestBody CreateVoucherDto dto, BindingResult errors) {
         try {

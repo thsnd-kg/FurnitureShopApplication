@@ -18,7 +18,7 @@ public class OrderDetail {
     @Setter(AccessLevel.NONE)
     private OrderDetailPK id = new OrderDetailPK();
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @MapsId("variantId")
     @JoinColumn(name = "variant_id")
     private Variant variant;

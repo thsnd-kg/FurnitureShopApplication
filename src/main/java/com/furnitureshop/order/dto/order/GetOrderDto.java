@@ -5,6 +5,7 @@ import com.furnitureshop.order.entity.Order;
 import com.furnitureshop.order.entity.OrderStatus;
 import com.furnitureshop.order.entity.PaymentStatus;
 import com.furnitureshop.order.entity.Voucher;
+import io.swagger.models.auth.In;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class GetOrderDto {
     private final Integer totalPrice;
     private final List<GetOrderDetailDto> orderDetails;
     private final LocalDateTime createdAt;
+    private final Integer discount;
 
     public GetOrderDto(Order order) {
         this.orderId = order.getOrderId();
@@ -36,5 +38,6 @@ public class GetOrderDto {
         this.orderDetails = order.getOrderDetails().isEmpty()
                 ? new ArrayList<>()
                 : order.getOrderDetails().stream().map(GetOrderDetailDto::new).collect(Collectors.toList());
+        this.discount = order.getDiscount();
     }
 }

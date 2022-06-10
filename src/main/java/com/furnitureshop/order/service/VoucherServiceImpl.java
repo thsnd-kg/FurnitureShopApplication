@@ -33,6 +33,19 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    public Voucher getVoucherByName(String voucherName) {
+        Optional<Voucher> voucher = repository.findByVoucherName(voucherName);
+
+        if (!voucher.isPresent())
+            throw new IllegalStateException("Voucher not exists");
+
+        if (voucher.get().getIsDeleted())
+            throw new IllegalStateException("Voucher not exists");
+
+        return voucher.get();
+    }
+
+    @Override
     public List<Voucher> getVouchers() {
         return repository.findAll();
     }
@@ -44,6 +57,10 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     public Voucher createVoucher(CreateVoucherDto dto) {
+        if (isExisted(dto.getVoucherName())) {
+            throw new IllegalStateException("Voucher code exists");
+        }
+
         Voucher voucher = new Voucher();
 
         voucher.setVoucherName(dto.getVoucherName());
@@ -81,5 +98,12 @@ public class VoucherServiceImpl implements VoucherService {
         voucher.setCappedAt(dto.getCappedAt());
 
         return repository.save(voucher);
+    }
+
+    @Override
+    public Boolean isExisted(String voucherName) {
+        Optional<Voucher> voucher = repository.findByVoucherName(voucherName);
+
+        return voucher.isPresent();
     }
 }
