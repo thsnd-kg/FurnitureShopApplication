@@ -9,8 +9,7 @@ import io.swagger.models.auth.In;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -26,6 +25,8 @@ public class GetOrderDto {
     private final Integer discount;
 
     public GetOrderDto(Order order) {
+        List<GetOrderDetailDto> temp;
+
         this.orderId = order.getOrderId();
         this.orderStatus = order.getOrderStatus();
         this.paymentStatus = order.getPaymentStatus();
@@ -38,6 +39,7 @@ public class GetOrderDto {
         this.orderDetails = order.getOrderDetails().isEmpty()
                 ? new ArrayList<>()
                 : order.getOrderDetails().stream().map(GetOrderDetailDto::new).collect(Collectors.toList());
+        this.orderDetails.sort(Comparator.comparing(o -> o.getVariant().getVariantId()));
         this.discount = order.getDiscount();
     }
 }
