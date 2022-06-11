@@ -83,10 +83,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         Optional<User> user = repository.findByUsername(username);
+
         if(!user.isPresent())
             throw new IllegalArgumentException("Username does not exist");
         if(Objects.equals(user.get().getActiveFlag(), "D"))
             throw new IllegalArgumentException("Username does not exist");
+        if(user.get().getActiveFlag() == "B")
+            throw new IllegalStateException("User blocked");
 
         return user.get();
     }
@@ -131,22 +134,25 @@ public class UserServiceImpl implements UserService {
         } else {
             username = principal.toString();
         }
-        User user = getUserByUsername(username);
-        return user;
+        return getUserByUsername(username);
     }
 
     @Override
     public boolean blockUser(String username) {
-        User user = getUserByUsername(username);
+        Optional<User> user = repository.findByUsername(username);
 
-        if (Objects.equals(user.getActiveFlag(), "D"))
+        if (!user.isPresent()) {
+            throw new IllegalStateException("Username does not exist");
+        }
+
+        if (Objects.equals(user.get().getActiveFlag(), "D"))
             return false;
-        if (Objects.equals(user.getActiveFlag(), "Y"))
-            user.setActiveFlag("B");
+        if (Objects.equals(user.get().getActiveFlag(), "Y"))
+            user.get().setActiveFlag("B");
         else
-            user.setActiveFlag("Y");
+            user.get().setActiveFlag("Y");
 
-        repository.save(user);
+        repository.save(user.get());
 
         return true;
     }
