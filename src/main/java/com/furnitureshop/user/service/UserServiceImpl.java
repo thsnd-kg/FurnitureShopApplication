@@ -85,6 +85,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = repository.findByUsername(username);
         if(!user.isPresent())
             throw new IllegalArgumentException("Username does not exist");
+        if(Objects.equals(user.get().getActiveFlag(), "D"))
+            throw new IllegalArgumentException("Username does not exist");
+        if (Objects.equals(user.get().getActiveFlag(), "B"))
+            throw new IllegalStateException("User blocked");
 
         return user.get();
     }

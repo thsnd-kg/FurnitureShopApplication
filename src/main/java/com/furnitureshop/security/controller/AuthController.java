@@ -59,6 +59,8 @@ public class AuthController {
             response.put("user", user);
             // log history - AOP
             return ResponseHandler.getResponse(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println("{} has been logged in with wrong password: {}" + dto.getUsername() + e.getMessage() );
         }
