@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username does not exist");
         if(Objects.equals(user.get().getActiveFlag(), "D"))
             throw new IllegalArgumentException("Username does not exist");
-        if(user.get().getActiveFlag() == "B")
+        if(Objects.equals(user.get().getActiveFlag(), "B"))
             throw new IllegalStateException("User blocked");
 
         return user.get();
