@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -124,12 +125,28 @@ public class UserServiceImpl implements UserService {
         String username;
 
         if (principal instanceof UserDetails) {
-             username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
-             username = principal.toString();
+            username = principal.toString();
         }
         User user = getUserByUsername(username);
         return user;
+    }
+
+    @Override
+    public boolean blockUser(String username) {
+        User user = getUserByUsername(username);
+
+        if (Objects.equals(user.getActiveFlag(), "D"))
+            return false;
+        if (Objects.equals(user.getActiveFlag(), "Y"))
+            user.setActiveFlag("B");
+        else
+            user.setActiveFlag("Y");
+
+        repository.save(user);
+
+        return true;
     }
 
     @Override
@@ -137,7 +154,7 @@ public class UserServiceImpl implements UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }

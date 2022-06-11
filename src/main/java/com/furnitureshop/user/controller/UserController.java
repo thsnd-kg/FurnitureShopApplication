@@ -73,25 +73,32 @@ public class UserController {
     }
 
 
-    @DeleteMapping(path= "/users/{username}")
+    @DeleteMapping(path = "/users/{username}")
     public Object deleteUser(@PathVariable("username") String username) {
-        try{
+        try {
             service.deleteUserByUsername(username);
 
-            return ResponseHandler.getResponse( HttpStatus.OK);
-        } catch (Exception e){
+            return ResponseHandler.getResponse(HttpStatus.OK);
+        } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
+    @PutMapping(path = "/users/{username}")
+    public Object blockUser(@PathVariable("username") String username) {
+        try {
+            return ResponseHandler.getResponse(service.blockUser(username), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseHandler.getResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /*Website*/
     @GetMapping(path = "/profile/me")
-    public Object getProfile(){
-        try{
+    public Object getProfile() {
+        try {
             return ResponseHandler.getResponse(service.getProfile(), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
