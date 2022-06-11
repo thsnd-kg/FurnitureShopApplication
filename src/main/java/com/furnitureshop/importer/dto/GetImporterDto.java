@@ -22,7 +22,7 @@ public class GetImporterDto {
         this.importId = importer.getImportId();
         this.importDesc = importer.getImportDesc();
         this.totalPrice = importer.getTotalPrice();
-        this.emailImporter = importer.getUser().getEmail();
+        this.emailImporter = importer.getUser().getUsername();
         this.createdAt = importer.getCreatedAt().toLocalDate();
         this.importDetails = importer.getImportDetails().isEmpty()
                 ? new ArrayList<>()
