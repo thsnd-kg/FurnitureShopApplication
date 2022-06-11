@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class ImporterServiceImpl implements ImporterService {
 
     @Override
     public Map<LocalDate, List<Importer>> getImportReport(LocalDate start, LocalDate end, String compression) {
-        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
+        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atTime(LocalTime.MAX))
                 .stream().collect(Collectors.groupingBy(item ->
                         item.getCreatedAt().toLocalDate().with(AdjusterUtils.getAdjuster().get(compression)))));
     }

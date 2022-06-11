@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @CrossOrigin
 @RestController
@@ -52,8 +53,12 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
             String token = jwtUtils.generateJwtToken(auth);
+            User user = userService.getUserByUsername(dto.getUsername());
+            HashMap<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user", user);
             // log history - AOP
-            return ResponseHandler.getResponse(token, HttpStatus.OK);
+            return ResponseHandler.getResponse(response, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("{} has been logged in with wrong password: {}" + dto.getUsername() + e.getMessage() );
         }

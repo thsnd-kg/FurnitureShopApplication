@@ -28,5 +28,7 @@ public interface UserService {
 
     User getProfile();
 
+    boolean blockUser(String username);
+
     void changePassword(ChangePasswordDto dto);
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -217,7 +218,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Map<LocalDate, List<Order>> getOrderReport(LocalDate start, LocalDate end, String compression) {
-        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atStartOfDay())
+        return new TreeMap<>(repository.findByCreatedAtBetweenOrderByCreatedAt(start.atStartOfDay(), end.atTime(LocalTime.MAX))
                 .stream().filter(o -> o.getPaymentStatus().equals(PaymentStatus.PAID))
                 .collect(Collectors.groupingBy(item -> item.getCreatedAt().toLocalDate()
                         .with(AdjusterUtils.getAdjuster().get(compression)))));
