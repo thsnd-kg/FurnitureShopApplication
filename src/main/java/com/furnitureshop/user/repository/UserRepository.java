@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.activeFlag <> 'D' AND u.role IS NOT NULL")
+    @Query("SELECT u FROM User u WHERE u.activeFlag <> 'D' AND u.role IS NOT NULL AND u.role.name <> 'ADMIN'")
     List<User> findUsers();
 
     @Query("SELECT u FROM User u WHERE u.activeFlag <> 'D' AND u.role IS NULL")
