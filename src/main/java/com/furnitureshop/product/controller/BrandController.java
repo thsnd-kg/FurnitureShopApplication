@@ -2,6 +2,7 @@ package com.furnitureshop.product.controller;
 
 import com.furnitureshop.common.ResponseHandler;
 import com.furnitureshop.product.dto.BrandDto;
+import com.furnitureshop.product.entity.Brand;
 import com.furnitureshop.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -23,10 +26,15 @@ public class BrandController {
 
     @GetMapping("/website/brands")
     public Object getBrands(@RequestParam(value = "onlyActive") Boolean isActive) {
-        if(isActive)
-            return ResponseHandler.getResponse(service.getBrandsActive(), HttpStatus.OK);
+        if(isActive) {
+            List<Brand> brands = service.getBrandsActive();
+            brands.sort(Comparator.comparing(Brand::getBrandId));
+            return ResponseHandler.getResponse(brands, HttpStatus.OK);
+        }
 
-        return ResponseHandler.getResponse(service.getBrands(), HttpStatus.OK);
+        List<Brand> brands = service.getBrands();
+        brands.sort(Comparator.comparing(Brand::getBrandId));
+        return ResponseHandler.getResponse(brands, HttpStatus.OK);
     }
 
 

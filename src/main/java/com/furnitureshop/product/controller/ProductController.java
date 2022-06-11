@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,7 @@ public class ProductController {
     public Object getOptionValue(@PathVariable("product-id") Long productId) {
         try {
             List<GetValueDto> values = valueService.getOptionValues(productId);
+            values.sort(Comparator.comparing(GetValueDto::getOptionId));
             return ResponseHandler.getResponse(values, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
@@ -55,7 +57,10 @@ public class ProductController {
     @GetMapping("/website/products")
     public Object getProducts() {
         try {
-            List<GetProductDto> products = service.getProducts().stream().map(GetProductDto::new).collect(Collectors.toList());
+            List<GetProductDto> products = service.getProducts()
+                    .stream().map(GetProductDto::new)
+                    .sorted(Comparator.comparing(GetProductDto::getProductId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(products, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

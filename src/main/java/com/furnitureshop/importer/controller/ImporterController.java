@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +32,10 @@ public class ImporterController {
     @GetMapping
     public Object getImports() {
         try {
-            List<GetImporterDto> importers = service.getImports().stream().map(GetImporterDto::new).collect(Collectors.toList());
+            List<GetImporterDto> importers = service.getImports()
+                    .stream().map(GetImporterDto::new)
+                    .sorted(Comparator.comparing(GetImporterDto::getImportId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(importers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
@@ -53,8 +57,8 @@ public class ImporterController {
 
     @GetMapping("/report")
     public Object importReport(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
-                                  @RequestParam String compression) {
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+                               @RequestParam String compression) {
         try {
             Map<LocalDate, List<GetImporterDto>> result = service.getImportReport(start, end, compression)
                     .entrySet().stream().collect(

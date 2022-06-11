@@ -25,6 +25,9 @@ public class Variant extends BaseEntity implements Serializable {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "import_price")
+    private Integer importPrice = 0;
+
     @Column(name = "image",
             length = 300)
     private String image;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,10 @@ public class OrderController {
     @GetMapping
     public Object getOrders() {
         try {
-            List<GetOrderDto> orders = service.getOrders().stream().map(GetOrderDto::new).collect(Collectors.toList());
+            List<GetOrderDto> orders = service.getOrders()
+                    .stream().map(GetOrderDto::new)
+                    .sorted(Comparator.comparing(GetOrderDto::getOrderId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(orders, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
@@ -43,7 +47,10 @@ public class OrderController {
     @GetMapping("/order-status")
     public Object getOrdersByStatus(@RequestParam OrderStatus orderStatus) {
         try {
-            List<GetOrderDto> orders = service.getOrdersByOrderStatus(orderStatus).stream().map(GetOrderDto::new).collect(Collectors.toList());
+            List<GetOrderDto> orders = service.getOrdersByOrderStatus(orderStatus)
+                    .stream().map(GetOrderDto::new)
+                    .sorted(Comparator.comparing(GetOrderDto::getOrderId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(orders, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);
@@ -63,7 +70,10 @@ public class OrderController {
     @GetMapping("/user")
     public Object getYourOrders() {
         try {
-            List<GetOrderDto> orders = service.getYourOrders().stream().map(GetOrderDto::new).collect(Collectors.toList());
+            List<GetOrderDto> orders = service.getYourOrders()
+                    .stream().map(GetOrderDto::new)
+                    .sorted(Comparator.comparing(GetOrderDto::getOrderId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(orders, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

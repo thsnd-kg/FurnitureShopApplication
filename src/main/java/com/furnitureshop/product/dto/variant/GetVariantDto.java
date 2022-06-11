@@ -14,7 +14,7 @@ public class GetVariantDto {
     private final Long productId;
     private final String sku;
     private final Integer price;
-    private final Integer importPrice = 1000;
+    private final Integer importPrice;
     private final Integer quantity;
     private final String image;
     private final List<GetValueDto> options;
@@ -27,6 +27,7 @@ public class GetVariantDto {
         this.productId = variant.getProduct().getProductId();
         this.sku = variant.getSku();
         this.price = variant.getPrice();
+        this.importPrice = variant.getImportPrice() == null ? 1000 : variant.getImportPrice();
         this.quantity = variant.getQuantity();
         this.image = variant.getImage();
         this.options = variant.getValues().isEmpty() ? new ArrayList<>() : variant.getValues().stream().map(GetValueDto::new).collect(Collectors.toList());

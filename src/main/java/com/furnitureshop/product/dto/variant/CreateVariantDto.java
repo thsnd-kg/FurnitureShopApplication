@@ -1,8 +1,6 @@
 package com.furnitureshop.product.dto.variant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;

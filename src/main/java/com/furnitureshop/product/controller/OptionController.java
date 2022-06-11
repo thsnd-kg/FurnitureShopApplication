@@ -7,6 +7,7 @@ import com.furnitureshop.product.service.OptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,10 @@ public class OptionController {
     @GetMapping
     public Object getOptions() {
         try {
-            List<GetOptionDto> options = service.getOptions().stream().map(GetOptionDto::new).collect(Collectors.toList());
+            List<GetOptionDto> options = service.getOptions()
+                    .stream().map(GetOptionDto::new)
+                    .sorted(Comparator.comparing(GetOptionDto::getOptionId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(options, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,17 @@ public class VariantController {
     public Object getVariants(@RequestParam(name = "onlyActive") Boolean isActive, @RequestParam Long productId) {
         try {
             if (isActive) {
-                List<GetVariantDto> variants = service.getVariantsActiveByProductId(productId).stream().map(GetVariantDto::new).collect(Collectors.toList());
+                List<GetVariantDto> variants = service.getVariantsActiveByProductId(productId)
+                        .stream().map(GetVariantDto::new)
+                        .sorted(Comparator.comparing(GetVariantDto::getVariantId))
+                        .collect(Collectors.toList());
                 return ResponseHandler.getResponse(variants, HttpStatus.OK);
             }
 
-            List<GetVariantDto> variants = service.getVariantsByProductId(productId).stream().map(GetVariantDto::new).collect(Collectors.toList());
+            List<GetVariantDto> variants = service.getVariantsByProductId(productId)
+                    .stream().map(GetVariantDto::new)
+                    .sorted(Comparator.comparing(GetVariantDto::getVariantId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(variants, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

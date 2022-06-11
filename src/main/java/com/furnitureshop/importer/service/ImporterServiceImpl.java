@@ -65,6 +65,7 @@ public class ImporterServiceImpl implements ImporterService {
             importerDetail.setVariant(variant);
 
             importerDetail.getVariant().setQuantity(oldQuantity + importerDetail.getQuantity());
+            importerDetail.getVariant().setImportPrice(importerDetail.getPrice());
 
             importer.getImportDetails().add(importerDetail);
         }

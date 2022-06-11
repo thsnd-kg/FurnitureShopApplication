@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,17 @@ public class VoucherController {
     public Object getVouchers(@RequestParam(value = "onlyActive") Boolean isActive) {
         try {
             if (isActive) {
-                List<GetVoucherDto> vouchers = service.getVoucherActive().stream().map(GetVoucherDto::new).collect(Collectors.toList());
+                List<GetVoucherDto> vouchers = service.getVoucherActive()
+                        .stream().map(GetVoucherDto::new)
+                        .sorted(Comparator.comparing(GetVoucherDto::getVoucherId))
+                        .collect(Collectors.toList());
                 return ResponseHandler.getResponse(vouchers, HttpStatus.OK);
             }
 
-            List<GetVoucherDto> vouchers = service.getVouchers().stream().map(GetVoucherDto::new).collect(Collectors.toList());
+            List<GetVoucherDto> vouchers = service.getVouchers()
+                    .stream().map(GetVoucherDto::new)
+                    .sorted(Comparator.comparing(GetVoucherDto::getVoucherId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(vouchers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseHandler.getResponse(e, HttpStatus.BAD_REQUEST);

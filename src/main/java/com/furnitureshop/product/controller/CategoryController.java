@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +28,17 @@ public class CategoryController {
     @GetMapping("/website/categories")
     public Object getCategories(@RequestParam(value = "onlyActive") Boolean isActive) {
         if (isActive) {
-            List<GetCategoryDto> categories = service.getCategoriesActive().stream().map(GetCategoryDto::new).collect(Collectors.toList());
+            List<GetCategoryDto> categories = service.getCategoriesActive()
+                    .stream().map(GetCategoryDto::new)
+                    .sorted(Comparator.comparing(GetCategoryDto::getCategoryId))
+                    .collect(Collectors.toList());
             return ResponseHandler.getResponse(categories, HttpStatus.OK);
         }
 
-        List<GetCategoryDto> categories = service.getCategories().stream().map(GetCategoryDto::new).collect(Collectors.toList());
+        List<GetCategoryDto> categories = service.getCategories()
+                .stream().map(GetCategoryDto::new)
+                .sorted(Comparator.comparing(GetCategoryDto::getCategoryId))
+                .collect(Collectors.toList());
         return ResponseHandler.getResponse(categories, HttpStatus.OK);
     }
 
