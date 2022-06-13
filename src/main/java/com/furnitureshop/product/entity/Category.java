@@ -26,8 +26,8 @@ public class Category extends BaseEntity {
     private String categoryName;
 
     @Column(name = "category_desc",
-            length = 100,
-            columnDefinition = "varchar(100) default 'No description'")
+            length = 1000,
+            columnDefinition = "varchar(1000) default 'No description'")
     private String categoryDesc = "No description";
 
     @Column(name = "is_deleted",
