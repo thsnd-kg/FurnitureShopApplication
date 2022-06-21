@@ -1,5 +1,6 @@
 package com.furnitureshop.product.repository;
 
+import com.furnitureshop.product.entity.Category;
 import com.furnitureshop.product.entity.Product;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,5 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    List<Product> findByIsDeletedFalse();
 }

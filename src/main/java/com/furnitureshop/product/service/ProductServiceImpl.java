@@ -53,6 +53,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductsActive() {
+        return repository.findByIsDeletedFalse();
+    }
+
+    @Override
     public Product createProduct(CreateProductDto dto) {
         Product product = new Product();
 

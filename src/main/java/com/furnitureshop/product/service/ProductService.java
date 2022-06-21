@@ -16,6 +16,8 @@ public interface ProductService {
 
     List<Product> getProducts();
 
+    List<Product> getProductsActive();
+
     Product createProduct(CreateProductDto dto);
 
     Product updateProduct(UpdateProductDto dto);

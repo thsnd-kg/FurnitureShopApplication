@@ -57,7 +57,7 @@ public class ProductController {
     @GetMapping("/website/products")
     public Object getProducts() {
         try {
-            List<GetProductDto> products = service.getProducts()
+            List<GetProductDto> products = service.getProductsActive()
                     .stream().map(GetProductDto::new)
                     .sorted(Comparator.comparing(GetProductDto::getProductId))
                     .collect(Collectors.toList());

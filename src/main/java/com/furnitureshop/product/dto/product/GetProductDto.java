@@ -2,6 +2,7 @@ package com.furnitureshop.product.dto.product;
 
 import com.furnitureshop.product.dto.variant.GetVariantDto;
 import com.furnitureshop.product.entity.Product;
+import com.furnitureshop.product.entity.Variant;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -32,7 +33,11 @@ public class GetProductDto {
         this.productDesc = product.getProductDesc();
         this.image = product.getImage();
         this.isDeleted = product.getIsDeleted();
-        this.variants = product.getVariants().isEmpty() ? new ArrayList<>() : product.getVariants().stream().map(GetVariantDto::new).collect(Collectors.toList());
+        List<Variant> variantsEntity = new ArrayList<>() ;
+        for(Variant v  : product.getVariants()) {
+            if(!v.getIsDeleted()) variantsEntity.add(v);
+        }
+        this.variants = product.getVariants().isEmpty() ? new ArrayList<>() : variantsEntity.stream().map(GetVariantDto::new).collect(Collectors.toList());
         this.variants.sort(Comparator.comparing(GetVariantDto::getVariantId));
     }
 }
