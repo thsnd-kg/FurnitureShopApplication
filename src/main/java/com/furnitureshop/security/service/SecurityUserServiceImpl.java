@@ -48,13 +48,13 @@ public class SecurityUserServiceImpl implements SecurityUserService {
     public Boolean verifyMailToken(String VerificationToken) {
         Optional<VerificationToken> verification = verificationTokenRepository.findByToken(VerificationToken);
         if(!verification.isPresent())
-            throw new IllegalStateException("Token xác thực không đúng");
+            throw new IllegalStateException("Invalid Token");
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         if(verification.get().getExpiryDate().before(calendar.getTime()))
-            throw new IllegalStateException("Token hết hạn");
+            throw new IllegalStateException("Expired token");
 
         User user = verification.get().getUser();
         user.setActiveFlag("Y");
@@ -67,7 +67,7 @@ public class SecurityUserServiceImpl implements SecurityUserService {
     public PasswordResetToken createPasswordResetToken(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if(!user.isPresent())
-            throw new IllegalStateException("Email này không có trong hệ thống");
+            throw new IllegalStateException("This email haven't been registed in our system");
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken myToken = new PasswordResetToken();
@@ -81,13 +81,13 @@ public class SecurityUserServiceImpl implements SecurityUserService {
     public void verifyPasswordResetToken(ForgotPasswordDto dto) {
         Optional<PasswordResetToken> verification = passwordResetTokenRepository.findByToken(dto.getToken());
         if(!verification.isPresent())
-            throw new IllegalStateException("Token xác thực không đúng");
+            throw new IllegalStateException("Invalid Token");
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         if(verification.get().getExpiryDate().before(calendar.getTime()))
-            throw new IllegalStateException("Token hết hạn");
+            throw new IllegalStateException("Expired token");
 
         User user = verification.get().getUser();
         user.setPassword(encoder.encode(dto.getPassword()));
