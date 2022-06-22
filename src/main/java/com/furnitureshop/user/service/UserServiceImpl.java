@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +58,8 @@ public class UserServiceImpl implements UserService {
         if(dto.getRoleId() != null){
             Role role = roleService.getRoleById(dto.getRoleId());
             newUser.setRole(role);
+        } else {
+            newUser.setActiveFlag("N");
         }
 
         return repository.save(newUser);
@@ -180,6 +183,12 @@ public class UserServiceImpl implements UserService {
         }
 
 
+    }
+
+    @Transactional
+    @Override
+    public void deleteByUsername(String username) {
+        repository.deleteByUsername(username);
     }
 
 }

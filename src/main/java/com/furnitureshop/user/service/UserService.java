@@ -31,4 +31,6 @@ public interface UserService {
     boolean blockUser(String username);
 
     void changePassword(ChangePasswordDto dto);
+
+    void deleteByUsername(String username);
 }
