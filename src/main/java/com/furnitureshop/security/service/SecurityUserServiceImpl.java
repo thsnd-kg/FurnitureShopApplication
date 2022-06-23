@@ -67,7 +67,7 @@ public class SecurityUserServiceImpl implements SecurityUserService {
     public PasswordResetToken createPasswordResetToken(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if(!user.isPresent())
-            throw new IllegalStateException("This email haven't been registed in our system");
+            throw new IllegalStateException("This email haven't been registered in our system");
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken myToken = new PasswordResetToken();
